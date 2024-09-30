@@ -15,24 +15,8 @@ bot.loadPlugin(pvp)
 // bot.loadPlugin(autoeat)
 
 log(`登录于 ${botOption.host}:${botOption.port}`)
+
 export class KonekoFsm extends FSM {
-    public update() {
-        try {
-            if (this.curState.cond()) {
-                this.curState.takeAction()
-            } else {
-                for (let nextState of this.curState.nextStates) {
-                    this.curState = nextState
-                }
-            }
-        } catch (e) {
-            // 如果出现 TypeError: curState.nextStates is not iterable，请检查您的状态机环路是否存在 null 节点。
-            throw e
-        }
-
-        log(`FSM 当前：${this.curState.name}`)
-    }
-
     protected register() {
         // 状态机注册
         const idleState = new IdleState()
@@ -45,7 +29,6 @@ export class KonekoFsm extends FSM {
 
         this.curState = idleState
     }
-
 }
 
 const konekoFsm = new KonekoFsm()

@@ -1,3 +1,5 @@
+import {log} from "../utils/log";
+
 export abstract class State {
     public env: any
     public name: string
@@ -20,6 +22,21 @@ export abstract class FSM {
 
     protected abstract register()
 
-    public abstract update()
+    public update() {
+        try {
+            if (this.curState.cond()) {
+                this.curState.takeAction()
+            } else {
+                for (let nextState of this.curState.nextStates) {
+                    this.curState = nextState
+                }
+            }
+        } catch (e) {
+            // 如果出现 TypeError: curState.nextStates is not iterable，请检查您的状态机环路是否存在 null 节点。
+            throw e
+        }
+
+        log(`FSM 当前：${this.curState.name}`)
+    }
 }
 

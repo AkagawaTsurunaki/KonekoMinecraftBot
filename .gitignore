@@ -2,3 +2,4 @@
 /.idea
 /scripts
 package-lock.json
+const.ts

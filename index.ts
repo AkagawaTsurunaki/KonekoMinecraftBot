@@ -7,6 +7,7 @@ import {FSM} from "./fsm/fsm";
 import {IdleState} from "./fsm/idleState";
 import {FollowPlayerState} from "./fsm/followPlayerState";
 import {AttackHostileState} from "./fsm/attackHostileState";
+import {Vec3} from "vec3";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -39,4 +40,14 @@ bot.on("spawn", () => {
 
 bot.on("physicsTick", () => {
     konekoFsm.update()
+})
+
+bot.on("hardcodedSoundEffectHeard", async (soundId: number,
+                                     soundCategory: string | number,
+                                     position: Vec3,
+                                     volume: number,
+                                     pitch: number) => {
+    if (soundCategory === "player" || soundCategory === "hostile" || soundCategory === "mob") {
+        await bot.lookAt(position)
+    }
 })

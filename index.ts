@@ -8,6 +8,7 @@ import {IdleState} from "./fsm/idleState";
 import {FollowPlayerState} from "./fsm/followPlayerState";
 import {AttackHostileState} from "./fsm/attackHostileState";
 import {Vec3} from "vec3";
+import {AttackPlayerState} from "./fsm/attackPlayerState";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -23,10 +24,12 @@ export class KonekoFsm extends FSM {
         const idleState = new IdleState()
         const followPlayerState = new FollowPlayerState()
         const attackHostile = new AttackHostileState()
+        const attackPlayerState = new AttackPlayerState()
 
-        idleState.nextStates = [followPlayerState, attackHostile]
+        idleState.nextStates = [followPlayerState, attackHostile, attackPlayerState]
         followPlayerState.nextStates = [idleState]
         attackHostile.nextStates = [followPlayerState]
+        attackPlayerState.nextStates = [idleState]
 
         this.curState = idleState
     }

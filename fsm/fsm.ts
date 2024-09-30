@@ -10,5 +10,11 @@ export abstract class State {
 }
 
 export abstract class FSM {
+    constructor() {
+        this.register()
+    }
+    public curState: State
 
+    protected abstract register()
+    public abstract update()
 }

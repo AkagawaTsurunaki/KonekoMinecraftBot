@@ -3,7 +3,7 @@ import {createBot} from "mineflayer";
 import {log} from "./utils/log";
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
-import {KonekoFsm} from "./konekoFsm/konekoFsm";
+import {KonekoFsm} from "./fsm/fsm";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)

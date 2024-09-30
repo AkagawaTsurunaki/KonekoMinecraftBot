@@ -1,11 +1,11 @@
-import {State} from "../fsm/fsm";
+import {State} from "./fsm";
 import {Follow} from "../skills/follow";
 import {log} from "../utils/log";
 import {bot} from "../index";
 import {clamp, dot} from "../utils/math";
 import {FearBehaviour} from "../behaviours/fear";
 
-export class FollowState extends State {
+export class FollowPlayerState extends State {
 
     public name = "跟随状态"
     private minDistance = 10

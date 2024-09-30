@@ -1,4 +1,4 @@
-import {State} from "../fsm/fsm";
+import {State} from "./fsm";
 
 export class IdleState extends State {
 

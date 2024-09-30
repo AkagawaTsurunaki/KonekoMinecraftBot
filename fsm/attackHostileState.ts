@@ -12,6 +12,14 @@ export class AttackHostileState extends State {
     }
 
     async takeAction() {
+        // console.log(bot.inventory.items());
+        // bot.equip()
+        // 切换武器
+        const weapons = bot.inventory.items().filter(item => item.name.includes("sword") || item.name.includes("axe"))
+        // console.log(swords);
+        if (weapons && weapons.length > 0) {
+            await bot.equip(weapons[0], "hand")
+        }
         await Attack.attackNearestHostiles(9)
     }
 

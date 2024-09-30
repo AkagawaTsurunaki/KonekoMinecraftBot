@@ -63,7 +63,6 @@ export class FearBehaviour {
      * [难度，饥饿值，饱和度，生命值，月相，时间]
      */
     public static getFearVector(): Array<number> {
-        console.log(bot.food)
         return [
             this.difficultyMap[bot.game.difficulty],
             (this.MAX_FOOD - bot.food) / this.MAX_FOOD,

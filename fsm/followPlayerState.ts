@@ -22,14 +22,12 @@ export class FollowPlayerState extends State {
     }
 
     takeAction() {
-        const vec = FearBehaviour.getFearVector()
-        console.log(vec)
         const fearVal = dot(this.fearWeights, FearBehaviour.getFearVector())
 
         if (Number.isNaN(fearVal)) return
         this.minDistance = clamp(Math.exp(-fearVal) * 30 - 5, 2, 64)
 
-        log(`当前追踪距离：${this.minDistance}`, true)
+        log(`当前追踪距离：${this.minDistance}`)
         Follow.followNearestPlayer(this.minDistance, true).then(
             () => log(`跟随最近玩家完成`)
         )

@@ -4,7 +4,7 @@ import {bot} from "../index";
 import {createLevelFuncByMap} from "../utils/math";
 
 
-export class AttackHostileState extends AbstractState {
+export class AttackHostilesState extends AbstractState {
 
     /**
      * 索敌半径

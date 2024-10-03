@@ -6,7 +6,7 @@ import {plugin as pvp} from "mineflayer-pvp";
 import {FSM} from "./fsm/fsm";
 import {IdleState} from "./fsm/idleState";
 import {FollowPlayerState} from "./fsm/followPlayerState";
-import {AttackHostileState} from "./fsm/attackHostileState";
+import {AttackHostilesState} from "./fsm/attackHostilesState";
 import {Vec3} from "vec3";
 import {DiveState} from "./fsm/diveState";
 import {AttackPlayerState} from "./fsm/attackPlayerState";
@@ -24,15 +24,15 @@ export class KonekoFsm extends FSM {
         // 状态机注册
         const idleState = new IdleState()
         const followPlayerState = new FollowPlayerState()
-        const attackHostile = new AttackHostileState()
+        const attackHostiles = new AttackHostilesState()
         const attackPlayerState = new AttackPlayerState()
         const diveState = new DiveState()
 
-        idleState.nextStates = [attackHostile, diveState, followPlayerState, attackPlayerState]
-        followPlayerState.nextStates = [idleState, attackHostile, attackPlayerState]
-        attackHostile.nextStates = [idleState, diveState]
-        attackPlayerState.nextStates = [idleState, attackHostile]
-        diveState.nextStates = [idleState, attackHostile]
+        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState]
+        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState]
+        attackHostiles.nextStates = [idleState, diveState]
+        attackPlayerState.nextStates = [idleState, attackHostiles]
+        diveState.nextStates = [idleState, attackHostiles]
 
         this.curState = idleState
     }

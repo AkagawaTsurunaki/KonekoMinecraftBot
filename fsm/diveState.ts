@@ -17,6 +17,7 @@ export class DiveState extends AbstractState {
         // 机器人是否在水中，氧气值含量，生命值
         // @ts-ignore
         const inWater = bot.entity.isInWater
+        if (!inWater) return 0
         const condVal = dot([this.inWaterWeight, this.oxygenLevelWeight, this.healthWeight],
             [inWater ? 1 : 0, Math.abs(bot.oxygenLevel - 20) / 20, Math.abs(bot.health - 20) / 20])
         return condVal ? condVal : 0;

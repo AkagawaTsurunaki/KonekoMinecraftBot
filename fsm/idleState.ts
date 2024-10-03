@@ -9,7 +9,7 @@ export class IdleState extends AbstractState {
 
 
     getCondVal(): number {
-        return 0.0;
+        return 0.01;
     }
 
     onEntered() {

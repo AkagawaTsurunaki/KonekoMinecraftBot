@@ -1,7 +1,6 @@
 import {bot} from "../index";
 import {Block} from "prismarine-block";
-import {goto} from "../utils/helper";
-import {goals} from "mineflayer-pathfinder";
+import {gotoNear} from "../utils/helper";
 
 export class Sleep {
 
@@ -21,8 +20,7 @@ export class Sleep {
             console.warn(`附近没有找到床……`)
             return
         }
-        // TOFIX: 位置不对，会挖方快
-        await bot.pathfinder.goto(new goals.GoalBlock(bedBlock.position.x, bedBlock.position.y, bedBlock.position.z))
+        await gotoNear(bedBlock.position)
         console.log(`已找到床，准备睡觉`)
         await bot.sleep(bedBlock)
         console.log(`已起床`)

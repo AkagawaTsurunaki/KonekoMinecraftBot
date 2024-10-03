@@ -41,3 +41,8 @@ export function goto(block: Vec3) {
     bot.pathfinder.setMovements(movements);
     bot.pathfinder.setGoal(goal)
 }
+
+export async function gotoNear(block: Vec3) {
+    const goal = new goals.GoalNear(block.x, block.y, block.z, 1)
+    await bot.pathfinder.goto(goal)
+}

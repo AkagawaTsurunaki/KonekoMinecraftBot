@@ -32,7 +32,8 @@ export class KonekoFsm extends FSM {
         const sleepState = new SleepState();
 
         idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState]
-        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState]
+        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState, sleepState]
+        sleepState.nextStates = [idleState, followPlayerState]
         attackHostiles.nextStates = [idleState, diveState, followPlayerState]
         attackPlayerState.nextStates = [idleState, attackHostiles]
         diveState.nextStates = [idleState, attackHostiles]

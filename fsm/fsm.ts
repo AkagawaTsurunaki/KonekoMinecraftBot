@@ -2,6 +2,7 @@ export abstract class AbstractState {
 
     public name: string
     public nextStates: Array<AbstractState>
+    protected isEntered: boolean = false
 
     public constructor(name: string) {
         this.name = name

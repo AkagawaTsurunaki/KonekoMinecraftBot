@@ -3,7 +3,7 @@ import {Entity} from "prismarine-entity";
 import {bot} from "../index";
 
 
-export class Attack {
+export class AttackSkill {
 
     public static findNearestHostile(attackRadius: number) {
         const mobFilter = (e: Entity) =>

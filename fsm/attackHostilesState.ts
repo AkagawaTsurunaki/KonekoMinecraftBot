@@ -1,5 +1,5 @@
 import {AbstractState} from "./fsm";
-import {Attack} from "../skills/attack";
+import {AttackSkill} from "../skills/attackSkill";
 import {bot} from "../index";
 import {createLevelFuncByMap} from "../utils/math";
 
@@ -52,7 +52,7 @@ export class AttackHostilesState extends AbstractState {
 
 
     getCondVal(): number {
-        const hostile = Attack.findNearestHostile(this.searchRadius)
+        const hostile = AttackSkill.findNearestHostile(this.searchRadius)
         if (!hostile) return 0.0
         const dist = bot.entity.position.distanceTo(hostile.position)
         return this.radiusToCondValFunc(dist)
@@ -60,9 +60,9 @@ export class AttackHostilesState extends AbstractState {
 
     async onEntered() {
         // 切换武器
-        await Attack.equipWeapon()
+        await AttackSkill.equipWeapon()
         // 攻击怪物
-        await Attack.attackNearestHostiles(this.attackRadius)
+        await AttackSkill.attackNearestHostiles(this.attackRadius)
     }
 
     async onExited() {

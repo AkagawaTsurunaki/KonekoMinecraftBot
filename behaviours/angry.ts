@@ -15,8 +15,6 @@ export class AngryBehaviour {
             this.updatePvpTarget()
             this.tryForgivePlayer()
             this.propitiate(1)
-            console.log(this.pvpTarget)
-            console.log(this.playerAngryDict)
         })
 
         // @ts-ignore

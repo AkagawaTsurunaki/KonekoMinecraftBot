@@ -11,7 +11,7 @@ import {Vec3} from "vec3";
 import {DiveState} from "./fsm/diveState";
 import {AttackPlayerState} from "./fsm/attackPlayerState";
 import {ChatMessage} from "prismarine-chat";
-import {Sleep} from "./skills/sleep";
+import {SleepSkill} from "./skills/sleepSkill";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -85,7 +85,7 @@ bot.on("chat", async (
     matches: string[] | null
 ) => {
     if (message === "nemu") {
-        await Sleep.gotoSleep()
+        await SleepSkill.gotoSleep()
     }
 })
 

@@ -2,7 +2,7 @@ import {bot} from "../index";
 import {Block} from "prismarine-block";
 import {gotoNear} from "../utils/helper";
 
-export class Sleep {
+export class SleepSkill {
 
 
     public static findBedBlock(searchRadius = 64) {

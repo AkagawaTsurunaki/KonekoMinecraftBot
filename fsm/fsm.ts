@@ -24,11 +24,14 @@ export abstract class FSM {
 
     public update() {
         try {
+            log(`当前状态：${this.curState.name}`, true)
             if (this.curState.cond()) {
                 this.curState.takeAction()
             } else {
                 for (let nextState of this.curState.nextStates) {
-                    this.curState = nextState
+                    if (nextState.cond()) {
+                        this.curState = nextState
+                    }
                 }
             }
         } catch (e) {

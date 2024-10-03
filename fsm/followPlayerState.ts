@@ -28,7 +28,7 @@ export class FollowPlayerState extends AbstractState {
         if (player) {
             dist = player.position.distanceTo(bot.entity.position)
         }
-        return clamp(this.distLevelMap(dist) * 0.6 + fearVal * 0.4, 0, 1)
+        return clamp(this.distLevelMap(clamp(dist, 0, 1000)) * 0.7 + fearVal * 0.3, 0, 1)
     }
 
     async onEntered() {

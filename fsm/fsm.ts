@@ -1,13 +1,3 @@
-export abstract class State {
-    public name: string
-    public nextStates: Array<State>
-
-    abstract cond()
-
-    abstract takeAction()
-
-}
-
 export abstract class AbstractState {
 
     public name: string

@@ -1,24 +1,32 @@
-import {State} from "./fsm";
+import {AbstractState} from "./fsm";
 import {AngryBehaviour} from "../behaviours/angry";
 import {bot} from "../index";
 
-export class AttackPlayerState extends State {
+export class AttackPlayerState extends AbstractState {
 
     private angryBehaviour = new AngryBehaviour()
 
-    cond(): boolean {
-        if (this.angryBehaviour.pvpTarget == null) {
-            bot.pvp.forceStop()
-            return false
-        }
-        return true
+    constructor() {
+        super("攻击玩家状态");
     }
 
-    async takeAction() {
+
+    getCondVal(): number {
+        if (this.angryBehaviour.pvpTarget == null) {
+            return 0
+        }
+        return 0.99
+    }
+
+    async onEntered() {
         await bot.pvp.attack(this.angryBehaviour.pvpTarget)
     }
 
-    updateEnv(env: any) {
+    async onExited() {
+        await bot.pvp.stop()
+    }
+
+    onUpdate(...args: any[]) {
     }
 
 }

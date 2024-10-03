@@ -96,7 +96,7 @@ export class AngryBehaviour {
         }
     }
 
-    private updatePvpTarget() {
+    private getMaxAngryPlayer() {
         let maxValue = 0
         let username: string = ''
         for (const key in this.playerAngryDict) {
@@ -105,6 +105,11 @@ export class AngryBehaviour {
                 username = key
             }
         }
+        return {username: username, maxValue: maxValue}
+    }
+
+    private updatePvpTarget() {
+        const {username, maxValue} = this.getMaxAngryPlayer()
         if (username) {
             const maxAngryValuePlayer = findPlayerByUsername(username)
             if (maxAngryValuePlayer && maxValue > this.attackThr) {

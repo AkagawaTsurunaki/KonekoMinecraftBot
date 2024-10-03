@@ -10,6 +10,8 @@ import {AttackHostilesState} from "./fsm/attackHostilesState";
 import {Vec3} from "vec3";
 import {DiveState} from "./fsm/diveState";
 import {AttackPlayerState} from "./fsm/attackPlayerState";
+import {ChatMessage} from "prismarine-chat";
+import {Sleep} from "./skills/sleep";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -75,8 +77,20 @@ bot.on("spawn", () => {
     bot.chat(`Koneko 正在测试中……`)
 });
 
+bot.on("chat", async (
+    username: string,
+    message: string,
+    translate: string | null,
+    jsonMsg: ChatMessage,
+    matches: string[] | null
+) => {
+    if (message === "nemu") {
+        await Sleep.gotoSleep()
+    }
+})
+
 bot.on("physicsTick", () => {
-    konekoFsm.update()
+    // konekoFsm.update()
 })
 
 bot.on("hardcodedSoundEffectHeard", async (soundId: number,

@@ -3,6 +3,7 @@ import {goals, Movements} from "mineflayer-pathfinder";
 import {Vec3} from "vec3";
 import {bot} from "../index";
 import {sleep} from "../utils/sleep";
+import {goto} from "../utils/helper";
 
 export class Farm {
 
@@ -66,23 +67,12 @@ export class Farm {
     }
 
 
-    private goto(block: Vec3) {
-        const movements = new Movements(bot)
-        movements.canDig = false
-        movements.allow1by1towers = false
-        movements.canOpenDoors = true
-        const goal = new goals.GoalBlock(block.x, block.y, block.z)
-        bot.pathfinder.setMovements(movements);
-        bot.pathfinder.setGoal(goal)
-    }
-
-
     public async harvest(listener: () => boolean) {
         console.log(`正在收获作物`)
         while (listener()) {
             const block = this.findBlockToHarvest()
             if (block) {
-                this.goto(block.position)
+                goto(block.position)
                 await bot.dig(block)
                 await sleep(50)
             } else {
@@ -100,7 +90,7 @@ export class Farm {
             if (!blockToSow) {
                 break
             }
-            this.goto(blockToSow.position.offset(0, 1, 0))
+            goto(blockToSow.position.offset(0, 1, 0))
             try {
                 await bot.equip(bot.registry.itemsByName[cropName].id, 'hand')
             } catch (e) {
@@ -127,7 +117,7 @@ export class Farm {
             if (!blockToFertilize) {
                 break
             }
-            this.goto(blockToFertilize.position)
+            goto(blockToFertilize.position)
             try {
                 await bot.equip(bot.registry.itemsByName['bone_meal'].id, 'hand')
             } catch (ignore) {
@@ -148,7 +138,7 @@ export class Farm {
         const composterBlock = this.findComposter()
         while (listener()) {
             if (composterBlock) {
-                this.goto(composterBlock.position)
+                goto(composterBlock.position)
                 try {
                     await bot.equip(bot.registry.itemsByName[itemName].id, 'hand')
                 } catch (ignore) {

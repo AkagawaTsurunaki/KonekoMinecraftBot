@@ -1,5 +1,7 @@
 import {bot} from "../index";
 import {Entity} from "prismarine-entity";
+import {Vec3} from "vec3";
+import {goals, Movements} from "mineflayer-pathfinder";
 
 export function findPlayerByUsername(username: string): Entity {
     if (bot && username) {
@@ -28,4 +30,14 @@ export function getEntitiesTypeStatistic(): Map<string, number> {
         }
     }
     return result
+}
+
+export function goto(block: Vec3) {
+    const movements = new Movements(bot)
+    movements.canDig = false
+    movements.allow1by1towers = false
+    movements.canOpenDoors = true
+    const goal = new goals.GoalBlock(block.x, block.y, block.z)
+    bot.pathfinder.setMovements(movements);
+    bot.pathfinder.setGoal(goal)
 }

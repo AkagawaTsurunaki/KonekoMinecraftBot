@@ -26,14 +26,14 @@ export class KonekoFsm extends FSM {
         // const followPlayerState = new FollowPlayerState()
         const attackHostile = new AttackHostileState()
         // const attackPlayerState = new AttackPlayerState()
-        // const diveState = new DiveState()
-        //
+        const diveState = new DiveState()
+
         // idleState.nextStates = [followPlayerState, attackHostile, attackPlayerState, diveState]
-        idleState.nextStates = [attackHostile]
+        idleState.nextStates = [attackHostile, diveState]
         // followPlayerState.nextStates = [idleState]
-        attackHostile.nextStates = [idleState]
+        attackHostile.nextStates = [idleState, diveState]
         // attackPlayerState.nextStates = [idleState]
-        // diveState.nextStates = [idleState]
+        diveState.nextStates = [idleState, attackHostile]
 
         this.curState = idleState
     }

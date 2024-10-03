@@ -58,7 +58,7 @@ export abstract class FSM {
     }
 
     public update() {
-        log(`当前状态：${this.curState.name}`)
+        log(`当前状态：${this.curState.name}`, true)
         try {
             let maxCondVal = this.switchThr
             let maxCondValState = null
@@ -66,7 +66,7 @@ export abstract class FSM {
                 this.curState.onEntered()
             } else {
                 for (let nextState of this.curState.nextStates) {
-                    log(`邻接状态：${nextState.name}（${nextState.getCondVal()}）`);
+                    log(`邻接状态：${nextState.name}（${nextState.getCondVal()}）`, true);
                     if (nextState.getCondVal() > maxCondVal) {
                         maxCondValState = nextState
                     }

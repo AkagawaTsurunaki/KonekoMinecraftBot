@@ -1,30 +1,36 @@
-import {State} from "./fsm";
+import {AbstractState} from "./fsm";
 import {bot} from "../index";
+import {dot} from "../utils/math";
 
-export class DiveState extends State {
 
-    public name: string = "潜水状态"
+export class DiveState extends AbstractState {
 
-    cond() {
+    private inWaterWeight = 0.1
+    private oxygenLevelWeight = 0.4
+    private healthWeight = 0.5
+
+    constructor() {
+        super("潜水状态");
+    }
+
+    getCondVal(): number {
+        // 机器人是否在水中，氧气值含量，生命值
         // @ts-ignore
-        if (bot.entity.isInWater) {
-            if (bot.oxygenLevel) {
-                if (bot.oxygenLevel < 5) {
-                    return true
-                }
-                // else {
-                //     bot.setControlState("jump", false)
-                // }
-            }
-        }
-        return false
+        const inWater = bot.entity.isInWater
+        const condVal = dot([this.inWaterWeight, this.oxygenLevelWeight, this.healthWeight],
+            [inWater ? 1 : 0, Math.abs(bot.oxygenLevel - 20) / 20, Math.abs(bot.health - 20) / 20])
+        return condVal ? condVal : 0;
     }
 
-    takeAction() {
-        bot.setControlState("jump", true)
+    onEntered() {
+        bot.setControlState('jump', true)
     }
 
-    updateEnv(env: any) {
+    onExited() {
+        bot.setControlState('jump', false)
+    }
+
+    onUpdate(...args: any[]) {
     }
 
 }

@@ -13,15 +13,22 @@ stateDiagram
 %%    Harvest --> Crafting
 %%    Crafting --> Eat
     
-    Main(Idle) --> FollowPlayer
-    FollowPlayer --> Main(Idle)
-
-    Main(Idle) --> AttackHostiles
-    AttackHostiles --> FollowPlayer
-
-    Main(Idle) --> Dive
-    Dive --> Main(Idle)
-
-    Main(Idle) --> AttackPlayer
-    AttackPlayer --> Main(Idle)
+%%    Main(Idle) --> FollowPlayer
+%%    FollowPlayer --> Main(Idle)
+%%
+%%    Main(Idle) --> AttackHostiles
+%%    AttackHostiles --> FollowPlayer
+%%    AttackHostiles --> Dive
+%%
+%%    Main(Idle) --> Dive
+%%    Dive --> Main(Idle)
+%%
+%%    Main(Idle) --> AttackPlayer
+%%    AttackPlayer --> Main(Idle)
+    Idle --> Dive
+    Dive --> Idle
+    Idle --> AttackHostiles
+    AttackHostiles --> Idle
+    Dive --> AttackHostiles
+    AttackHostiles --> Dive
 ```

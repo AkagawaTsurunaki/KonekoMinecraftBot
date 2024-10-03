@@ -1,11 +1,10 @@
 import {Block} from "prismarine-block";
-import {goals, Movements} from "mineflayer-pathfinder";
 import {Vec3} from "vec3";
 import {bot} from "../index";
 import {sleep} from "../utils/sleep";
 import {goto} from "../utils/helper";
 
-export class Farm {
+export class FarmSkill {
 
     public readonly cropList: number[] = [
         bot.registry.blocksByName['wheat'].id,

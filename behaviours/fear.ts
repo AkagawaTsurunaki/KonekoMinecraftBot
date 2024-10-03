@@ -1,19 +1,15 @@
 import {createLinearFunction} from "../utils/math";
 import {bot} from "../index";
+import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../const";
 
 /**
  * 根据 [难度，饥饿值，饱和度，生命值，月相，时间] 计算恐惧向量。
  */
 export class FearBehaviour {
 
-    private static readonly BEGINNING_OF_SUNSET: number = 12000
-    private static readonly BEGINNING_OF_NIGHT: number = 13000
-    private static readonly BEGINNING_OF_SUNRISE: number = 23000
-    private static readonly BEGINNING_OF_DAY: number = 24000
-    private static readonly sunset = createLinearFunction(this.BEGINNING_OF_SUNSET, 0.0,
-        this.BEGINNING_OF_NIGHT, 1.0)
-    private static readonly sunrise = createLinearFunction(this.BEGINNING_OF_SUNRISE, 1.0,
-        this.BEGINNING_OF_DAY, 0.0);
+
+    private static readonly sunset = createLinearFunction(BEGINNING_OF_SUNSET, 0.0, BEGINNING_OF_NIGHT, 1.0)
+    private static readonly sunrise = createLinearFunction(BEGINNING_OF_SUNRISE, 1.0, BEGINNING_OF_DAY, 0.0);
     private static readonly MAX_FOOD: number = 20
     private static readonly MAX_FOOD_SATURATION: number = 20
     private static readonly MAX_HEALTH: number = 20
@@ -47,11 +43,11 @@ export class FearBehaviour {
 
 
     private static time(timeOfDay: number) {
-        if (this.BEGINNING_OF_SUNSET < timeOfDay && timeOfDay <= this.BEGINNING_OF_NIGHT) {
+        if (BEGINNING_OF_SUNSET < timeOfDay && timeOfDay <= BEGINNING_OF_NIGHT) {
             return this.sunset(timeOfDay)
-        } else if (this.BEGINNING_OF_NIGHT < timeOfDay && timeOfDay <= this.BEGINNING_OF_SUNRISE) {
+        } else if (BEGINNING_OF_NIGHT < timeOfDay && timeOfDay <= BEGINNING_OF_SUNRISE) {
             return 1.0
-        } else if (this.BEGINNING_OF_SUNRISE < timeOfDay && timeOfDay <= this.BEGINNING_OF_DAY) {
+        } else if (BEGINNING_OF_SUNRISE < timeOfDay && timeOfDay <= BEGINNING_OF_DAY) {
             return this.sunrise(timeOfDay)
         } else {
             return 0.0

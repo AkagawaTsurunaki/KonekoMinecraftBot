@@ -13,3 +13,19 @@ export function findPlayerByUsername(username: string): Entity {
 
     return null
 }
+
+const entityTypes = ['player', 'mob', 'object', 'global', 'orb', 'projectile', 'hostile', 'other']
+
+export function getEntitiesTypeStatistic(): Map<string, number> {
+    const result = new Map<string, number>()
+    for (let id in bot.entities) {
+        const entity = bot.entities[id];
+        if (!entity) continue
+        if (result.has(entity.type)) {
+            result[entity.type] += 1
+        } else {
+            result[entity.type] = 1
+        }
+    }
+    return result
+}

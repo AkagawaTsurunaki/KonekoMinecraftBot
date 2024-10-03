@@ -23,16 +23,17 @@ export class KonekoFsm extends FSM {
     protected register() {
         // 状态机注册
         const idleState = new IdleState()
-        const followPlayerState = new FollowPlayerState()
+        // const followPlayerState = new FollowPlayerState()
         const attackHostile = new AttackHostileState()
-        const attackPlayerState = new AttackPlayerState()
-        const diveState = new DiveState()
-
-        idleState.nextStates = [followPlayerState, attackHostile, attackPlayerState, diveState]
-        followPlayerState.nextStates = [idleState]
-        attackHostile.nextStates = [followPlayerState]
-        attackPlayerState.nextStates = [idleState]
-        diveState.nextStates = [idleState]
+        // const attackPlayerState = new AttackPlayerState()
+        // const diveState = new DiveState()
+        //
+        // idleState.nextStates = [followPlayerState, attackHostile, attackPlayerState, diveState]
+        idleState.nextStates = [attackHostile]
+        // followPlayerState.nextStates = [idleState]
+        attackHostile.nextStates = [idleState]
+        // attackPlayerState.nextStates = [idleState]
+        // diveState.nextStates = [idleState]
 
         this.curState = idleState
     }
@@ -41,7 +42,7 @@ export class KonekoFsm extends FSM {
 const konekoFsm = new KonekoFsm()
 
 bot.on("spawn", () => {
-    bot.chat(`Ciallo～(∠・ω< )⌒★`)
+    bot.chat(`Koneko 正在测试中……`)
 });
 
 bot.on("physicsTick", () => {

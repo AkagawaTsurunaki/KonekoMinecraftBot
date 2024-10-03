@@ -18,4 +18,11 @@ export class Attack {
             await bot.pvp.attack(hostile)
         }
     }
+
+    public static async equipWeapon() {
+        const weapons = bot.inventory.items().filter(item => item.name.includes("sword") || item.name.includes("axe"))
+        if (weapons && weapons.length > 0) {
+            await bot.equip(weapons[0], "hand")
+        }
+    }
 }

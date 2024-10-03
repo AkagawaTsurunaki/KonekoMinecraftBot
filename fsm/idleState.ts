@@ -1,16 +1,24 @@
-import {State} from "./fsm";
+import {AbstractState} from "./fsm";
 
-export class IdleState extends State {
 
-    public name = "主状态"
+export class IdleState extends AbstractState {
 
-    cond() {
-        return false
+    constructor() {
+        super("主状态");
     }
 
-    takeAction() {
+
+    getCondVal(): number {
+        return 0.0;
     }
 
-    updateEnv(env: any) {
+    onEntered() {
     }
+
+    onExited() {
+    }
+
+    onUpdate(...args: any[]) {
+    }
+
 }

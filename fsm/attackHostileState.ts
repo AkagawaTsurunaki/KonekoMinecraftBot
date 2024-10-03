@@ -1,29 +1,72 @@
-import {State} from "./fsm";
+import {AbstractState} from "./fsm";
 import {Attack} from "../skills/attack";
 import {bot} from "../index";
+import {createLevelFuncByMap} from "../utils/math";
 
-export class AttackHostileState extends State {
 
-    cond() {
-        const hostile = Attack.findNearestHostile(16)
-        if (!hostile) return false
+export class AttackHostileState extends AbstractState {
+
+    /**
+     * 索敌半径
+     * @private
+     */
+    private searchRadius = 20
+
+    /**
+     * 二级警戒半径
+     * @private
+     */
+    private attentionRadius = 16
+
+    /**
+     * 一级警戒半径
+     * @private
+     */
+    private warningRadius = 12
+
+    /**
+     * 进攻半径
+     * @private
+     */
+    private attackRadius = 9
+
+    private radioToCondValMap = new Map([
+        [-Infinity, 1],
+        [0, 1],
+        [this.attackRadius, 0.8],
+        [this.warningRadius, 0.5],
+        [this.attentionRadius, 0.3],
+        [this.searchRadius, 0.1],
+        [Infinity, 0]
+    ])
+
+    private radiusToCondValFunc = createLevelFuncByMap(this.radioToCondValMap)
+
+    constructor() {
+        super("攻击怪物状态");
+    }
+
+    onUpdate() {
+        // 什么也不做
+    }
+
+
+    getCondVal(): number {
+        const hostile = Attack.findNearestHostile(this.searchRadius)
+        if (!hostile) return 0.0
         const dist = bot.entity.position.distanceTo(hostile.position)
-        return dist < 9
+        return this.radiusToCondValFunc(dist)
     }
 
-    async takeAction() {
-        // console.log(bot.inventory.items());
-        // bot.equip()
+    async onEntered() {
         // 切换武器
-        const weapons = bot.inventory.items().filter(item => item.name.includes("sword") || item.name.includes("axe"))
-        // console.log(swords);
-        if (weapons && weapons.length > 0) {
-            await bot.equip(weapons[0], "hand")
-        }
-        await Attack.attackNearestHostiles(9)
+        await Attack.equipWeapon()
+        // 攻击怪物
+        await Attack.attackNearestHostiles(this.attackRadius)
     }
 
-    updateEnv(env: any) {
+    async onExited() {
+        await bot.pvp.stop()
     }
 
 }

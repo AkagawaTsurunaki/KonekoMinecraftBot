@@ -5,7 +5,7 @@ import {goals, Movements} from "mineflayer-pathfinder";
 import {log} from "../utils/log";
 import {masterName} from "../const";
 
-export class Follow {
+export class FollowSkill {
 
     /**
      * 根据用户名跟随指定玩家。

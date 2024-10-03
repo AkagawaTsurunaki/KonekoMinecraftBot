@@ -1,5 +1,5 @@
 import {AbstractState} from "./fsm";
-import {Follow} from "../skills/follow";
+import {FollowSkill} from "../skills/followSkill";
 import {log} from "../utils/log";
 import {bot} from "../index";
 import {clamp, createLevelFuncByMap, dot} from "../utils/math";
@@ -24,7 +24,7 @@ export class FollowPlayerState extends AbstractState {
         const fearVal = dot(this.fearWeights, FearBehaviour.getFearVector())
         let dist = Infinity
 
-        const player = Follow.findNearestPlayer(0, this.searchRadius)
+        const player = FollowSkill.findNearestPlayer(0, this.searchRadius)
         if (player) {
             dist = player.position.distanceTo(bot.entity.position)
         }
@@ -38,7 +38,7 @@ export class FollowPlayerState extends AbstractState {
         this.minDistance = clamp(Math.exp(-fearVal) * 30 - 5, 2, 64)
 
         log(`当前追踪距离：${this.minDistance}`)
-        await Follow.followNearestPlayer(this.minDistance, true)
+        await FollowSkill.followNearestPlayer(this.minDistance, true)
     }
 
     onExited() {

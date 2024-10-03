@@ -11,7 +11,7 @@ import {Vec3} from "vec3";
 import {DiveState} from "./fsm/diveState";
 import {AttackPlayerState} from "./fsm/attackPlayerState";
 import {ChatMessage} from "prismarine-chat";
-import {SleepSkill} from "./skills/sleepSkill";
+import {SleepState} from "./fsm/sleepState";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -29,12 +29,14 @@ export class KonekoFsm extends FSM {
         const attackHostiles = new AttackHostilesState()
         const attackPlayerState = new AttackPlayerState()
         const diveState = new DiveState()
+        const sleepState = new SleepState();
 
-        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState]
-        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState]
+        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState, sleepState]
+        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState, sleepState]
         attackHostiles.nextStates = [idleState, diveState]
         attackPlayerState.nextStates = [idleState, attackHostiles]
         diveState.nextStates = [idleState, attackHostiles]
+        sleepState.nextStates = [idleState]
 
         this.curState = idleState
     }
@@ -84,13 +86,10 @@ bot.on("chat", async (
     jsonMsg: ChatMessage,
     matches: string[] | null
 ) => {
-    if (message === "nemu") {
-        await SleepSkill.gotoSleep()
-    }
 })
 
 bot.on("physicsTick", () => {
-    // konekoFsm.update()
+    konekoFsm.update()
 })
 
 bot.on("hardcodedSoundEffectHeard", async (soundId: number,

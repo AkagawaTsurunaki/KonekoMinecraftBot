@@ -5,24 +5,28 @@ import {gotoNear} from "../utils/helper";
 export class SleepSkill {
 
 
-    public static findBedBlock(searchRadius = 64) {
+    public static findBedBlock(searchRadius: number, count: number) {
         return bot.findBlock({
             point: bot.entity.position,
             matching: (block: Block) => block && block.name.includes("bed"),
             maxDistance: searchRadius,
-            count: 5
+            count: count
         })
     }
 
-    public static async gotoSleep() {
-        const bedBlock = this.findBedBlock();
-        if (bedBlock == null) {
-            console.warn(`附近没有找到床……`)
-            return
+    public static async gotoSleep(searchRadius: number, count: number) {
+        try {
+            const bedBlock = this.findBedBlock(searchRadius, count);
+            if (bedBlock == null) {
+                console.warn(`附近没有找到床……`)
+                return
+            }
+            await gotoNear(bedBlock.position)
+            console.log(`已找到床，准备睡觉`)
+            await bot.sleep(bedBlock)
+            console.log(`已起床`)
+        } catch (e) {
+            console.error(`无法睡觉，原因是 ${e.message}`)
         }
-        await gotoNear(bedBlock.position)
-        console.log(`已找到床，准备睡觉`)
-        await bot.sleep(bedBlock)
-        console.log(`已起床`)
     }
 }

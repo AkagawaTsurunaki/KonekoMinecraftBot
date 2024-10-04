@@ -49,3 +49,11 @@ export function createLevelFuncByArray(xs: Array<number>, ys: Array<number>): (x
         throw new Error(`x=${x} 不在定义域内`)
     }
 }
+
+export function getTimeDiff(date1: Date, date2: Date) {
+    return Math.abs((date2.getTime() - date1.getTime()) / 1000);
+}
+
+export function randomNeg1ToPos1() {
+    return (Math.random() - 0.5) * 2
+}

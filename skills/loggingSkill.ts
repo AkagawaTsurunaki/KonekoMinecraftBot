@@ -1,21 +1,14 @@
 import {dbscan} from "../algorithm/dbscan";
 import {bot} from "../index";
-import {gotoNear} from "../utils/helper";
+import {tryGotoNear} from "../utils/helper";
 
 export class LoggingSkill {
-    private maxSearchRadius = 128
-    private maxCollectCount = 1024
-    private readonly woodNameList: string[] = ['cherry_log', 'oak_log', 'dark_oak_log', 'spruce_log', 'birch_log', 'jungle_log', 'acacia_log', 'mangrove_log']
-    private readonly axeTypeList: number[] = [
-        bot.registry.itemsByName['diamond_axe'].id,
-        bot.registry.itemsByName['iron_axe'].id,
-        bot.registry.itemsByName['stone_axe'].id,
-        bot.registry.itemsByName['wooden_axe'].id,
-        bot.registry.itemsByName['golden_axe'].id,
-        bot.registry.itemsByName['netherite_axe'].id
-    ]
+    private static maxSearchRadius = 128
+    private static maxCollectCount = 1024
+    private static readonly woodNameList: string[] = ['cherry_log', 'oak_log', 'dark_oak_log', 'spruce_log', 'birch_log', 'jungle_log', 'acacia_log', 'mangrove_log']
+    private static readonly axeNameList: string[] = ['diamond_axe', 'iron_axe', 'stone_axe', 'wooden_axe', 'golden_axe', 'netherite_axe']
 
-    private findWoodsToCollect(wood: string) {
+    private static findWoodsToCollect(wood: string) {
         return bot.findBlocks({
             matching: block => block && block.type === bot.registry.blocksByName[wood].id,
             maxDistance: this.maxSearchRadius,
@@ -23,16 +16,16 @@ export class LoggingSkill {
         })
     }
 
-
-    private async tryEquipAxe() {
-        const heldAxeTypeList = this.axeTypeList.filter(axeType =>
+    private static async tryEquipAxe() {
+        const axeTypeList = this.axeNameList.map(axeName => bot.registry.itemsByName[axeName].id)
+        const heldAxeTypeList = axeTypeList.filter(axeType =>
             bot.inventory.findInventoryItem(axeType, null, false) != null);
         if (heldAxeTypeList.length == 0)
             return
         await bot.equip(heldAxeTypeList[0], 'hand')
     }
 
-    public async collect(wood: string) {
+    public static async logging(wood: string, stop: () => boolean) {
         if (!this.woodNameList.includes(wood)) {
             console.error(`无法找到目标原木 ${wood}`)
             return
@@ -44,9 +37,14 @@ export class LoggingSkill {
             const loggingPosList = cluster.map(index => woodPositions[index])
                 .sort((a, b) => a.y - b.y)
             for (const woodPos of loggingPosList) {
+                if (stop()) {
+                    bot.stopDigging()
+                    console.log(`中止伐木`)
+                    return
+                }
                 const woodBlock = bot.blockAt(woodPos)
                 if (woodBlock) {
-                    await gotoNear(woodBlock.position)
+                    await tryGotoNear(woodBlock.position)
                     await this.tryEquipAxe()
                     try {
                         await bot.dig(woodBlock)

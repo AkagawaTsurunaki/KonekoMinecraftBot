@@ -1,6 +1,6 @@
 import {bot} from "../index";
 import {Block} from "prismarine-block";
-import {gotoNear} from "../utils/helper";
+import {tryGotoNear} from "../utils/helper";
 
 export class SleepSkill {
 
@@ -21,7 +21,7 @@ export class SleepSkill {
                 console.warn(`附近没有找到床……`)
                 return
             }
-            await gotoNear(bedBlock.position)
+            await tryGotoNear(bedBlock.position)
             console.log(`已找到床，准备睡觉`)
             await bot.sleep(bedBlock)
             console.log(`已起床`)

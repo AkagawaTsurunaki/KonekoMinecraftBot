@@ -12,6 +12,9 @@ import {DiveState} from "./fsm/diveState";
 import {AttackPlayerState} from "./fsm/attackPlayerState";
 import {ChatMessage} from "prismarine-chat";
 import {SleepState} from "./fsm/sleepState";
+import {Block} from "prismarine-block";
+import {LoggingWithPlayerState} from "./fsm/loggingWithPlayerState";
+import {Entity} from "prismarine-entity";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -30,16 +33,20 @@ export class KonekoFsm extends FSM {
         const attackPlayerState = new AttackPlayerState()
         const diveState = new DiveState()
         const sleepState = new SleepState();
+        const loggingWithPlayerState = new LoggingWithPlayerState();
 
-        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState]
-        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState, sleepState]
+        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState, loggingWithPlayerState]
+        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState, sleepState, loggingWithPlayerState]
         sleepState.nextStates = [idleState, followPlayerState]
-        attackHostiles.nextStates = [idleState, diveState, followPlayerState]
+        attackHostiles.nextStates = [idleState, diveState, followPlayerState, loggingWithPlayerState]
         attackPlayerState.nextStates = [idleState, attackHostiles]
         diveState.nextStates = [idleState, attackHostiles]
+        loggingWithPlayerState.nextStates = [idleState]
         // sleepState.nextStates = [idleState]
 
         this.curState = idleState
+
+        loggingWithPlayerState.onUpdate()
     }
 
     private getMaxCondValState() {
@@ -91,6 +98,13 @@ bot.on("chat", async (
 
 bot.on("physicsTick", () => {
     konekoFsm.update()
+})
+
+
+// @ts-ignore
+bot.on("blockBreakProgressEnd", (block: Block, entity: Entity) => {
+    console.log(block)
+    console.log(entity)
 })
 
 bot.on("hardcodedSoundEffectHeard", async (soundId: number,

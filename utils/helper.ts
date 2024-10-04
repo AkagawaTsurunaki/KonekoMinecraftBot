@@ -2,6 +2,7 @@ import {bot} from "../index";
 import {Entity} from "prismarine-entity";
 import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
+import {randomNeg1ToPos1} from "./math";
 
 export function findPlayerByUsername(username: string): Entity {
     if (bot && username) {
@@ -42,7 +43,14 @@ export function goto(block: Vec3) {
     bot.pathfinder.setGoal(goal)
 }
 
-export async function gotoNear(block: Vec3) {
+export async function tryGotoNear(block: Vec3) {
     const goal = new goals.GoalNear(block.x, block.y, block.z, 1)
-    await bot.pathfinder.goto(goal)
+    try {
+        await bot.pathfinder.goto(goal)
+    } catch (e) {
+        if (e.message.includes("Timeout")) {
+            const goal = new goals.GoalNear(block.x + randomNeg1ToPos1(), block.y + randomNeg1ToPos1(), block.z + randomNeg1ToPos1(), 1)
+            await bot.pathfinder.goto(goal)
+        }
+    }
 }

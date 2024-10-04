@@ -10,11 +10,9 @@ import {AttackHostilesState} from "./fsm/attackHostilesState";
 import {Vec3} from "vec3";
 import {DiveState} from "./fsm/diveState";
 import {AttackPlayerState} from "./fsm/attackPlayerState";
-import {ChatMessage} from "prismarine-chat";
 import {SleepState} from "./fsm/sleepState";
-import {Block} from "prismarine-block";
 import {LoggingWithPlayerState} from "./fsm/loggingWithPlayerState";
-import {Entity} from "prismarine-entity";
+import {IdleDysphoria} from "./behaviours/idleDysphoria";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -23,11 +21,12 @@ bot.loadPlugin(pvp)
 // bot.loadPlugin(autoeat)
 
 log(`登录于 ${botOption.host}:${botOption.port}`)
+const idleState = new IdleState()
 
 export class KonekoFsm extends FSM {
+
     protected register() {
         // 状态机注册
-        const idleState = new IdleState()
         const followPlayerState = new FollowPlayerState()
         const attackHostiles = new AttackHostilesState()
         const attackPlayerState = new AttackPlayerState()
@@ -42,11 +41,16 @@ export class KonekoFsm extends FSM {
         attackPlayerState.nextStates = [idleState, attackHostiles]
         diveState.nextStates = [idleState, attackHostiles]
         loggingWithPlayerState.nextStates = [idleState]
-        // sleepState.nextStates = [idleState]
 
         this.curState = idleState
 
         loggingWithPlayerState.onUpdate()
+    }
+
+    public start() {
+        bot.on("physicsTick", () => {
+            this.update()
+        })
     }
 
     private getMaxCondValState() {
@@ -85,27 +89,8 @@ const konekoFsm = new KonekoFsm()
 
 bot.on("spawn", () => {
     bot.chat(`Koneko 正在测试中……`)
+    konekoFsm.start()
 });
-
-bot.on("chat", async (
-    username: string,
-    message: string,
-    translate: string | null,
-    jsonMsg: ChatMessage,
-    matches: string[] | null
-) => {
-})
-
-bot.on("physicsTick", () => {
-    konekoFsm.update()
-})
-
-
-// @ts-ignore
-bot.on("blockBreakProgressEnd", (block: Block, entity: Entity) => {
-    console.log(block)
-    console.log(entity)
-})
 
 bot.on("hardcodedSoundEffectHeard", async (soundId: number,
                                            soundCategory: string | number,

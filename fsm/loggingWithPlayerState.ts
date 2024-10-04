@@ -42,6 +42,9 @@ export class LoggingWithPlayerState extends AbstractState {
         this.isEntered = true
         this.startLoggingTime = new Date()
         await LoggingSkill.logging(this.lastLoggedLogBlock, () => {
+            if (this.startLoggingTime === null) {
+                this.startLoggingTime = new Date()
+            }
             return getTimeDiff(this.startLoggingTime, new Date()) > this.maxLoggingTime
         })
         this.lastLoggedLogBlock = null
@@ -52,14 +55,17 @@ export class LoggingWithPlayerState extends AbstractState {
     onExited() {
         this.isEntered = false
         this.finished = false
+        this.logBlockRec.clear()
+        this.lastLoggedLogBlock = null
+        this.loggingUsername = null
+        this.startLoggingTime = null
     }
 
     onUpdate(...args: any[]) {
         // @ts-ignore
         bot.on("blockBreakProgressEnd", (block: Block, entity: Entity) => {
             console.log(block)
-            if (entity.type === "player") {
-                if (entity.username === bot.username) return
+            if (entity.type === "player" && entity.username !== bot.username && block.name.includes("log")) {
                 if (entity.username !== this.loggingUsername) {
                     this.loggingUsername = entity.username
                     this.logBlockRec.clear()

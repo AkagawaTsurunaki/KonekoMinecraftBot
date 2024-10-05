@@ -13,6 +13,7 @@ import {AttackPlayerState} from "./fsm/attackPlayerState";
 import {SleepState} from "./fsm/sleepState";
 import {LoggingWithPlayerState} from "./fsm/loggingWithPlayerState";
 import {IdleDysphoria} from "./behaviours/idleDysphoria";
+import {HarvestState} from "./fsm/harvestState";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -33,14 +34,18 @@ export class KonekoFsm extends FSM {
         const diveState = new DiveState()
         const sleepState = new SleepState();
         const loggingWithPlayerState = new LoggingWithPlayerState();
+        const harvestState = new HarvestState();
 
-        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState, loggingWithPlayerState]
-        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState, sleepState, loggingWithPlayerState]
+        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState, loggingWithPlayerState,
+            harvestState]
+        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState, sleepState, loggingWithPlayerState,
+            harvestState]
         sleepState.nextStates = [idleState, followPlayerState]
         attackHostiles.nextStates = [idleState, diveState, followPlayerState, loggingWithPlayerState]
         attackPlayerState.nextStates = [idleState, attackHostiles]
         diveState.nextStates = [idleState, attackHostiles]
         loggingWithPlayerState.nextStates = [idleState]
+        harvestState.nextStates = [idleState]
 
         this.curState = idleState
 

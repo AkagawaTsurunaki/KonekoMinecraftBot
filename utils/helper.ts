@@ -3,6 +3,7 @@ import {Entity} from "prismarine-entity";
 import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
 import {randomNeg1ToPos1} from "./math";
+import {masterName} from "../const";
 
 export function findPlayerByUsername(username: string): Entity {
     if (bot && username) {
@@ -53,4 +54,18 @@ export async function tryGotoNear(block: Vec3) {
             await bot.pathfinder.goto(goal)
         }
     }
+}
+
+export function isOtherPlayer(entity: Entity) {
+    if (!entity) return false
+    return entity.type === "player" && entity.username != bot.username;
+}
+
+export function isMaster(entity: Entity) {
+    if (isOtherPlayer(entity)) {
+        if (entity.username === masterName) {
+            return true
+        }
+    }
+    return false
 }

@@ -11,3 +11,5 @@ export const BEGINNING_OF_SUNSET: number = 12000
 export const BEGINNING_OF_NIGHT: number = 13000
 export const BEGINNING_OF_SUNRISE: number = 23000
 export const BEGINNING_OF_DAY: number = 24000
+
+export const corpsNameList = ['wheat', 'potatoes', 'carrots', 'beetroots']

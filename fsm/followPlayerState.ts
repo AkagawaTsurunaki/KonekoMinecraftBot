@@ -7,12 +7,12 @@ import {clamp} from "../utils/math";
 export class FollowPlayerState extends AbstractState {
 
     /**
-     * 搜索玩家的最大半径
+     * 搜索玩家半径，只有在此半径的玩家才会被搜索。
      * @private
      */
     private searchRadius = 128;
     /**
-     * 接触玩家的最小半径，小于此半径机器人将不会再执行跟随技能
+     * 接触玩家的半径，小于此半径机器人将不会再执行跟随技能。
      * @private
      */
     private contactRadius = 10;

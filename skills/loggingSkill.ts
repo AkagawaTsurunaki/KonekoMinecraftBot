@@ -1,12 +1,11 @@
 import {dbscan} from "../algorithm/dbscan";
 import {bot} from "../index";
 import {tryGotoNear} from "../utils/helper";
+import {axeNameList, woodNameList} from "../const";
 
 export class LoggingSkill {
     private static maxSearchRadius = 128
     private static maxCollectCount = 1024
-    private static readonly woodNameList: string[] = ['cherry_log', 'oak_log', 'dark_oak_log', 'spruce_log', 'birch_log', 'jungle_log', 'acacia_log', 'mangrove_log']
-    private static readonly axeNameList: string[] = ['diamond_axe', 'iron_axe', 'stone_axe', 'wooden_axe', 'golden_axe', 'netherite_axe']
 
     private static findWoodsToCollect(wood: string) {
         return bot.findBlocks({
@@ -17,7 +16,7 @@ export class LoggingSkill {
     }
 
     private static async tryEquipAxe() {
-        const axeTypeList = this.axeNameList.map(axeName => bot.registry.itemsByName[axeName].id)
+        const axeTypeList = axeNameList.map(axeName => bot.registry.itemsByName[axeName].id)
         const heldAxeTypeList = axeTypeList.filter(axeType =>
             bot.inventory.findInventoryItem(axeType, null, false) != null);
         if (heldAxeTypeList.length == 0)
@@ -26,7 +25,7 @@ export class LoggingSkill {
     }
 
     public static async logging(wood: string, stop: () => boolean) {
-        if (!this.woodNameList.includes(wood)) {
+        if (!woodNameList.includes(wood)) {
             console.error(`无法找到目标原木 ${wood}`)
             return
         }

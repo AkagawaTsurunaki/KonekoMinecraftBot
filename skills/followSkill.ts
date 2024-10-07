@@ -73,7 +73,7 @@ export class FollowSkill {
      * @param minRadius 最小搜索半径。
      * @param maxRadius 最大搜索半径。
      */
-    public static findNearestPlayer(minRadius = 0, maxRadius = 255): Entity | null {
+    public static findNearestPlayer(minRadius: number, maxRadius: number): Entity | null {
         const playerFilter = (e: Entity) => e.type === 'player'
         const player = bot.nearestEntity(playerFilter)
         if (player) {

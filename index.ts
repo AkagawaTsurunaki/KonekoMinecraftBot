@@ -13,6 +13,7 @@ import {AttackPlayerState} from "./fsm/attackPlayerState";
 import {SleepState} from "./fsm/sleepState";
 import {LoggingWithPlayerState} from "./fsm/loggingWithPlayerState";
 import {HarvestState} from "./fsm/harvestState";
+import {Timer} from "./utils/timer";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -50,9 +51,14 @@ export class KonekoFsm extends FSM {
         loggingWithPlayerState.onUpdate()
     }
 
+    private timer = new Timer(20)
+
     public start() {
         bot.on("physicsTick", () => {
-            this.update()
+            this.timer.onPhysicsTick()
+            if (this.timer.check()) {
+                this.update()
+            }
         })
     }
 

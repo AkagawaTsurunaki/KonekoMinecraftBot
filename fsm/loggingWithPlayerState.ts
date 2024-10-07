@@ -64,7 +64,6 @@ export class LoggingWithPlayerState extends AbstractState {
     onUpdate(...args: any[]) {
         // @ts-ignore
         bot.on("blockBreakProgressEnd", (block: Block, entity: Entity) => {
-            console.log(block)
             if (entity.type === "player" && entity.username !== bot.username && block.name.includes("log")) {
                 if (entity.username !== this.loggingUsername) {
                     this.loggingUsername = entity.username

@@ -1,25 +1,20 @@
 import {AbstractState} from "./fsm";
 import {Block} from "prismarine-block";
-import {Entity} from "prismarine-entity";
 import {bot} from "../index";
-import {isMaster} from "../utils/helper";
 import {LimitedArray} from "../utils/limitArray";
 import {getTimeDiff} from "../utils/math";
-import {debug, warn} from "../utils/log";
 import {corpsNameList} from "../const";
+import {FarmSkill} from "../skills/farmSkill";
 
-class BreakBlockIntent {
-    private readonly blockNames: string[]
-    private readonly blockBreakProgressEndEvents: LimitedArray<Date>
-    private readonly continuousDiggingCount: number
-    private readonly continuousDiggingTime: number
+abstract class BlockUpdateIntent {
+    protected readonly blockBreakProgressEndEvents: LimitedArray<Date>
+    protected readonly continuousDiggingCount: number
+    protected readonly continuousDiggingTime: number
 
-    constructor(blockNames: string[], continuousDiggingCount: number, continuousDiggingTime: number) {
-        this.blockNames = blockNames
+    constructor(continuousDiggingCount: number, continuousDiggingTime: number) {
         this.continuousDiggingCount = continuousDiggingCount
         this.continuousDiggingTime = continuousDiggingTime
         this.blockBreakProgressEndEvents = new LimitedArray(this.continuousDiggingCount);
-        this.eventRegister()
     }
 
     public intent(): boolean {
@@ -31,41 +26,49 @@ class BreakBlockIntent {
         return timeDiff <= this.continuousDiggingTime;
     }
 
-    private eventRegister() {
-        // @ts-ignore
-        bot.on("blockBreakProgressEnd", (block: Block, entity: Entity) => {
-            if (this.blockNames.includes(block.name)) {
-                debug(block, true)
-                if (isMaster(entity)) {
-                    this.blockBreakProgressEndEvents.add(new Date())
-                    warn("Detected", true)
-                }
-            }
+    public startEventListeners() {
+        bot.world.on("blockUpdate", (oldBlock: Block | null, newBlock: Block) => {
+            this.eventListener(oldBlock, newBlock)
         })
+    }
+
+    protected abstract eventListener(oldBlock: Block | null, newBlock: Block)
+}
+
+class HarvestIntent extends BlockUpdateIntent {
+    protected eventListener(oldBlock: Block | null, newBlock: Block) {
+        if (oldBlock && newBlock) {
+            // 作物被收割了
+            if (corpsNameList.includes(oldBlock.name) && newBlock.name.includes("air")) {
+                this.blockBreakProgressEndEvents.add(new Date())
+            }
+        }
     }
 }
 
 export class HarvestState extends AbstractState {
-    private readonly breakBlockIntent: BreakBlockIntent
+    private readonly harvestedIntent: BlockUpdateIntent
+    private searchRadius = 128;
 
     constructor() {
         super("收获状态");
-        this.breakBlockIntent = new BreakBlockIntent(corpsNameList, 3, 30)
+        this.harvestedIntent = new HarvestIntent(3, 30)
+        this.harvestedIntent.startEventListeners()
     }
 
     getCondVal(): number {
-        if (this.breakBlockIntent.intent()) {
+        if (this.harvestedIntent.intent()) {
             return 1;
         }
         return 0;
     }
 
-    onEntered() {
-        console.warn('Starting...')
+    async onEntered() {
+        await FarmSkill.harvest(this.searchRadius, 500, () => !this.isEntered)
     }
 
     onExited() {
-
+        this.isEntered = false
     }
 
     onUpdate(...args: any[]) {

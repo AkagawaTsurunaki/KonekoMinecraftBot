@@ -3,41 +3,34 @@ import {Vec3} from "vec3";
 import {bot} from "../index";
 import {sleep} from "../utils/sleep";
 import {goto} from "../utils/helper";
+import {corpsNameList} from "../const";
+import {log, warn} from "../utils/log";
 
 export class FarmSkill {
 
-    public readonly cropList: number[] = [
-        bot.registry.blocksByName['wheat'].id,
-        bot.registry.blocksByName['potatoes'].id,
-        bot.registry.blocksByName['carrots'].id,
-        bot.registry.blocksByName['beetroots'].id
-    ]
-    private readonly maturity: number = 7
-    private readonly searchRadius: number = 64
-    private readonly maxSearchBlocks: number = 512
+    private static readonly maturity: number = 7
 
-    private harvestableFilter = (block: Block): boolean => {
+    private static harvestableFilter = (block: Block): boolean => {
+        const cropList = corpsNameList.map(corpName => bot.registry.blocksByName[corpName].id)
         return block
-            && this.cropList.includes(block.type)
+            && cropList.includes(block.type)
             && block.metadata === this.maturity
     }
 
-
-    private findBlockToHarvest(): Block | null {
+    private static findBlockToHarvest(maxDistance: number, count: number): Block | null {
         return bot.findBlock({
             point: bot.entity.position,
             matching: this.harvestableFilter,
-            maxDistance: this.searchRadius,
-            count: this.maxSearchBlocks
+            maxDistance: maxDistance,
+            count: count
         })
     }
 
-
-    private findBlockToSow(): Block | null {
+    private static findBlockToSow(maxDistance: number): Block | null {
         return bot.findBlock({
             point: bot.entity.position,
             matching: bot.registry.blocksByName['farmland'].id,
-            maxDistance: this.searchRadius,
+            maxDistance: maxDistance,
             useExtraInfo: (block) => {
                 const blockAbove = bot.blockAt(block.position.offset(0, 1, 0))
                 return !blockAbove || blockAbove.type === 0
@@ -46,18 +39,18 @@ export class FarmSkill {
     }
 
 
-    private findBlockToFertilize(): Block | null {
+    private static findBlockToFertilize(maxDistance: number): Block | null {
         return bot.findBlock({
             point: bot.entity.position,
-            maxDistance: this.searchRadius,
+            maxDistance: maxDistance,
             matching: (block) => {
-                return block && this.cropList.includes(block.type) && block.metadata < this.maturity
+                return block && corpsNameList.includes(block.name) && block.metadata < this.maturity
             }
         })
     }
 
 
-    private findComposter(): Block | null {
+    private static findComposter(): Block | null {
         return bot.findBlock({
             matching: (block) => {
                 return block && block.type == bot.registry.blocksByName['composter'].id
@@ -66,10 +59,10 @@ export class FarmSkill {
     }
 
 
-    public async harvest(listener: () => boolean) {
-        console.log(`正在收获作物`)
-        while (listener()) {
-            const block = this.findBlockToHarvest()
+    public static async harvest(maxDistance: number, count: number, stop: () => boolean) {
+        log(`正在收获作物`)
+        while (!stop()) {
+            const block = this.findBlockToHarvest(maxDistance, count)
             if (block) {
                 goto(block.position)
                 await bot.dig(block)
@@ -78,14 +71,14 @@ export class FarmSkill {
                 bot.stopDigging()
             }
         }
-        console.log(`完成收获作物`)
+        log(`完成收获作物`)
     }
 
 
-    public async sow(cropName: string, listener: () => boolean) {
-        console.log(`正在种植作物`)
-        while (listener()) {
-            let blockToSow = this.findBlockToSow()
+    public static async sow(maxDistance: number, cropName: string, stop: () => boolean) {
+        log(`正在种植作物`)
+        while (!stop()) {
+            let blockToSow = this.findBlockToSow(maxDistance)
             if (!blockToSow) {
                 break
             }
@@ -93,25 +86,25 @@ export class FarmSkill {
             try {
                 await bot.equip(bot.registry.itemsByName[cropName].id, 'hand')
             } catch (e) {
-                console.warn(`背包已无更多 ${cropName}`)
+                warn(`背包已无更多 ${cropName}`)
                 break
             }
             try {
                 await bot.placeBlock(blockToSow, new Vec3(0, 1, 0))
             } catch (e) {
-                console.log(`正在搜索更多耕地……`)
+                warn(`正在搜索更多耕地……`)
             }
         }
-        console.log(`完成种植作物`)
+        log(`完成种植作物`)
     }
 
 
-    public async fertilize(listener: () => boolean) {
-        console.log('正在施肥作物')
+    public static async fertilize(maxDistance: number, stop: () => boolean) {
+        log('正在施肥作物')
 
-        while (listener()) {
+        while (!stop()) {
 
-            const blockToFertilize = this.findBlockToFertilize()
+            const blockToFertilize = this.findBlockToFertilize(maxDistance)
 
             if (!blockToFertilize) {
                 break
@@ -120,7 +113,7 @@ export class FarmSkill {
             try {
                 await bot.equip(bot.registry.itemsByName['bone_meal'].id, 'hand')
             } catch (ignore) {
-                console.warn(`背包已无更多 bone_meal`)
+                warn(`背包已无更多 bone_meal`)
                 break
             }
             try {
@@ -128,12 +121,12 @@ export class FarmSkill {
             } catch (ignore) {
             }
         }
-        console.log('完成正在施肥作物')
+        log('完成正在施肥作物')
     }
 
 
-    public async compost(itemName: string, listener: () => boolean) {
-        console.log(`开始堆肥`)
+    public static async compost(itemName: string, listener: () => boolean) {
+        log(`开始堆肥`)
         const composterBlock = this.findComposter()
         while (listener()) {
             if (composterBlock) {
@@ -151,7 +144,7 @@ export class FarmSkill {
                 }
             }
         }
-        console.log(`完成堆肥`)
+        log(`完成堆肥`)
     }
 
 }

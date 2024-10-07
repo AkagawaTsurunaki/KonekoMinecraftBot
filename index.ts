@@ -1,4 +1,4 @@
-import {botOption} from "./const"
+import {botOption, masterName} from "./const"
 import {createBot} from "mineflayer";
 import {log} from "./utils/log";
 import {pathfinder} from "mineflayer-pathfinder";
@@ -26,7 +26,7 @@ const idleState = new IdleState()
 
 export class KonekoFsm extends FSM {
 
-    protected register() {
+    public init() {
         // 状态机注册
         const followPlayerState = new FollowPlayerState()
         const attackHostiles = new AttackHostilesState()
@@ -89,6 +89,7 @@ export class KonekoFsm extends FSM {
             this.curState.onEntered()
         } catch (e) {
             console.error("状态机崩溃。")
+            bot.chat(`${bot.username} 因状态机崩溃而停止运行，请联系 ${masterName} 进行重启。`)
             throw e
         }
     }
@@ -98,8 +99,12 @@ const konekoFsm = new KonekoFsm()
 
 bot.on("spawn", () => {
     bot.chat(`Koneko 正在测试中……`)
+    konekoFsm.init()
     konekoFsm.start()
+
 });
+
+
 
 bot.on("hardcodedSoundEffectHeard", async (soundId: number,
                                            soundCategory: string | number,

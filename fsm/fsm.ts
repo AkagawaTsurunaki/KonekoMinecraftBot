@@ -29,13 +29,10 @@ export abstract class AbstractState {
 }
 
 export abstract class FSM {
-    constructor() {
-        this.register()
-    }
 
     public curState: AbstractState
 
-    protected abstract register()
+    public abstract init()
 
     public abstract update()
 }

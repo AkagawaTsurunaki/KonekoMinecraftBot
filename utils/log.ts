@@ -4,17 +4,17 @@ function format(message: any) {
     return `${bot.username}：${message}`
 }
 
-export function log(message?: any, show: boolean = false): void {
+export function log(message?: any, show: boolean = true): void {
     if (!show) return
     console.log(format(message))
 }
 
-export function warn(message?: any, show: boolean = false): void {
+export function warn(message?: any, show: boolean = true): void {
     if (!show) return
     console.warn(format(message))
 }
 
-export function error(message?: any, show: boolean = false): void {
+export function error(message?: any, show: boolean = true): void {
     if (!show) return
     console.error(format(message))
 }

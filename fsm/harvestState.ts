@@ -5,6 +5,8 @@ import {LimitedArray} from "../utils/limitArray";
 import {getTimeDiff} from "../utils/math";
 import {corpsNameList} from "../const";
 import {FarmSkill} from "../skills/farmSkill";
+import {log} from "../utils/log";
+import {tryGotoNear} from "../utils/helper";
 
 abstract class BlockUpdateIntent {
     protected readonly blockBreakProgressEndEvents: LimitedArray<Date>
@@ -32,6 +34,10 @@ abstract class BlockUpdateIntent {
         })
     }
 
+    public reset() {
+        this.blockBreakProgressEndEvents.clear()
+    }
+
     protected abstract eventListener(oldBlock: Block | null, newBlock: Block)
 }
 
@@ -49,6 +55,7 @@ class HarvestIntent extends BlockUpdateIntent {
 export class HarvestState extends AbstractState {
     private readonly harvestedIntent: BlockUpdateIntent
     private searchRadius = 128;
+    private contactRadius = 3;
 
     constructor() {
         super("收获状态");
@@ -64,7 +71,36 @@ export class HarvestState extends AbstractState {
     }
 
     async onEntered() {
-        await FarmSkill.harvest(this.searchRadius, 500, () => !this.isEntered)
+        if (this.isEntered) return
+        this.isEntered = true
+        // await FarmSkill.harvest(this.searchRadius, 500, () => !this.isEntered)
+        // while (true) {
+        //     const corpBlock = FarmSkill.findBlockToHarvest(this.searchRadius, 1)
+        //     if (corpBlock) {
+        //         const dist = bot.entity.position.distanceTo(corpBlock.position);
+        //         if (dist > this.contactRadius) {
+        //             await tryGotoNear(corpBlock.position)
+        //         }
+        //         await bot.dig(corpBlock, true);
+        //     } else {
+        //         break
+        //     }
+        // }
+        const corpBlocks = FarmSkill.findBlocksToHarvest(this.searchRadius, 1000)
+        if (corpBlocks) {
+            for (let corpBlock of corpBlocks) {
+                const dist = bot.entity.position.distanceTo(corpBlock);
+                if (dist > this.contactRadius) {
+                    await tryGotoNear(corpBlock)
+                }
+                const corpBlock1 = bot.blockAt(corpBlock)
+                await bot.dig(corpBlock1, true);
+            }
+        }
+
+        log(`完成收割作物`)
+        this.isEntered = false
+        this.harvestedIntent.reset()
     }
 
     onExited() {

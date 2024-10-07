@@ -2,9 +2,9 @@ import {Block} from "prismarine-block";
 import {Vec3} from "vec3";
 import {bot} from "../index";
 import {sleep} from "../utils/sleep";
-import {goto} from "../utils/helper";
+import {goto, tryGotoNear} from "../utils/helper";
 import {corpsNameList} from "../const";
-import {log, warn} from "../utils/log";
+import {error, log, warn} from "../utils/log";
 
 export class FarmSkill {
 
@@ -17,8 +17,17 @@ export class FarmSkill {
             && block.metadata === this.maturity
     }
 
-    private static findBlockToHarvest(maxDistance: number, count: number): Block | null {
+    public static findBlockToHarvest(maxDistance: number, count: number): Block | null {
         return bot.findBlock({
+            point: bot.entity.position,
+            matching: this.harvestableFilter,
+            maxDistance: maxDistance,
+            count: count
+        })
+    }
+
+    public static findBlocksToHarvest(maxDistance: number, count: number): Vec3[] {
+        return bot.findBlocks({
             point: bot.entity.position,
             matching: this.harvestableFilter,
             maxDistance: maxDistance,
@@ -59,19 +68,44 @@ export class FarmSkill {
     }
 
 
-    public static async harvest(maxDistance: number, count: number, stop: () => boolean) {
-        log(`正在收获作物`)
-        while (!stop()) {
-            const block = this.findBlockToHarvest(maxDistance, count)
-            if (block) {
-                goto(block.position)
-                await bot.dig(block)
-                await sleep(50)
-            } else {
-                bot.stopDigging()
+    // public static async harvest(maxDistance: number, count: number, stop: () => boolean) {
+    //     log(`正在收获作物`)
+    //     console.log(!stop())
+    //     while (!stop()) {
+    //         const block = this.findBlockToHarvest(maxDistance, count)
+    //         if (block) {
+    //             await tryGotoNear(block.position)
+    //             try {
+    //                 await bot.dig(block)
+    //             } catch (e) {
+    //                 if (e.message.includes("Digging aborted")) {
+    //                     // 暂时不处理
+    //                 }
+    //             }
+    //             // await sleep(50)
+    //         } else {
+    //             bot.stopDigging()
+    //         }
+    //     }
+    //     log(`完成收获作物`)
+    // }
+
+    public static async harvest(searchRadius: number, count: number, contactRadius: number, stop: () => boolean) {
+        const corpPosList = FarmSkill.findBlocksToHarvest(searchRadius, count)
+        if (corpPosList) {
+            try {
+                for (let corpPos of corpPosList) {
+                    const dist = bot.entity.position.distanceTo(corpPos);
+                    if (dist > contactRadius) {
+                        await tryGotoNear(corpPos)
+                    }
+                    const corpBlock = bot.blockAt(corpPos)
+                    await bot.dig(corpBlock, true);
+                }
+            } catch (e) {
+                error(`收割终止，因为：${e.message}`)
             }
         }
-        log(`完成收获作物`)
     }
 
 

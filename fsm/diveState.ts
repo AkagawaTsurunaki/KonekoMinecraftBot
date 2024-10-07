@@ -1,6 +1,6 @@
 import {AbstractState} from "./fsm";
 import {bot} from "../index";
-import {dot} from "../utils/math";
+import {clamp, dot} from "../utils/math";
 
 
 export class DiveState extends AbstractState {
@@ -20,7 +20,7 @@ export class DiveState extends AbstractState {
         if (!inWater) return 0
         const condVal = dot([this.inWaterWeight, this.oxygenLevelWeight, this.healthWeight],
             [inWater ? 1 : 0, Math.abs(bot.oxygenLevel - 20) / 20, Math.abs(bot.health - 20) / 20])
-        return condVal ? condVal : 0;
+        return clamp(condVal ? condVal : 0, 0, 1);
     }
 
     onEntered() {

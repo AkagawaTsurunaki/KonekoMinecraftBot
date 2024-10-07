@@ -12,7 +12,6 @@ import {DiveState} from "./fsm/diveState";
 import {AttackPlayerState} from "./fsm/attackPlayerState";
 import {SleepState} from "./fsm/sleepState";
 import {LoggingWithPlayerState} from "./fsm/loggingWithPlayerState";
-import {IdleDysphoria} from "./behaviours/idleDysphoria";
 import {HarvestState} from "./fsm/harvestState";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
@@ -36,10 +35,9 @@ export class KonekoFsm extends FSM {
         const loggingWithPlayerState = new LoggingWithPlayerState();
         const harvestState = new HarvestState();
 
-        idleState.nextStates = [attackHostiles, diveState, followPlayerState, attackPlayerState, loggingWithPlayerState,
+        idleState.nextStates = [attackHostiles, followPlayerState, attackHostiles, attackPlayerState, sleepState, loggingWithPlayerState,
             harvestState]
-        followPlayerState.nextStates = [idleState, attackHostiles, attackPlayerState, sleepState, loggingWithPlayerState,
-            harvestState]
+        followPlayerState.nextStates = [idleState, attackHostiles]
         sleepState.nextStates = [idleState, followPlayerState]
         attackHostiles.nextStates = [idleState, diveState, followPlayerState, loggingWithPlayerState]
         attackPlayerState.nextStates = [idleState, attackHostiles]

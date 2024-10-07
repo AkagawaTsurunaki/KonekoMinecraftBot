@@ -41,6 +41,7 @@ export class SleepState extends AbstractState {
         if (this.isEntered) return
         this.isEntered = true
         await SleepSkill.gotoSleep(this.searchRadius, 1)
+        this.isEntered = false
     }
 
     onExited() {

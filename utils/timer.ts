@@ -1,5 +1,3 @@
-import {log} from "./log";
-
 export class Timer {
 
     private time = 0
@@ -11,7 +9,6 @@ export class Timer {
 
     onPhysicsTick() {
         this.time += 1
-        console.log(this.time)
     }
 
     check(): boolean {

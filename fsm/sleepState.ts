@@ -31,7 +31,10 @@ export class SleepState extends AbstractState {
 
     getCondVal(): number {
         const timeVal = this.time()
-        return clamp(timeVal, 0, 1) * (timeVal === 0 ? 0 : 1)
+        if (SleepSkill.findBedBlock(this.searchRadius, 1)) {
+            return clamp(timeVal, 0, 1) * (timeVal === 0 ? 0 : 1)
+        }
+        return 0
     }
 
     async onEntered() {

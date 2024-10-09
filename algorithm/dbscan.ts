@@ -29,7 +29,7 @@ function expandCluster(points: Vec3[], neighbors: number[], eps: number, minPts:
 
 /**
  * 返回聚类列表。
- * 格式为：类编号，样本点列表
+ * 格式为：类编号，样本点列表（编号）
  *
  * @param points
  * @param eps
@@ -53,3 +53,4 @@ export function dbscan(points: Vec3[], eps: number, minPts: number): number[][] 
 
     return clusters
 }
+

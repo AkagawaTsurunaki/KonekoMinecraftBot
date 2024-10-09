@@ -7,6 +7,8 @@ import {corpsNameList} from "../const";
 import {FarmSkill} from "../skills/farmSkill";
 import {log} from "../utils/log";
 import {tryGotoNear} from "../utils/helper";
+import {dbscan} from "../algorithm/dbscan";
+import {getVec3ListFromClusters} from "../algorithm/clustersProcessAlgorithm";
 
 abstract class BlockUpdateIntent {
     protected readonly blockBreakProgressEndEvents: LimitedArray<Date>
@@ -55,7 +57,7 @@ class HarvestIntent extends BlockUpdateIntent {
 export class HarvestState extends AbstractState {
     private readonly harvestedIntent: BlockUpdateIntent
     private searchRadius = 128;
-    private contactRadius = 3;
+    private contactRadius = 5;
 
     constructor() {
         super("收获状态");
@@ -73,21 +75,13 @@ export class HarvestState extends AbstractState {
     async onEntered() {
         if (this.isEntered) return
         this.isEntered = true
-        // await FarmSkill.harvest(this.searchRadius, 500, () => !this.isEntered)
-        // while (true) {
-        //     const corpBlock = FarmSkill.findBlockToHarvest(this.searchRadius, 1)
-        //     if (corpBlock) {
-        //         const dist = bot.entity.position.distanceTo(corpBlock.position);
-        //         if (dist > this.contactRadius) {
-        //             await tryGotoNear(corpBlock.position)
-        //         }
-        //         await bot.dig(corpBlock, true);
-        //     } else {
-        //         break
-        //     }
-        // }
-        const corpBlocks = FarmSkill.findBlocksToHarvest(this.searchRadius, 1000)
-        if (corpBlocks) {
+
+        let corpBlocks = FarmSkill.findBlocksToHarvest(this.searchRadius, 1000)
+        if (corpBlocks == null || corpBlocks.length == 0) return
+
+        let clusters = dbscan(corpBlocks, 1, 1)
+        const vec3clusters = getVec3ListFromClusters(clusters, corpBlocks);
+        for (let corpBlocks of vec3clusters) {
             for (let corpBlock of corpBlocks) {
                 const dist = bot.entity.position.distanceTo(corpBlock);
                 if (dist > this.contactRadius) {

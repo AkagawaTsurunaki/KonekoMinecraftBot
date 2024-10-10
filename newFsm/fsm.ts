@@ -28,7 +28,7 @@ export interface State extends Transition {
 }
 
 
-class BaseState extends EventListenersManager implements State {
+export abstract class BaseState extends EventListenersManager implements State {
     id: string;
     transitionValue: number;
 
@@ -49,11 +49,11 @@ class BaseState extends EventListenersManager implements State {
 
     onExit(): void {
         this.removeEventListeners()
+        this.transitionValue = 0
     }
 
     onUpdate(): void {
     }
 
-    registerEventListeners(): void {
-    }
+    abstract registerEventListeners(): void
 }

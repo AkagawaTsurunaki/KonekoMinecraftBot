@@ -14,4 +14,8 @@ export class Timer {
     check(): boolean {
         return this.time % this.interval == 0
     }
+
+    reset() {
+        this.time = 0
+    }
 }

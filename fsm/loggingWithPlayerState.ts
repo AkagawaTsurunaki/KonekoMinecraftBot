@@ -36,7 +36,7 @@ export class LoggingWithPlayerState extends AbstractState {
         }
     }
 
-    async onEntered() {
+    async onEnter() {
         if (this.isEntered) return
         if (this.lastLoggedLogBlock == null) return
         this.isEntered = true
@@ -52,7 +52,7 @@ export class LoggingWithPlayerState extends AbstractState {
         this.finished = true
     }
 
-    onExited() {
+    onExit() {
         this.isEntered = false
         this.finished = false
         this.logBlockRec.clear()

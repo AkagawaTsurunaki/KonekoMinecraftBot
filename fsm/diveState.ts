@@ -23,11 +23,11 @@ export class DiveState extends AbstractState {
         return clamp(condVal ? condVal : 0, 0, 1);
     }
 
-    onEntered() {
+    onEnter() {
         bot.setControlState('jump', true)
     }
 
-    onExited() {
+    onExit() {
         bot.setControlState('jump', false)
     }
 

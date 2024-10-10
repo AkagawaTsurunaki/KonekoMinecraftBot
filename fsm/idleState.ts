@@ -12,10 +12,10 @@ export class IdleState extends AbstractState {
         return 0.01;
     }
 
-    onEntered() {
+    onEnter() {
     }
 
-    onExited() {
+    onExit() {
     }
 
     onUpdate(...args: any[]) {

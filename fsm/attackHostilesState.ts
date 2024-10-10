@@ -58,14 +58,14 @@ export class AttackHostilesState extends AbstractState {
         return this.radiusToCondValFunc(dist)
     }
 
-    async onEntered() {
+    async onEnter() {
         // 切换武器
         await AttackSkill.equipWeapon()
         // 攻击怪物
         await AttackSkill.attackNearestHostiles(this.attackRadius)
     }
 
-    async onExited() {
+    async onExit() {
         await bot.pvp.stop()
     }
 

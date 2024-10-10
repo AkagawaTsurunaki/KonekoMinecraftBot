@@ -84,10 +84,10 @@ export class KonekoFsm extends FSM {
         try {
             const nextState = this.getMaxCondValState()
             if (nextState) {
-                this.curState.onExited()
+                this.curState.onExit()
                 this.curState = nextState
             }
-            this.curState.onEntered()
+            this.curState.onEnter()
         } catch (e) {
             console.error("状态机崩溃。")
             bot.chat(`${bot.username} 因状态机崩溃而停止运行，请联系 ${masterName} 进行重启。`)

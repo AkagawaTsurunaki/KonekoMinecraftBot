@@ -32,14 +32,14 @@ export class FollowPlayerState extends AbstractState {
         return clamp(dist / this.searchRadius, 0, 1)
     }
 
-    async onEntered() {
+    async onEnter() {
         if (this.isEntered) return
         this.isEntered = true
         await FollowSkill.followNearestPlayer(this.contactRadius, true)
         this.isEntered = false
     }
 
-    onExited() {
+    onExit() {
         this.isEntered = false
     }
 

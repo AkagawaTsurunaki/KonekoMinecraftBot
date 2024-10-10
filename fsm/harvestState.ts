@@ -72,7 +72,7 @@ export class HarvestState extends AbstractState {
         return 0;
     }
 
-    async onEntered() {
+    async onEnter() {
         if (this.isEntered) return
         this.isEntered = true
 
@@ -97,7 +97,7 @@ export class HarvestState extends AbstractState {
         this.harvestedIntent.reset()
     }
 
-    onExited() {
+    onExit() {
         this.isEntered = false
     }
 

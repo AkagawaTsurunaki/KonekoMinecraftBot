@@ -18,11 +18,11 @@ export class AttackPlayerState extends AbstractState {
         return 0.99
     }
 
-    async onEntered() {
+    async onEnter() {
         await bot.pvp.attack(this.angryBehaviour.pvpTarget)
     }
 
-    async onExited() {
+    async onExit() {
         await bot.pvp.stop()
     }
 

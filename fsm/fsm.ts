@@ -19,12 +19,12 @@ export abstract class AbstractState {
     /**
      * 当进入此状态时执行的操作。
      */
-    public abstract onEntered()
+    public abstract onEnter()
 
     /**
      * 当退出此状态时执行的操作。
      */
-    public abstract onExited()
+    public abstract onExit()
 
 }
 

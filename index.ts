@@ -1,6 +1,6 @@
 import {botOption, masterName} from "./const"
 import {createBot} from "mineflayer";
-import {log} from "./utils/log";
+import {log, warn} from "./utils/log";
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {FSM} from "./fsm/fsm";
@@ -14,6 +14,10 @@ import {SleepState} from "./fsm/sleepState";
 import {LoggingWithPlayerState} from "./fsm/loggingWithPlayerState";
 import {HarvestState} from "./fsm/harvestState";
 import {Timer} from "./utils/timer";
+import {ChatMessage} from "prismarine-chat";
+import {CraftSkill} from "./skills/craftSkill";
+import {PlaceBlockSkill} from "./skills/placeBlockSkill";
+import {tryEquip} from "./utils/helper";
 // import {loader as autoeat} from "mineflayer-auto-eat"
 
 export const bot = createBot(botOption)
@@ -99,12 +103,18 @@ const konekoFsm = new KonekoFsm()
 
 bot.on("spawn", () => {
     bot.chat(`Koneko 正在测试中……`)
-    konekoFsm.init()
-    konekoFsm.start()
-
+    //konekoFsm.init()
+    //konekoFsm.start()
 });
 
 
+bot.on("whisper", async (username, message, translate, jsonMsg) => {
+    if (username === masterName) {
+        const item = await CraftSkill.craftCraftingTable();
+        await tryEquip(item, "hand")
+        await PlaceBlockSkill.placeBlockOtherPlayerLookedAt(masterName)
+    }
+})
 
 bot.on("hardcodedSoundEffectHeard", async (soundId: number,
                                            soundCategory: string | number,

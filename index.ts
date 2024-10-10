@@ -14,9 +14,6 @@ import {SleepState} from "./fsm/sleepState";
 import {LoggingWithPlayerState} from "./fsm/loggingWithPlayerState";
 import {HarvestState} from "./fsm/harvestState";
 import {Timer} from "./utils/timer";
-import {CraftSkill} from "./skills/craftSkill";
-import {PlaceBlockSkill} from "./skills/placeBlockSkill";
-import {tryEquip} from "./utils/helper";
 
 export const bot = createBot(botOption)
 bot.loadPlugin(pathfinder)
@@ -100,16 +97,13 @@ const konekoFsm = new KonekoFsm()
 
 bot.on("spawn", () => {
     bot.chat(`Koneko 正在测试中……`)
-    konekoFsm.init()
-    konekoFsm.start()
+    // konekoFsm.init()
+    // konekoFsm.start()
 });
 
 
-bot.on("whisper", async (username, message, translate, jsonMsg) => {
-    if (username === masterName) {
-        const item = await CraftSkill.craftCraftingTable();
-        await tryEquip(item, "hand")
-        await PlaceBlockSkill.placeBlockOtherPlayerLookedAt(masterName)
+bot.on("chat", async (username, message, translate, jsonMsg) => {
+    if (username === masterName && message === "rm") {
     }
 })
 

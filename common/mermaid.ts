@@ -1,11 +1,8 @@
 import {AutoFiniteStateMachine} from "../newFsm/fsm";
-import pino from "pino";
-import pretty from 'pino-pretty';
-const stream = pretty({
-    colorize: true
-})
+import {getLogger} from "../utils/log";
 
-const logger = pino({name: "MermaidGenerator"}, stream)
+
+const logger = getLogger("MermaidGenerator")
 
 export class MermaidGenerator {
     public generate(fsm: AutoFiniteStateMachine) {

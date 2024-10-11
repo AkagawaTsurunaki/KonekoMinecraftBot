@@ -1,10 +1,17 @@
-import {AbstractState} from "./fsm";
-import {FollowSkill} from "../skills/followSkill";
-import {bot} from "../index";
-import {clamp} from "../utils/math";
+import {AbstractState} from "../fsm";
+import {FollowSkill} from "../../skills/followSkill";
+import {bot} from "../../index";
+import {clamp} from "../../utils/math";
+import {lock, range} from "../../common/decorator";
+import {getLogger} from "../../utils/log";
 
+
+const logger = getLogger("FollowPlayerState")
 
 export class FollowPlayerState extends AbstractState {
+    constructor() {
+        super("FollowPlayerState");
+    }
 
     /**
      * 搜索玩家半径，只有在此半径的玩家才会被搜索。
@@ -17,12 +24,8 @@ export class FollowPlayerState extends AbstractState {
      */
     private contactRadius = 10;
 
-
-    constructor() {
-        super("跟随玩家状态");
-    }
-
-    getCondVal(): number {
+    @range(0, 1)
+    getTransitionValue(): number {
         const player = FollowSkill.findNearestPlayer(0, this.searchRadius);
         // 如果没有玩家再身边，状态转移
         if (player == null) return 0
@@ -32,18 +35,15 @@ export class FollowPlayerState extends AbstractState {
         return clamp(dist / this.searchRadius, 0, 1)
     }
 
-    async onEnter() {
-        if (this.isEntered) return
-        this.isEntered = true
+    @lock()
+    async onUpdate() {
+        super.onUpdate();
+        logger.debug("Following nearest player...")
         await FollowSkill.followNearestPlayer(this.contactRadius, true)
-        this.isEntered = false
+        logger.debug("Followed nearest player.")
     }
 
-    onExit() {
-        this.isEntered = false
-    }
-
-    onUpdate(...args: any[]) {
+    registerEventListeners(): void {
     }
 
 }

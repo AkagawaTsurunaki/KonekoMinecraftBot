@@ -1,7 +1,5 @@
 import {EventListenersManager} from "../events/eventListenerManager";
 import {myEmitter} from "../events/secondEvent";
-import {IdleState} from "./states/idleState";
-import {AttackHostilesState} from "./states/attackHostilesState";
 import {error} from "../utils/log";
 
 interface Transition {
@@ -58,7 +56,7 @@ export abstract class AbstractState extends EventListenersManager implements Sta
     abstract getTransitionValue(): number
 }
 
-interface FiniteStateMachine {
+export interface FiniteStateMachine {
     currentState: State | null
 
     init(): void
@@ -71,7 +69,7 @@ interface FiniteStateMachine {
 }
 
 
-abstract class AutoFiniteStateMachine implements FiniteStateMachine {
+export abstract class AutoFiniteStateMachine implements FiniteStateMachine {
     resetWhenException: boolean
     currentState: State | null;
 
@@ -129,20 +127,4 @@ abstract class AutoFiniteStateMachine implements FiniteStateMachine {
         }
     }
 
-}
-
-export class NewFSM extends AutoFiniteStateMachine {
-
-    idleState: State | null = null
-    attackHostilesState: State | null = null
-
-    init() {
-        this.idleState = new IdleState()
-        this.attackHostilesState = new AttackHostilesState()
-        this.currentState = this.idleState
-    }
-
-    reset() {
-        this.currentState = this.idleState
-    }
 }

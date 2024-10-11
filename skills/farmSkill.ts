@@ -100,9 +100,11 @@ export class FarmSkill {
                         await tryGotoNear(corpPos)
                     }
                     const corpBlock = bot.blockAt(corpPos)
-                    await bot.dig(corpBlock, true);
+                    if (corpBlock) {
+                        await bot.dig(corpBlock, true);
+                    }
                 }
-            } catch (e) {
+            } catch (e: any) {
                 error(`收割终止，因为：${e.message}`)
             }
         }

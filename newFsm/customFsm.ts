@@ -11,8 +11,8 @@ export class CustomFsm extends AutoFiniteStateMachine {
         this.idleState = new IdleState()
         this.attackHostilesState = new AttackHostilesState()
 
-        this.allStates[this.idleState.id] = this.idleState
-        this.allStates[this.attackHostilesState.id] = this.attackHostilesState
+        this.allStates.push(this.idleState)
+        this.allStates.push(this.attackHostilesState)
 
         this.idleState.nextStates = [this.attackHostilesState]
         this.attackHostilesState.nextStates = [this.idleState]

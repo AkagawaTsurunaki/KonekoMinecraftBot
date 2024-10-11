@@ -71,12 +71,12 @@ export interface FiniteStateMachine {
 export abstract class AutoFiniteStateMachine implements FiniteStateMachine {
     resetWhenException: boolean
     currentState: AbstractState | null;
-    allStates: { [key: string]: AbstractState }
+    allStates: AbstractState[]
 
     constructor() {
         this.resetWhenException = false
         this.currentState = null
-        this.allStates = {}
+        this.allStates = []
     }
 
     abstract init(): void

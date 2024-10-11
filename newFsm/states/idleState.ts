@@ -1,25 +1,30 @@
-import {BaseState} from "../fsm";
-import {lock} from "../../common/decorator";
+import {AbstractState} from "../fsm";
+import {Timer} from "../../utils/timer";
+import {range} from "../../common/decorator";
 
-export class IdleState extends BaseState {
+export class IdleState extends AbstractState {
+
+    private timer: Timer
+    private scaleFactor: number = 0.1
 
     constructor() {
         super("主状态");
-        this.transitionValue = 0.01
+        this.timer = new Timer()
     }
 
-    onEnter() {
-        super.onEnter();
-    }
-
-    onExit() {
-        super.onExit();
-    }
-
-    onUpdate() {
-        this.transitionValue = 0.01
+    onUpdate(): void {
+        // 无事可做
     }
 
     registerEventListeners(): void {
+        this.addEventListener("physicsTick", () => {
+            this.timer.onPhysicsTick()
+        })
     }
+
+    @range(0, 1)
+    getTransitionValue(): number {
+        return Math.sin(this.timer.time) * this.scaleFactor;
+    }
+
 }

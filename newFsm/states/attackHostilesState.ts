@@ -1,50 +1,69 @@
-import {BaseState} from "../fsm";
+import {AbstractState} from "../fsm";
 import {createLevelFuncByMap} from "../../utils/math";
 import {AttackSkill} from "../../skills/attackSkill";
 import {bot} from "../../index";
-import {lock} from "../../common/decorator";
+import {range} from "../../common/decorator";
 
-export class AttackHostilesState extends BaseState {
-    parameters = {
-        searchRadius: 20, // 索敌半径
-        attentionRadius: 16, // 二级警戒半径
-        warningRadius: 12, // 一级警戒半径,
-        attackRadius: 9, // 进攻半径
-    }
-
-    functions = {
-        radiusLevelFunc: createLevelFuncByMap(new Map([
-            [-Infinity, 1],
-            [0, 1],
-            [this.parameters.attackRadius, 0.8],
-            [this.parameters.warningRadius, 0.5],
-            [this.parameters.attentionRadius, 0.3],
-            [this.parameters.searchRadius, 0.1],
-            [Infinity, 0]
-        ]))
-    }
-
+export class AttackHostilesState extends AbstractState {
     constructor() {
         super("攻击怪物状态");
     }
 
-    async onUpdate() {
-        const hostile = AttackSkill.findNearestHostile(this.parameters.searchRadius)
+    /**
+     * 索敌半径
+     * @private
+     */
+    private searchRadius = 20
+
+    /**
+     * 二级警戒半径
+     * @private
+     */
+    private attentionRadius = 16
+
+    /**
+     * 一级警戒半径
+     * @private
+     */
+    private warningRadius = 12
+
+    /**
+     * 进攻半径
+     * @private
+     */
+    private attackRadius = 9
+
+    private radiusLevelFunc = createLevelFuncByMap(new Map([
+        [-Infinity, 1],
+        [0, 1],
+        [this.attackRadius, 0.8],
+        [this.warningRadius, 0.5],
+        [this.attentionRadius, 0.3],
+        [this.searchRadius, 0.1],
+        [Infinity, 0]
+    ]))
+
+    @range(0, 1)
+    getTransitionValue(): number {
+        const hostile = AttackSkill.findNearestHostile(this.searchRadius)
         if (!hostile) return 0.0
         const dist = bot.entity.position.distanceTo(hostile.position)
-        this.transitionValue = this.functions.radiusLevelFunc(dist)
+        return this.radiusLevelFunc(dist)
     }
 
-    // TODO: 设计一个锁阻止在每一个刻内被多次调用
-    @lock()
     async onEnter() {
+        super.onEnter();
         // 切换武器
         await AttackSkill.equipWeapon()
+    }
+
+    async onUpdate() {
         // 攻击怪物
-        await AttackSkill.attackNearestHostiles(this.parameters.attackRadius)
+        await AttackSkill.attackNearestHostiles(this.attackRadius)
     }
 
     async onExit() {
+        super.onExit();
         await bot.pvp.stop()
     }
 

@@ -7,8 +7,15 @@ stateDiagram
     IdleState --> AttackHostilesState
     IdleState --> AttackPlayerState
     IdleState --> DiveState
+    IdleState --> FollowPlayerState
+    IdleState --> SleepState
     AttackHostilesState --> IdleState
     AttackPlayerState --> IdleState
     AttackPlayerState --> AttackHostilesState
     DiveState --> IdleState
+    DiveState --> FollowPlayerState
+    FollowPlayerState --> IdleState
+    FollowPlayerState --> DiveState
+    FollowPlayerState --> AttackHostilesState
+    SleepState --> IdleState
 ```

@@ -1,10 +1,15 @@
-import {AbstractState} from "./fsm";
-import {SleepSkill} from "../skills/sleepSkill";
-import {bot} from "../index";
-import {clamp, createLinearFunction} from "../utils/math";
-import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../const";
+import {AbstractState} from "../fsm";
+import {SleepSkill} from "../../skills/sleepSkill";
+import {clamp, createLinearFunction} from "../../utils/math";
+import {bot} from "../../index";
+import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../const";
+import {lock} from "../../common/decorator";
 
 export class SleepState extends AbstractState {
+
+    constructor() {
+        super("SleepState");
+    }
 
     private searchRadius: number = 64
     private readonly sunsetToMidnight = createLinearFunction(BEGINNING_OF_SUNSET, 0.2, BEGINNING_OF_NIGHT, 1)
@@ -23,13 +28,11 @@ export class SleepState extends AbstractState {
         } else if (BEGINNING_OF_DAY <= timeOfDay) {
             return 0
         }
+        return 0
     }
 
-    constructor() {
-        super("睡眠状态");
-    }
 
-    getCondVal(): number {
+    getTransitionValue(): number {
         const timeVal = this.time()
         if (SleepSkill.findBedBlock(this.searchRadius, 1)) {
             return clamp(timeVal, 0, 1) * (timeVal === 0 ? 0 : 1)
@@ -37,18 +40,13 @@ export class SleepState extends AbstractState {
         return 0
     }
 
-    async onEnter() {
-        if (this.isEntered) return
-        this.isEntered = true
+    @lock()
+    async onUpdate() {
+        super.onUpdate();
         await SleepSkill.gotoSleep(this.searchRadius, 1)
-        this.isEntered = false
     }
 
-    onExit() {
-        this.isEntered = false
-    }
-
-    onUpdate(...args: any[]) {
+    registerEventListeners(): void {
     }
 
 }

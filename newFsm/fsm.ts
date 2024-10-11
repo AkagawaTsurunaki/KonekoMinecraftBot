@@ -3,7 +3,6 @@ import {myEmitter} from "../events/secondEvent";
 import {IdleState} from "./states/idleState";
 import {AttackHostilesState} from "./states/attackHostilesState";
 import {error} from "../utils/log";
-import {bot} from "../index";
 
 interface Transition {
     getTransitionValue(): number
@@ -81,8 +80,7 @@ abstract class AutoFiniteStateMachine implements FiniteStateMachine {
         this.currentState = null
     }
 
-    init(): void {
-    }
+    abstract init(): void
 
     abstract reset(): void
 
@@ -125,7 +123,6 @@ abstract class AutoFiniteStateMachine implements FiniteStateMachine {
             if (this.resetWhenException) {
                 const msg = "未经处理的异常导致的有限状态机停机"
                 error(msg)
-                bot.chat(msg)
             } else {
                 this.reset()
             }
@@ -136,10 +133,8 @@ abstract class AutoFiniteStateMachine implements FiniteStateMachine {
 
 export class NewFSM extends AutoFiniteStateMachine {
 
-
     idleState: State | null = null
     attackHostilesState: State | null = null
-
 
     init() {
         this.idleState = new IdleState()

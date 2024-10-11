@@ -64,6 +64,7 @@ export class HarvestState extends AbstractState {
         }
 
         this.harvestedIntent.resetIntent()
+        bot.chat("收割完毕喵~")
         logger.info("Harvest action finished.")
     }
 }

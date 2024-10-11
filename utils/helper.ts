@@ -8,7 +8,7 @@ import {error, warn} from "./log";
 import {EquipmentDestination} from "mineflayer";
 import {Item} from "prismarine-item";
 
-export function findPlayerByUsername(username: string): Entity {
+export function findPlayerByUsername(username: string): Entity | null {
     if (bot && username) {
         for (const id in bot.entities) {
             const e = bot.entities[id]
@@ -17,24 +17,7 @@ export function findPlayerByUsername(username: string): Entity {
             }
         }
     }
-
     return null
-}
-
-const entityTypes = ['player', 'mob', 'object', 'global', 'orb', 'projectile', 'hostile', 'other']
-
-export function getEntitiesTypeStatistic(): Map<string, number> {
-    const result = new Map<string, number>()
-    for (let id in bot.entities) {
-        const entity = bot.entities[id];
-        if (!entity) continue
-        if (result.has(entity.type)) {
-            result[entity.type] += 1
-        } else {
-            result[entity.type] = 1
-        }
-    }
-    return result
 }
 
 export function goto(block: Vec3) {
@@ -51,7 +34,7 @@ export async function tryGotoNear(block: Vec3, timeout: boolean = false) {
     const goal = new goals.GoalNear(block.x, block.y, block.z, 1)
     try {
         await bot.pathfinder.goto(goal)
-    } catch (e) {
+    } catch (e: any) {
         if (timeout && e.message.includes("Timeout")) {
             const goal = new goals.GoalNear(block.x + randomNeg1ToPos1(), block.y + randomNeg1ToPos1(), block.z + randomNeg1ToPos1(), 1)
             await bot.pathfinder.goto(goal)
@@ -76,7 +59,7 @@ export function isMaster(entity: Entity) {
 
 export async function tryEquip(item: string | Item, destination: EquipmentDestination | null) {
     try {
-        let _item: Item
+        let _item;
         if (typeof(item) == "string") {
             const itemId = bot.registry.itemsByName[item].id
             _item = bot.inventory.findInventoryItem(itemId, null, false);
@@ -89,7 +72,7 @@ export async function tryEquip(item: string | Item, destination: EquipmentDestin
         }
         await bot.equip(_item, destination)
         return _item
-    } catch (e) {
+    } catch (e: any) {
         if (e.message === "Invalid item object in equip (item is null or typeof item is not object)") {
             error(`装备的 item 对象无效（item 为 null 或 item 的类型不是 object）`)
         }

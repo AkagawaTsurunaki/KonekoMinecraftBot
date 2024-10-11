@@ -1,6 +1,6 @@
 export class Timer {
 
-    private time = 0
+    private _time = 0
     private interval = 0
 
     constructor(interval: number = 20) {
@@ -8,14 +8,18 @@ export class Timer {
     }
 
     onPhysicsTick() {
-        this.time += 1
+        this._time += 1
     }
 
     check(): boolean {
-        return this.time % this.interval == 0
+        return this._time % this.interval == 0
     }
 
     reset() {
-        this.time = 0
+        this._time = 0
+    }
+
+    get time() {
+        return this._time
     }
 }

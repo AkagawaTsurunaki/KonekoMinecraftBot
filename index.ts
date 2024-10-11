@@ -1,6 +1,6 @@
 import {botOption, masterName} from "./const"
 import {createBot} from "mineflayer";
-import {getLogger, log} from "./utils/log";
+import {getLogger} from "./utils/log";
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {Vec3} from "vec3";

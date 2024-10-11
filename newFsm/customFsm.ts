@@ -5,6 +5,7 @@ import {AttackPlayerState} from "./states/attackPlayerState";
 import {DiveState} from "./states/diveState";
 import {FollowPlayerState} from "./states/followPlayerState";
 import {SleepState} from "./states/sleepState";
+import {HarvestState} from "./states/harvestState";
 
 export class CustomFsm extends AutoFiniteStateMachine {
 
@@ -14,6 +15,7 @@ export class CustomFsm extends AutoFiniteStateMachine {
     private diveState: DiveState | null = null;
     private followPlayerState: FollowPlayerState | null = null;
     private sleepState: SleepState | null = null;
+    private harvestState: HarvestState | null = null;
 
     init() {
         this.idleState = new IdleState()
@@ -22,6 +24,7 @@ export class CustomFsm extends AutoFiniteStateMachine {
         this.diveState = new DiveState();
         this.followPlayerState = new FollowPlayerState()
         this.sleepState = new SleepState()
+        this.harvestState = new HarvestState()
 
         this.allStates.push(this.idleState)
         this.allStates.push(this.attackHostilesState)
@@ -29,13 +32,15 @@ export class CustomFsm extends AutoFiniteStateMachine {
         this.allStates.push(this.diveState)
         this.allStates.push(this.followPlayerState)
         this.allStates.push(this.sleepState)
+        this.allStates.push(this.harvestState)
 
-        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState]
-        this.attackHostilesState.nextStates = [this.idleState]
+        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState]
+        this.attackHostilesState.nextStates = [this.idleState, this.harvestState]
         this.attackPlayerState.nextStates = [this.idleState, this.attackHostilesState]
         this.diveState.nextStates = [this.idleState, this.followPlayerState]
         this.followPlayerState.nextStates = [this.idleState, this.diveState, this.attackHostilesState]
         this.sleepState.nextStates = [this.idleState]
+        this.harvestState.nextStates = [this.idleState]
 
         this.currentState = this.idleState
     }

@@ -7,6 +7,7 @@ import {IdleState} from "./fsm/idleState";
 import {Vec3} from "vec3";
 import {startSecondEvent} from "./events/secondEvent";
 import {CustomFsm} from "./newFsm/customFsm";
+import {MermaidGenerator} from "./common/mermaid";
 
 export const bot = createBot(botOption)
 
@@ -100,6 +101,7 @@ bot.on("spawn", () => {
     // konekoFsm.start()
     newFsm.init()
     newFsm.start()
+    new MermaidGenerator().generate(newFsm)
 });
 
 

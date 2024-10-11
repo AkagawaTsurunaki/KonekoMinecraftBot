@@ -8,7 +8,7 @@ export class IdleState extends AbstractState {
     private scaleFactor: number = 0.1
 
     constructor() {
-        super("主状态");
+        super("IdleState");
         this.timer = new Timer()
     }
 

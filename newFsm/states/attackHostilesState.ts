@@ -6,7 +6,7 @@ import {range} from "../../common/decorator";
 
 export class AttackHostilesState extends AbstractState {
     constructor() {
-        super("攻击怪物状态");
+        super("AttackHostilesState");
     }
 
     /**

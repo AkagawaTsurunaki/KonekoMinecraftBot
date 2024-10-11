@@ -58,6 +58,7 @@ export class AttackHostilesState extends AbstractState {
     }
 
     async onUpdate() {
+        super.onUpdate()
         // 攻击怪物
         await AttackSkill.attackNearestHostiles(this.attackRadius)
     }

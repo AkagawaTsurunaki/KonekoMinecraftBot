@@ -12,19 +12,25 @@ export class IdleState extends AbstractState {
         this.timer = new Timer()
     }
 
-    onUpdate(): void {
-        // 无事可做
+    @range(0, 1)
+    getTransitionValue(): number {
+        this.timer.onPhysicsTick()
+        return (Math.sin(this.timer.time) + 1) * this.scaleFactor;
     }
 
     registerEventListeners(): void {
-        this.addEventListener("physicsTick", () => {
-            this.timer.onPhysicsTick()
-        })
     }
 
-    @range(0, 1)
-    getTransitionValue(): number {
-        return Math.sin(this.timer.time) * this.scaleFactor;
+    onEnter(): void {
+        super.onEnter()
+    }
+
+    onUpdate(): void {
+        super.onUpdate()
+    }
+
+    onExit(): void {
+        super.onExit()
     }
 
 }

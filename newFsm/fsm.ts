@@ -1,6 +1,6 @@
 import {EventListenersManager} from "../events/eventListenerManager";
 import {myEmitter} from "../events/secondEvent";
-import {error} from "../utils/log";
+import {debug, error, log} from "../utils/log";
 
 interface Transition {
     getTransitionValue(): number
@@ -30,26 +30,25 @@ export interface State extends Transition {
 
 export abstract class AbstractState extends EventListenersManager implements State {
     id: string;
-    nextStates: State[]
-    protected transitionValue: number
+    nextStates: AbstractState[]
 
     constructor(id: string) {
         super()
         this.id = id
-        this.transitionValue = 0
         this.nextStates = []
     }
 
     onEnter(): void {
-        this.registerEventListeners()
+        debug(`进入状态 ${this.id}`)
     }
 
     onExit(): void {
-        this.removeEventListeners()
-        this.transitionValue = 0
+        debug(`脱离状态 ${this.id}`)
     }
 
-    abstract onUpdate(): void
+    onUpdate(): void {
+        debug(`帧执行状态 ${this.id}`)
+    }
 
     abstract registerEventListeners(): void
 
@@ -57,7 +56,7 @@ export abstract class AbstractState extends EventListenersManager implements Sta
 }
 
 export interface FiniteStateMachine {
-    currentState: State | null
+    currentState: AbstractState | null
 
     init(): void
 
@@ -71,11 +70,13 @@ export interface FiniteStateMachine {
 
 export abstract class AutoFiniteStateMachine implements FiniteStateMachine {
     resetWhenException: boolean
-    currentState: State | null;
+    currentState: AbstractState | null;
+    allStates: { [key: string]: AbstractState }
 
     constructor() {
         this.resetWhenException = false
         this.currentState = null
+        this.allStates = {}
     }
 
     abstract init(): void
@@ -88,16 +89,21 @@ export abstract class AutoFiniteStateMachine implements FiniteStateMachine {
         })
     }
 
-    private getMaxTransitionValueState(): [State | null, number] {
+    private getMaxTransitionValueState(): [AbstractState | null, number] {
         let maxTransitionValue = 0
         let maxTransitionValueState = null
+        let statesMessage = ""
+
         this.currentState?.nextStates.forEach(state => {
             const transitionValue = state.getTransitionValue();
+            statesMessage += `${state.id}: ${transitionValue}  `
             if (transitionValue > maxTransitionValue) {
                 maxTransitionValueState = state
                 maxTransitionValue = transitionValue
             }
         })
+
+        log(statesMessage)
         return [maxTransitionValueState, maxTransitionValue]
     }
 
@@ -105,16 +111,19 @@ export abstract class AutoFiniteStateMachine implements FiniteStateMachine {
         try {
             if (this.currentState == null) return;
             const currentStateTransitionValue = this.currentState.getTransitionValue();
+            log(`--> ${this.currentState.id}: ${currentStateTransitionValue} <--`)
             const [maxTransitionValueState, maxTransitionValue] = this.getMaxTransitionValueState();
 
             if (currentStateTransitionValue > maxTransitionValue) {
                 this.currentState.onUpdate()
             } else {
-                this.currentState.onExit()
                 if (maxTransitionValueState !== null) {
+                    this.currentState.onExit()
+                    this.currentState.nextStates.forEach(state => state.removeEventListeners())
                     this.currentState = maxTransitionValueState
+                    this.currentState.nextStates.forEach(state => state.registerEventListeners())
+                    this.currentState.onEnter()
                 }
-                this.currentState.onEnter()
             }
         } catch (e) {
             error(e)

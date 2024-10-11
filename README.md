@@ -6,7 +6,9 @@ Node.js v20.17.0
 stateDiagram
     IdleState --> AttackHostilesState
     IdleState --> AttackPlayerState
+    IdleState --> DiveState
     AttackHostilesState --> IdleState
     AttackPlayerState --> IdleState
     AttackPlayerState --> AttackHostilesState
+    DiveState --> IdleState
 ```

@@ -5,5 +5,8 @@ Node.js v20.17.0
 ```mermaid
 stateDiagram
     IdleState --> AttackHostilesState
+    IdleState --> AttackPlayerState
     AttackHostilesState --> IdleState
+    AttackPlayerState --> IdleState
+    AttackPlayerState --> AttackHostilesState
 ```

@@ -3,7 +3,6 @@ import {createBot} from "mineflayer";
 import {log} from "./utils/log";
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
-import {IdleState} from "./fsm/idleState";
 import {Vec3} from "vec3";
 import {startSecondEvent} from "./events/secondEvent";
 import {CustomFsm} from "./newFsm/customFsm";
@@ -16,7 +15,6 @@ bot.loadPlugin(pathfinder)
 bot.loadPlugin(pvp)
 
 log(`登录于 ${botOption.host}:${botOption.port}`)
-const idleState = new IdleState()
 
 // export class KonekoFsm extends FSM {
 //

@@ -31,8 +31,8 @@ export class HarvestState extends AbstractState {
         return 0;
     }
 
-    registerEventListeners(): void {
-        this.addEventListener("blockUpdate", (oldBlock: Block | null, newBlock: Block) => {
+    onListen() {
+        bot.on("blockUpdate", (oldBlock: Block | null, newBlock: Block) => {
             if (oldBlock && newBlock) {
                 // 作物被收割了
                 if (corpsNameList.includes(oldBlock.name) && newBlock.name.includes("air")) {

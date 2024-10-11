@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/AkagawaTsurunaki/KonekoMinecraftBot#readme",
   "dependencies": {
+    "@tensorflow/tfjs": "^4.21.0",
     "minecraft-data": "^3.69.0",
     "mineflayer": "^4.20.1",
     "mineflayer-auto-eat": "^5.0.0",

@@ -6,21 +6,18 @@ import {Timer} from "../utils/timer";
 
 const timer = new Timer(20)
 
-bot.on("physicsTick", () => {
-    timer.onPhysicsTick()
-    if (timer.check()) {
-        myEmitter.emit("secondTick")
-        timer.reset()
-    }
-})
+export function startSecondEvent() {
+    bot.on("physicsTick", () => {
+        timer.onPhysicsTick()
+        if (timer.check()) {
+            myEmitter.emit("secondTick")
+            timer.reset()
+        }
+    })
+}
 
 interface ExtendedBotEvents extends BotEvents {
     secondTick: () => Promise<void> | void
 }
 
-
-const myEmitter = new EventEmitter() as TypedEmitter<ExtendedBotEvents>
-
-myEmitter.on("secondTick", () => {
-    bot.chat("1 sec")
-})
+export const myEmitter = new EventEmitter() as TypedEmitter<ExtendedBotEvents>

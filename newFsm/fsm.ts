@@ -25,15 +25,16 @@ export interface State extends Transition {
      * 当退出此状态时执行的操作。每次状态转移退出时只会调用一次。
      */
     onExit(): void
+
+    onListen(): void
 }
 
 
-export abstract class AbstractState extends EventListenersManager implements State {
+export abstract class AbstractState implements State {
     id: string;
     nextStates: AbstractState[]
 
     constructor(id: string) {
-        super()
         this.id = id
         this.nextStates = []
     }
@@ -50,7 +51,8 @@ export abstract class AbstractState extends EventListenersManager implements Sta
         debug(`帧执行状态 ${this.id}`)
     }
 
-    abstract registerEventListeners(): void
+    onListen() {
+    }
 
     abstract getTransitionValue(): number
 }
@@ -87,6 +89,7 @@ export abstract class AutoFiniteStateMachine implements FiniteStateMachine {
         myEmitter.on("secondTick", () => {
             this.update()
         })
+        this.allStates.forEach(state => state.onListen())
     }
 
     private getMaxTransitionValueState(): [AbstractState | null, number] {
@@ -119,9 +122,9 @@ export abstract class AutoFiniteStateMachine implements FiniteStateMachine {
             } else {
                 if (maxTransitionValueState !== null) {
                     this.currentState.onExit()
-                    this.currentState.nextStates.forEach(state => state.removeEventListeners())
+                    // this.currentState.nextStates.forEach(state => state.removeEventListeners())
                     this.currentState = maxTransitionValueState
-                    this.currentState.nextStates.forEach(state => state.registerEventListeners())
+                    // this.currentState.nextStates.forEach(state => state.registerEventListeners())
                     this.currentState.onEnter()
                 }
             }

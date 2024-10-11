@@ -9,7 +9,10 @@ stateDiagram
     IdleState --> DiveState
     IdleState --> FollowPlayerState
     IdleState --> SleepState
+    IdleState --> HarvestState
+    IdleState --> LoggingState
     AttackHostilesState --> IdleState
+    AttackHostilesState --> HarvestState
     AttackPlayerState --> IdleState
     AttackPlayerState --> AttackHostilesState
     DiveState --> IdleState
@@ -18,4 +21,6 @@ stateDiagram
     FollowPlayerState --> DiveState
     FollowPlayerState --> AttackHostilesState
     SleepState --> IdleState
+    HarvestState --> IdleState
+    LoggingState --> IdleState
 ```

@@ -15,6 +15,12 @@ export function dot(vec1: Array<number>, vec2: Array<number>) {
     return sum
 }
 
+export function sum(vec: Array<number>) {
+    let result = 0
+    vec.forEach(v => result += v)
+    return result
+}
+
 export function clamp(val: number, min: number, max: number): number {
     if (val < min) {
         return min

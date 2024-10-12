@@ -2,6 +2,11 @@ import {dbscan} from "../algorithm/dbscan";
 import {bot} from "../../index";
 import {tryGotoNear} from "../utils/helper";
 import {axeNameList, woodNameList} from "../common/const";
+import {getLogger} from "../utils/log";
+
+
+const logger = getLogger("LoggingSkill")
+
 
 export class LoggingSkill {
     private static maxSearchRadius = 128
@@ -26,10 +31,10 @@ export class LoggingSkill {
 
     public static async logging(wood: string, stop: () => boolean) {
         if (!woodNameList.includes(wood)) {
-            console.error(`无法找到目标原木 ${wood}`)
+            logger.error(`Can not find "${wood}" in wood name list: Must be one of ${woodNameList}.`)
             return
         }
-        console.log(`正在伐木……`)
+        logger.info(`Logging skill executing...`)
         const woodPositions = this.findWoodsToCollect(wood);
         const clusters = dbscan(woodPositions, 1, 1)
         for (const cluster of clusters) {
@@ -38,7 +43,7 @@ export class LoggingSkill {
             for (const woodPos of loggingPosList) {
                 if (stop()) {
                     bot.stopDigging()
-                    console.log(`中止伐木`)
+                    logger.warn(`Logging skill stopped: Stop function called.`)
                     return
                 }
                 const woodBlock = bot.blockAt(woodPos)
@@ -52,7 +57,7 @@ export class LoggingSkill {
                 }
             }
         }
-        console.log('结束伐木')
+        logger.info(`Logging skill finished.`)
     }
 
 }

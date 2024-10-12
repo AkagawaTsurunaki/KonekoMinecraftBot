@@ -1,14 +1,14 @@
 import {IdleState} from "./states/idleState";
 import {AttackHostilesState} from "./states/attackHostilesState";
-import {AutoFiniteStateMachine} from "./fsm";
 import {AttackPlayerState} from "./states/attackPlayerState";
 import {DiveState} from "./states/diveState";
 import {FollowPlayerState} from "./states/followPlayerState";
 import {SleepState} from "./states/sleepState";
 import {HarvestState} from "./states/harvestState";
 import {LoggingState} from "./states/loggingState";
+import {FSMImpl} from "./fsmImpl";
 
-export class CustomFsm extends AutoFiniteStateMachine {
+export class CustomFSM extends FSMImpl {
 
     private idleState: IdleState | null = null
     private attackHostilesState: AttackHostilesState | null = null

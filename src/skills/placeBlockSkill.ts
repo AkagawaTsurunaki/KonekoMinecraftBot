@@ -1,7 +1,7 @@
 import {bot} from "../../index";
 import {Vec3} from "vec3";
 import {masterName} from "../common/const";
-import {getLogger} from "../utils/log";
+import {getLogger} from "../utils/logger";
 
 
 const logger = getLogger("SleepSkill")

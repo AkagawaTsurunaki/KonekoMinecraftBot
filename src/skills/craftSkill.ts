@@ -1,5 +1,5 @@
 import {bot} from "../../index";
-import {getLogger} from "../utils/log";
+import {getLogger} from "../utils/logger";
 
 
 const logger = getLogger("SleepSkill")

@@ -4,7 +4,7 @@ import {bot} from "../../index";
 import {sleep} from "../utils/sleep";
 import {goto, tryGotoNear} from "../utils/helper";
 import {corpsNameList} from "../common/const";
-import {getLogger} from "../utils/log";
+import {getLogger} from "../utils/logger";
 
 
 const logger = getLogger("SleepSkill")

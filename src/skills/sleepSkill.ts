@@ -2,7 +2,7 @@ import {bot} from "../../index";
 import {Block} from "prismarine-block";
 import {tryGotoNear} from "../utils/helper";
 import {sleep} from "../utils/sleep";
-import {getLogger} from "../utils/log";
+import {getLogger} from "../utils/logger";
 
 
 const logger = getLogger("SleepSkill")

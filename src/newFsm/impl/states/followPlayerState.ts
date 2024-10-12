@@ -1,4 +1,4 @@
-import {getLogger} from "../../../utils/log";
+import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
 import {lock, range} from "../../../common/decorator";
 import {FollowSkill} from "../../../skills/followSkill";

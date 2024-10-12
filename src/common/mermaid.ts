@@ -1,4 +1,4 @@
-import {getLogger} from "../utils/log";
+import {getLogger} from "../utils/logger";
 import {FiniteStateMachine} from "../newFsm/fsm";
 
 

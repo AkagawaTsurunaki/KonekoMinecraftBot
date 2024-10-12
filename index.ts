@@ -2,7 +2,7 @@ import {createBot} from "mineflayer";
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {Vec3} from "vec3";
-import {getLogger} from "./src/utils/log";
+import {getLogger} from "./src/utils/logger";
 import {botOption, masterName} from "./src/common/const";
 import {startSecondEvent} from "./src/events/secondEvent";
 import {CustomFSM} from "./src/newFsm/impl/customFSM";

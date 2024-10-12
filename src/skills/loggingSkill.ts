@@ -2,7 +2,7 @@ import {dbscan} from "../algorithm/dbscan";
 import {bot} from "../../index";
 import {tryGotoNear} from "../utils/helper";
 import {axeNameList, woodNameList} from "../common/const";
-import {getLogger} from "../utils/log";
+import {getLogger} from "../utils/logger";
 
 
 const logger = getLogger("LoggingSkill")

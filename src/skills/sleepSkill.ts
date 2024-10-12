@@ -2,6 +2,11 @@ import {bot} from "../../index";
 import {Block} from "prismarine-block";
 import {tryGotoNear} from "../utils/helper";
 import {sleep} from "../utils/sleep";
+import {getLogger} from "../utils/log";
+
+
+const logger = getLogger("SleepSkill")
+
 
 export class SleepSkill {
 
@@ -16,23 +21,25 @@ export class SleepSkill {
     }
 
     public static async gotoSleep(searchRadius: number, count: number, maxTry=5) {
+        logger.info(`Sleep skill executing...`)
         try {
             const bedBlock = this.findBedBlock(searchRadius, count);
             if (bedBlock == null) {
-                console.warn(`附近没有找到床……`)
+                logger.warn("Sleep skill stopped: Can not find any bed block nearby.")
                 return
             }
             await tryGotoNear(bedBlock.position)
-            console.log(`已找到床，准备睡觉`)
+
+            logger.info(`Found the bed, ready to sleep.`)
             let tryCount = 0
             while (!bot.isSleeping && tryCount < maxTry) {
                 await bot.sleep(bedBlock)
                 await sleep(50)
                 tryCount += 1
             }
-            console.log(`已起床`)
+            logger.info(`Awake`)
         } catch (e: any) {
-            console.error(`无法睡觉，原因是 ${e.message}`)
+            logger.error(`Can not sleep because: ${e.message}`)
         }
     }
 }

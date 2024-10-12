@@ -1,12 +1,13 @@
-import {botOption, masterName} from "./const"
 import {createBot} from "mineflayer";
-import {getLogger} from "./utils/log";
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {Vec3} from "vec3";
-import {startSecondEvent} from "./events/secondEvent";
-import {CustomFsm} from "./newFsm/customFsm";
-import {MermaidGenerator} from "./common/mermaid";
+import {getLogger} from "./src/utils/log";
+import {botOption, masterName} from "./src/common/const";
+import {startSecondEvent} from "./src/events/secondEvent";
+import {CustomFsm} from "./src/newFsm/customFsm";
+import {MermaidGenerator} from "./src/common/mermaid";
+
 
 const logger = getLogger("index")
 export const bot = createBot(botOption)

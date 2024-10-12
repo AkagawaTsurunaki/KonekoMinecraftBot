@@ -25,8 +25,6 @@ const newFsm = new CustomFsm()
 
 bot.on("spawn", () => {
     bot.chat(`Koneko 正在测试中……`)
-    // konekoFsm.init()
-    // konekoFsm.start()
     newFsm.init()
     newFsm.start()
     logger.info(`Finite state machine started.`)

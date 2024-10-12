@@ -1,7 +1,7 @@
-import {AbstractState} from "../fsm";
 import {bot} from "../../../index";
 import {clamp, dot} from "../../utils/math";
 import {range} from "../../common/decorator";
+import {AbstractState} from "../abstractState";
 
 
 export class DiveState extends AbstractState {

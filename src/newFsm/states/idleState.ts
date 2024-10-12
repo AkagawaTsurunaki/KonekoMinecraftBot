@@ -1,6 +1,6 @@
-import {AbstractState} from "../fsm";
 import {Timer} from "../../utils/timer";
 import {range} from "../../common/decorator";
+import {AbstractState} from "../abstractState";
 
 export class IdleState extends AbstractState {
 

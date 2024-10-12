@@ -1,8 +1,8 @@
-import {AbstractState} from "../fsm";
 import {createLevelFuncByMap} from "../../utils/math";
 import {AttackSkill} from "../../skills/attackSkill";
 import {bot} from "../../../index";
 import {range} from "../../common/decorator";
+import {AbstractState} from "../abstractState";
 
 export class AttackHostilesState extends AbstractState {
     constructor() {

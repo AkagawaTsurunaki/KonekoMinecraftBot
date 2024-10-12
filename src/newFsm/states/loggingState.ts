@@ -1,4 +1,3 @@
-import {AbstractState} from "../fsm";
 import {Block} from "prismarine-block";
 import {Entity} from "prismarine-entity";
 import {bot} from "../../../index";
@@ -6,6 +5,7 @@ import {BlockUpdateIntent} from "../../intent/blockUpdateIntent";
 import {LoggingSkill} from "../../skills/loggingSkill";
 import {lock} from "../../common/decorator";
 import {getLogger} from "../../utils/log";
+import {AbstractState} from "../abstractState";
 
 
 const logger = getLogger("LoggingState")

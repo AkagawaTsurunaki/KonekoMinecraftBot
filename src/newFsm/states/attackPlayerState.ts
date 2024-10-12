@@ -1,6 +1,6 @@
-import {AbstractState} from "../fsm";
 import {AngryBehaviour} from "../../behaviours/angry";
 import {bot} from "../../../index";
+import {AbstractState} from "../abstractState";
 
 export class AttackPlayerState extends AbstractState {
     constructor() {

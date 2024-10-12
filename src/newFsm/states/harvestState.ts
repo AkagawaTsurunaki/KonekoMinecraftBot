@@ -1,4 +1,3 @@
-import {AbstractState} from "../fsm";
 import {BlockUpdateIntent} from "../../intent/blockUpdateIntent";
 import {FarmSkill} from "../../skills/farmSkill";
 import {dbscan} from "../../algorithm/dbscan";
@@ -9,6 +8,7 @@ import {lock} from "../../common/decorator";
 import {Block} from "prismarine-block";
 import {corpsNameList} from "../../common/const";
 import {getLogger} from "../../utils/log";
+import {AbstractState} from "../abstractState";
 
 
 const logger = getLogger("HarvestState")

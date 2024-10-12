@@ -1,9 +1,9 @@
-import {AbstractState} from "../fsm";
 import {FollowSkill} from "../../skills/followSkill";
 import {bot} from "../../../index";
 import {clamp} from "../../utils/math";
 import {lock, range} from "../../common/decorator";
 import {getLogger} from "../../utils/log";
+import {AbstractState} from "../abstractState";
 
 
 const logger = getLogger("FollowPlayerState")

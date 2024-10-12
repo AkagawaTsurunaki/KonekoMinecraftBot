@@ -1,9 +1,9 @@
-import {AbstractState} from "../fsm";
 import {SleepSkill} from "../../skills/sleepSkill";
 import {clamp, createLinearFunction} from "../../utils/math";
 import {bot} from "../../../index";
 import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../common/const";
 import {lock} from "../../common/decorator";
+import {AbstractState} from "../abstractState";
 
 export class SleepState extends AbstractState {
 

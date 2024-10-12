@@ -1,5 +1,6 @@
 import {myEmitter} from "../events/secondEvent";
-import {debug, error, log} from "../utils/log";
+import {error, log} from "../utils/log";
+import {AbstractState} from "./abstractState";
 
 interface Transition {
     getTransitionValue(): number
@@ -28,33 +29,6 @@ export interface State extends Transition {
     onListen(): void
 }
 
-
-export abstract class AbstractState implements State {
-    id: string;
-    nextStates: AbstractState[]
-
-    constructor(id: string) {
-        this.id = id
-        this.nextStates = []
-    }
-
-    onEnter(): void {
-        debug(`进入状态 ${this.id}`)
-    }
-
-    onExit(): void {
-        debug(`脱离状态 ${this.id}`)
-    }
-
-    onUpdate(): void {
-        debug(`帧执行状态 ${this.id}`)
-    }
-
-    onListen() {
-    }
-
-    abstract getTransitionValue(): number
-}
 
 export interface FiniteStateMachine {
     currentState: AbstractState | null

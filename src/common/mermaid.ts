@@ -1,11 +1,11 @@
-import {AutoFiniteStateMachine} from "../newFsm/fsm";
 import {getLogger} from "../utils/log";
+import {FiniteStateMachine} from "../newFsm/fsm";
 
 
 const logger = getLogger("MermaidGenerator")
 
 export class MermaidGenerator {
-    public generate(fsm: AutoFiniteStateMachine) {
+    public generate(fsm: FiniteStateMachine) {
         let lines = fsm.allStates.flatMap(state =>
             state.nextStates.map(nextState => `${state.id} --> ${nextState.id}`)
         );

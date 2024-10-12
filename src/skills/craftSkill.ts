@@ -1,12 +1,16 @@
-import {warn} from "../utils/log";
 import {bot} from "../../index";
+import {getLogger} from "../utils/log";
+
+
+const logger = getLogger("SleepSkill")
+
 
 export class CraftSkill {
     public static async craftCraftingTable() {
         // 检查身上是否有木板
         const items = bot.inventory.items().filter(item => item.name.includes("planks"));
         if (items.length === 0) {
-            warn("没有 planks 可用于制作 craftingTable")
+            logger.warn(`No more "*_planks" to craft "crafting_table"`)
             return
         }
 
@@ -14,7 +18,7 @@ export class CraftSkill {
         let planksCount = 0
         items.forEach(planks => planksCount += planks.count)
         if (planksCount < 4) {
-            warn(`没有足够的 planks 可用于制作 craftingTable，当前 ${planksCount}`)
+            logger.warn(`Need more "*_planks" to craft "crafting_table", now we have ${planksCount}`)
             return;
         }
 
@@ -22,7 +26,7 @@ export class CraftSkill {
         const craftingTableId = bot.registry.itemsByName["crafting_table"].id;
         const recipes = bot.recipesFor(craftingTableId, null, 1, false);
         if (recipes.length === 0) {
-            warn(`没有获取过木板，请先获取木板`)
+            logger.warn(`We have not gotten "*_planks" so the recipe is not existed, try to get some.`)
             return;
         }
 

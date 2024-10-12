@@ -2,8 +2,12 @@ import {bot} from "../../index";
 import {Entity} from "prismarine-entity";
 import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
-import {log} from "../utils/log";
 import {masterName} from "../common/const";
+import {getLogger} from "../utils/log";
+
+
+const logger = getLogger("SleepSkill")
+
 
 export class FollowSkill {
 
@@ -15,7 +19,7 @@ export class FollowSkill {
     public static async followByUsername(username: string, minFollowingDistance: number) {
 
         if (!bot.players[username]) {
-            log(`无法找到玩家 ${username}`)
+            logger.error(`Can not find the player "${username}".`)
         }
 
         const playerFilter = (e: Entity) => e.type === 'player'

@@ -4,7 +4,11 @@ import {bot} from "../../index";
 import {sleep} from "../utils/sleep";
 import {goto, tryGotoNear} from "../utils/helper";
 import {corpsNameList} from "../common/const";
-import {error, log, warn} from "../utils/log";
+import {getLogger} from "../utils/log";
+
+
+const logger = getLogger("SleepSkill")
+
 
 export class FarmSkill {
 
@@ -82,14 +86,14 @@ export class FarmSkill {
                     }
                 }
             } catch (e: any) {
-                error(`收割终止，因为：${e.message}`)
+                logger.error(`Can not harvest because: ${e.message}`)
             }
         }
     }
 
 
     public static async sow(maxDistance: number, cropName: string, stop: () => boolean) {
-        log(`正在种植作物`)
+        logger.info(`Sowing...`)
         while (!stop()) {
             let blockToSow = this.findBlockToSow(maxDistance)
             if (!blockToSow) {
@@ -99,21 +103,21 @@ export class FarmSkill {
             try {
                 await bot.equip(bot.registry.itemsByName[cropName].id, 'hand')
             } catch (e) {
-                warn(`背包已无更多 ${cropName}`)
+                logger.warn(`No more "${cropName}" to sow.`)
                 break
             }
             try {
                 await bot.placeBlock(blockToSow, new Vec3(0, 1, 0))
             } catch (e) {
-                warn(`正在搜索更多耕地……`)
+                logger.warn(`Waiting for searching for more blocks to sow...`)
             }
         }
-        log(`完成种植作物`)
+        logger.info(`Sowing finished.`)
     }
 
 
     public static async fertilize(maxDistance: number, stop: () => boolean) {
-        log('正在施肥作物')
+        logger.info('Fertilizing...')
 
         while (!stop()) {
 
@@ -126,7 +130,7 @@ export class FarmSkill {
             try {
                 await bot.equip(bot.registry.itemsByName['bone_meal'].id, 'hand')
             } catch (ignore) {
-                warn(`背包已无更多 bone_meal`)
+                logger.warn(`No more "bone_meal" to fertilize.`)
                 break
             }
             try {
@@ -134,12 +138,13 @@ export class FarmSkill {
             } catch (ignore) {
             }
         }
-        log('完成正在施肥作物')
+        logger.info('Fertilizing finished.')
     }
 
 
     public static async compost(itemName: string, listener: () => boolean) {
-        log(`开始堆肥`)
+        logger.info(`Composting...`)
+
         const composterBlock = this.findComposter()
         while (listener()) {
             if (composterBlock) {
@@ -147,7 +152,7 @@ export class FarmSkill {
                 try {
                     await bot.equip(bot.registry.itemsByName[itemName].id, 'hand')
                 } catch (ignore) {
-                    console.warn(`背包已无更多 ${itemName}`)
+                    logger.warn(`No more "${itemName}" to compost.`)
                     break
                 }
                 await sleep(200)
@@ -157,7 +162,8 @@ export class FarmSkill {
                 }
             }
         }
-        log(`完成堆肥`)
+
+        logger.info('Composting finished.')
     }
 
 }

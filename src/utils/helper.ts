@@ -4,9 +4,6 @@ import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
 import {randomNeg1ToPos1} from "./math";
 import {masterName} from "../common/const";
-import {error, warn} from "./log";
-import {EquipmentDestination} from "mineflayer";
-import {Item} from "prismarine-item";
 
 export function findPlayerByUsername(username: string): Entity | null {
     if (bot && username) {
@@ -54,28 +51,4 @@ export function isMaster(entity: Entity) {
         }
     }
     return false
-}
-
-
-export async function tryEquip(item: string | Item, destination: EquipmentDestination | null) {
-    try {
-        let _item;
-        if (typeof(item) == "string") {
-            const itemId = bot.registry.itemsByName[item].id
-            _item = bot.inventory.findInventoryItem(itemId, null, false);
-        } else {
-            _item = item
-        }
-        if (_item == null) {
-            warn(`背包中没有这个物品`)
-            return null
-        }
-        await bot.equip(_item, destination)
-        return _item
-    } catch (e: any) {
-        if (e.message === "Invalid item object in equip (item is null or typeof item is not object)") {
-            error(`装备的 item 对象无效（item 为 null 或 item 的类型不是 object）`)
-        }
-        return null
-    }
 }

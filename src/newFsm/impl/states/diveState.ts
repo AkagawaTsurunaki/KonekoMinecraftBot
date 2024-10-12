@@ -1,7 +1,7 @@
-import {bot} from "../../../index";
-import {clamp, dot} from "../../utils/math";
-import {range} from "../../common/decorator";
-import {AbstractState} from "../abstractState";
+import {AbstractState} from "../../abstractState";
+import {range} from "../../../common/decorator";
+import {clamp, dot} from "../../../utils/math";
+import {bot} from "../../../../index";
 
 
 export class DiveState extends AbstractState {

@@ -1,6 +1,7 @@
-import {AngryBehaviour} from "../../behaviours/angry";
-import {bot} from "../../../index";
-import {AbstractState} from "../abstractState";
+import {AbstractState} from "../../abstractState";
+import {AngryBehaviour} from "../../../behaviours/angry";
+import {bot} from "../../../../index";
+
 
 export class AttackPlayerState extends AbstractState {
     constructor() {

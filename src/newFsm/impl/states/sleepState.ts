@@ -1,9 +1,10 @@
-import {SleepSkill} from "../../skills/sleepSkill";
-import {clamp, createLinearFunction} from "../../utils/math";
-import {bot} from "../../../index";
-import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../common/const";
-import {lock} from "../../common/decorator";
-import {AbstractState} from "../abstractState";
+import {AbstractState} from "../../abstractState";
+import {clamp, createLinearFunction} from "../../../utils/math";
+import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../../common/const";
+import {bot} from "../../../../index";
+import {SleepSkill} from "../../../skills/sleepSkill";
+import {lock} from "../../../common/decorator";
+
 
 export class SleepState extends AbstractState {
 

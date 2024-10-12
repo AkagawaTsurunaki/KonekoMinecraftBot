@@ -1,14 +1,15 @@
 import {Block} from "prismarine-block";
 import {Entity} from "prismarine-entity";
-import {bot} from "../../../index";
-import {BlockUpdateIntent} from "../../intent/blockUpdateIntent";
-import {LoggingSkill} from "../../skills/loggingSkill";
-import {lock} from "../../common/decorator";
-import {getLogger} from "../../utils/log";
-import {AbstractState} from "../abstractState";
+import {getLogger} from "../../../utils/log";
+import {AbstractState} from "../../abstractState";
+import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
+import {bot} from "../../../../index";
+import {LoggingSkill} from "../../../skills/loggingSkill";
+import {lock} from "../../../common/decorator";
 
 
 const logger = getLogger("LoggingState")
+
 
 export class LoggingState extends AbstractState {
     constructor() {

@@ -1,6 +1,6 @@
-import {Timer} from "../../utils/timer";
-import {range} from "../../common/decorator";
-import {AbstractState} from "../abstractState";
+import {AbstractState} from "../../abstractState";
+import {Timer} from "../../../utils/timer";
+import {range} from "../../../common/decorator";
 
 export class IdleState extends AbstractState {
 

@@ -1,7 +1,11 @@
 import {bot} from "../../index";
 import {Vec3} from "vec3";
-import {error} from "../utils/log";
 import {masterName} from "../common/const";
+import {getLogger} from "../utils/log";
+
+
+const logger = getLogger("SleepSkill")
+
 
 export class PlaceBlockSkill {
 
@@ -17,7 +21,7 @@ export class PlaceBlockSkill {
             await bot.placeBlock(lookAtBlock, new Vec3(0, 1, 0))
         } catch (e: any) {
             if (e.message.includes("must be holding an item to place")) {
-                error(`手中没有物品可以放置`)
+                logger.error(`Nothing to place, must be holding an item to place.`)
             }
         }
     }

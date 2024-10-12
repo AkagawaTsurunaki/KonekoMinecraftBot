@@ -1,5 +1,6 @@
 import {Vec3} from "vec3";
-import {bot} from "../index";
+import {bot} from "../../index";
+
 
 function getCenterPoint3D(vectors: Vec3[]): Vec3 {
     if (vectors.length == 0) {
@@ -29,8 +30,8 @@ export function getVec3ListFromClusters(clusters: number[][], origin: Vec3[]): V
     return clusters.map(ids => ids.map(id => origin[id]));
 }
 
-export function getCenterPointSortedClusters(clusters: Vec3[][]): Vec3[][] {
-    if (clusters == null || clusters.length == 0) return
+export function getCenterPointSortedClusters(clusters: Vec3[][]): Vec3[][] | null {
+    if (clusters == null || clusters.length == 0) return null
 
     const pointsInfo = clusters.map(points => {
         return {

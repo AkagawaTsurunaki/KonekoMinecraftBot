@@ -1,6 +1,8 @@
 import {Entity} from "prismarine-entity";
 import {findPlayerByUsername} from "../utils/helper";
 import {bot} from "../../index";
+import {myEmitter} from "../events/extendedBotEvents";
+import assert from "node:assert";
 
 export class AngryBehaviour {
 
@@ -33,24 +35,11 @@ export class AngryBehaviour {
             }
         })
 
-        bot._client.on('damage_event', async (packet) => {
-            const entityId = packet.entityId
-            // const sourceTypeId = packet.sourceTypeId
-            const sourceCauseId = packet.sourceCauseId
-            // const sourceDirectId = packet.sourceDirectId
-            if (entityId === bot.entity.id) {
-                const sourceCauseEntity = bot.entities[sourceCauseId - 1]
-
-                if (sourceCauseEntity) {
-                    if (sourceCauseEntity.type === 'player') {
-                        const playerName = sourceCauseEntity.username
-                        if (playerName) {
-                            this.rile(playerName)
-                        }
-                    } else if (sourceCauseEntity.type === 'hostile' || 'mob') {
-                        this.propitiate()
-                    }
-                }
+        myEmitter.on("botDamageEvent", (botEntity, sourceType, sourceCause, sourceDirect) => {
+            if (sourceCause?.type === "player" && sourceCause.username) {
+                this.rile(sourceCause.username)
+            } else if (sourceCause?.type === "hostile" || "mob") {
+                this.propitiate()
             }
         })
     }

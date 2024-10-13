@@ -8,6 +8,7 @@ import {startDamageEvent} from "./src/events/damageEvent";
 import {startBotDamageEvent} from "./src/events/botHurtEvent";
 import {createExtendedBot} from "./src/extension/extendedBot";
 import {CustomFSM} from "./src/newFsm/impl/customFSM";
+import {MermaidGenerator} from "./src/common/mermaid";
 
 const logger = getLogger("index")
 export const bot = createExtendedBot(botOption)
@@ -32,7 +33,7 @@ function initKoneko() {
     fsm.init()
     fsm.start()
     logger.info(`Finite state machine started.`)
-    // new MermaidGenerator().generate(newFsm)
+    MermaidGenerator.generate(fsm)
 
     logger.info(`${bot.username} is running.`)
 }

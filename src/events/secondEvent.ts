@@ -1,8 +1,6 @@
 import {bot} from "../../index";
-import {BotEvents} from "mineflayer";
-import {EventEmitter} from 'events';
-import TypedEmitter from 'typed-emitter'
 import {Timer} from "../utils/timer";
+import {myEmitter} from "./extendedBotEvents";
 
 const timer = new Timer(20)
 
@@ -16,8 +14,3 @@ export function startSecondEvent() {
     })
 }
 
-interface ExtendedBotEvents extends BotEvents {
-    secondTick: () => Promise<void> | void
-}
-
-export const myEmitter = new EventEmitter() as TypedEmitter<ExtendedBotEvents>

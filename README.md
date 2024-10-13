@@ -11,6 +11,8 @@ stateDiagram
     IdleState --> SleepState
     IdleState --> HarvestState
     IdleState --> LoggingState
+    IdleState --> InLavaState
+    IdleState --> OnFireState
     AttackHostilesState --> IdleState
     AttackHostilesState --> HarvestState
     AttackPlayerState --> IdleState
@@ -23,4 +25,7 @@ stateDiagram
     SleepState --> IdleState
     HarvestState --> IdleState
     LoggingState --> IdleState
+    InLavaState --> IdleState
+    InLavaState --> OnFireState
+    OnFireState --> IdleState
 ```

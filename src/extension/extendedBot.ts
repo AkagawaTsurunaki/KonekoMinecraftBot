@@ -1,37 +1,45 @@
 import {Entity} from "prismarine-entity";
 import {getLogger} from "../utils/logger";
-import {bot} from "../../index";
+import {Bot, createBot} from "mineflayer";
 
 const logger = getLogger("isEntityOnFire")
 
 /**
- * Is on fire
+ * Is the entity on fire.
+ * @param entity The entity to check.
  */
 function isEntityOnFire(entity: Entity): boolean {
-    const isOnFire = entity.metadata[0];
-    logger.debug(isOnFire)
-    // @ts-ignore
-    return isOnFire === 1
+    const isOnFire = entity.metadata[0] as unknown as number;
+    if (isOnFire) {
+        return isOnFire === 1
+    }
+    return false
 }
 
-export class ExtendedBot {
-    private _isOnFire: boolean = false
-
-    constructor() {
-        bot.on("death", () => {
-            // @ts-ignore
-            bot.entity.metadata[0] = 0
-        })
-    }
-
-    public get isOnFire(): boolean {
-        this._isOnFire = isEntityOnFire(bot.entity)
-        return this._isOnFire
-    }
+/**
+ * Set the entity metadata whether it is on fire.
+ * @param entity The entity to set metadata `isOnFire`.
+ * @param isOnFire `true` if on fire, `false` if not on fire.
+ */
+function setEntityIsOnFire(entity: Entity, isOnFire: boolean) {
+    entity.metadata[0] = (isOnFire ? 1 : 0) as unknown as object
 }
 
-export function createExtendedBot() {
-    return new ExtendedBot()
+export interface ExtendedBot extends Bot {
+    isOnFire(): boolean
+}
+
+export function createExtendedBot(botOption: any): ExtendedBot {
+    let bot = createBot(botOption) as unknown as ExtendedBot
+    bot.isOnFire = () => {
+        return isEntityOnFire(bot.entity)
+    }
+    // The metadata of `isOnFire` for the bot will not update after its re-spawning.
+    bot.on("death", () => {
+        setEntityIsOnFire(bot.entity, false)
+        logger.debug(`bot.entity.metadata "isOnFire" was set to false.`)
+    })
+    return bot as unknown as ExtendedBot
 }
 
 

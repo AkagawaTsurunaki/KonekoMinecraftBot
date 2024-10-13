@@ -1,4 +1,3 @@
-import {createBot} from "mineflayer";
 import {goals, pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {Vec3} from "vec3";
@@ -11,14 +10,11 @@ import {myEmitter} from "./src/events/extendedBotEvents";
 import {createExtendedBot} from "./src/extension/extendedBot";
 
 const logger = getLogger("index")
-
-
-export const bot = createBot(botOption)
-export const extendedBot = createExtendedBot()
-
-logger.info(`Login at ${botOption.host}:${botOption.port}`)
+export const bot = createExtendedBot(botOption)
 
 function initKoneko() {
+    logger.info(`Login at ${botOption.host}:${botOption.port}`)
+
     // Load all plugins.
     bot.loadPlugin(pathfinder)
     bot.loadPlugin(pvp)
@@ -88,8 +84,7 @@ myEmitter.on("botDamageEvent", async (sourceType, sourceCause, sourceDirect) => 
 
 
 bot.on("physicsTick", () => {
-
-    if (extendedBot.isOnFire) {
+    if (bot.isOnFire()) {
         logger.info("Entity is on fire")
     }
 })

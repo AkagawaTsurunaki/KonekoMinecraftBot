@@ -1,7 +1,7 @@
 import {AbstractState} from "../abstractState";
-import {myEmitter} from "../../events/secondEvent";
 import {FiniteStateMachine} from "../fsm";
 import {getLogger} from "../../utils/logger";
+import {myEmitter} from "../../events/extendedBotEvents";
 
 
 const logger = getLogger("FiniteStateMachineImpl")

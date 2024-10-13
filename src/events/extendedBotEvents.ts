@@ -6,7 +6,7 @@ import {DamageType} from "./damageEvent";
 
 export interface ExtendedBotEvents extends BotEvents {
     secondTick: () => Promise<void> | void
-    botDamageEvent: (botEntity: Entity,
+    botDamageEvent: (
               sourceType: DamageType,
               sourceCause: Entity | null,
               sourceDirect: Entity | null) => Promise<void> | void

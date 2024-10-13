@@ -35,7 +35,7 @@ export class AngryBehaviour {
             }
         })
 
-        myEmitter.on("botDamageEvent", (botEntity, sourceType, sourceCause, sourceDirect) => {
+        myEmitter.on("botDamageEvent", (sourceType, sourceCause, sourceDirect) => {
             if (sourceCause?.type === "player" && sourceCause.username) {
                 this.rile(sourceCause.username)
             } else if (sourceCause?.type === "hostile" || "mob") {

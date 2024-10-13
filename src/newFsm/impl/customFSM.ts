@@ -8,6 +8,7 @@ import {HarvestState} from "./states/harvestState";
 import {LoggingState} from "./states/loggingState";
 import {FSMImpl} from "./fsmImpl";
 import {InLavaState} from "./states/inLavaState";
+import {OnFireState} from "./states/onFireState";
 
 export class CustomFSM extends FSMImpl {
 
@@ -20,6 +21,7 @@ export class CustomFSM extends FSMImpl {
     private harvestState: HarvestState | null = null;
     private loggingState: LoggingState | null = null;
     private inLavaState: InLavaState | null = null;
+    private onFireState: OnFireState | null = null;
 
     init() {
         this.idleState = new IdleState()
@@ -31,6 +33,7 @@ export class CustomFSM extends FSMImpl {
         this.harvestState = new HarvestState()
         this.loggingState = new LoggingState()
         this.inLavaState = new InLavaState()
+        this.onFireState = new OnFireState()
 
         this.allStates.push(this.idleState)
         this.allStates.push(this.attackHostilesState)
@@ -41,8 +44,9 @@ export class CustomFSM extends FSMImpl {
         this.allStates.push(this.harvestState)
         this.allStates.push(this.loggingState)
         this.allStates.push(this.inLavaState)
+        this.allStates.push(this.onFireState)
 
-        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState]
+        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState, this.onFireState]
         this.attackHostilesState.nextStates = [this.idleState, this.harvestState]
         this.attackPlayerState.nextStates = [this.idleState, this.attackHostilesState]
         this.diveState.nextStates = [this.idleState, this.followPlayerState]
@@ -50,7 +54,8 @@ export class CustomFSM extends FSMImpl {
         this.sleepState.nextStates = [this.idleState]
         this.harvestState.nextStates = [this.idleState]
         this.loggingState.nextStates = [this.idleState]
-        this.inLavaState.nextStates = [this.idleState]
+        this.inLavaState.nextStates = [this.idleState, this.onFireState]
+        this.onFireState.nextStates = [this.idleState]
 
         this.currentState = this.idleState
     }

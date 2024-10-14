@@ -14,16 +14,12 @@ stateDiagram
     IdleState --> InLavaState
     IdleState --> OnFireState
     AttackHostilesState --> IdleState
-    AttackHostilesState --> HarvestState
-    AttackPlayerState --> IdleState
-    AttackPlayerState --> AttackHostilesState
-    DiveState --> IdleState
-    DiveState --> FollowPlayerState
-    FollowPlayerState --> IdleState
+    AttackHostilesState --> FollowPlayerState
     FollowPlayerState --> DiveState
     FollowPlayerState --> AttackHostilesState
     SleepState --> IdleState
     HarvestState --> IdleState
+    HarvestState --> AttackPlayerState
     LoggingState --> IdleState
     InLavaState --> IdleState
     InLavaState --> OnFireState

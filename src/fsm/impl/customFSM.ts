@@ -47,12 +47,12 @@ export class CustomFSM extends FSMImpl {
         this.allStates.push(this.onFireState)
 
         this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState, this.onFireState]
-        this.attackHostilesState.nextStates = [this.idleState, this.harvestState]
+        this.attackHostilesState.nextStates = [this.idleState, this.followPlayerState]
         this.attackPlayerState.nextStates = [this.idleState, this.attackHostilesState]
         this.diveState.nextStates = [this.idleState, this.followPlayerState]
         this.followPlayerState.nextStates = [this.idleState, this.diveState, this.attackHostilesState]
         this.sleepState.nextStates = [this.idleState]
-        this.harvestState.nextStates = [this.idleState]
+        this.harvestState.nextStates = [this.idleState, this.attackPlayerState, this.attackPlayerState]
         this.loggingState.nextStates = [this.idleState]
         this.inLavaState.nextStates = [this.idleState, this.onFireState]
         this.onFireState.nextStates = [this.idleState]

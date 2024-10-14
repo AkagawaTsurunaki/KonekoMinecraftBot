@@ -7,7 +7,7 @@ import {startSecondEvent} from "./src/events/secondEvent";
 import {startDamageEvent} from "./src/events/damageEvent";
 import {startBotDamageEvent} from "./src/events/botHurtEvent";
 import {createExtendedBot} from "./src/extension/extendedBot";
-import {CustomFSM} from "./src/newFsm/impl/customFSM";
+import {CustomFSM} from "./src/./fsm/impl/customFSM";
 import {MermaidGenerator} from "./src/common/mermaid";
 
 const logger = getLogger("index")

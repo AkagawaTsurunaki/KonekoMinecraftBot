@@ -1,5 +1,5 @@
 import {getLogger} from "../utils/logger";
-import {FiniteStateMachine} from "../newFsm/fsm";
+import {FiniteStateMachine} from ".././fsm/fsm";
 
 
 const logger = getLogger("MermaidGenerator")

@@ -7,7 +7,8 @@ import {startBotDamageEvent} from "./src/events/botHurtEvent";
 import {createExtendedBot} from "./src/extension/extendedBot";
 import {FaceToSoundSource} from "./src/behaviours/faceToSoundSource";
 import {CustomFSM} from "./src/fsm/impl/customFSM";
-import {MermaidGenerator} from "./src/common/mermaid";
+import {DocGenerator} from "./src/common/mermaid";
+import * as fs from "node:fs";
 
 export const botOption: {
     "host": string,
@@ -39,7 +40,10 @@ function initKoneko() {
     fsm.init()
     fsm.start()
     logger.info(`Finite state machine started.`)
-    MermaidGenerator.generate(fsm)
+
+    // Generate documents
+    DocGenerator.generateStateDiag(fsm)
+    DocGenerator.generateForm(fsm)
 
     // Some behaviours
     behaviours.push(new FaceToSoundSource())

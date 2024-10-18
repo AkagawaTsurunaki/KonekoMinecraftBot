@@ -13,7 +13,8 @@ const logger = getLogger("LoggingState")
 
 export class LoggingState extends AbstractState {
     constructor() {
-        super("LoggingState");
+        super("LoggingState", "If a player broke some log blocks nearby, " +
+            "bot will also try to help collect the wood with the axe equipped.");
     }
 
     private loggingIntent = new BlockUpdateIntent(3, 30)

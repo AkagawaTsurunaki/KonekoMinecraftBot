@@ -8,7 +8,7 @@ export class IdleState extends AbstractState {
     private scaleFactor: number = 0.1
 
     constructor() {
-        super("IdleState");
+        super("IdleState", "Do nothing. It is also an entry node for other states.");
         this.timer = new Timer()
     }
 
@@ -16,21 +16,6 @@ export class IdleState extends AbstractState {
     getTransitionValue(): number {
         this.timer.onPhysicsTick()
         return (Math.sin(this.timer.time) + 1) * this.scaleFactor;
-    }
-
-    registerEventListeners(): void {
-    }
-
-    onEnter(): void {
-        super.onEnter()
-    }
-
-    onUpdate(): void {
-        super.onUpdate()
-    }
-
-    onExit(): void {
-        super.onExit()
     }
 
 }

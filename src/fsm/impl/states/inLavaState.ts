@@ -7,7 +7,7 @@ const logger = getLogger("InLavaState")
 
 export class InLavaState extends AbstractState {
     constructor() {
-        super("InLavaState");
+        super("InLavaState", "The robot panics in the lava and will randomly jump around.");
     }
 
     isInLava = false

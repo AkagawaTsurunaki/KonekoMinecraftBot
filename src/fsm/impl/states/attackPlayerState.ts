@@ -5,7 +5,10 @@ import {bot} from "../../../../index";
 
 export class AttackPlayerState extends AbstractState {
     constructor() {
-        super("AttackPlayerState")
+        super("AttackPlayerState",
+            "Players who has maximum angry value will be attacked first. " +
+            "Player who has dead or has angry value below the threshold of attacking will be forgiven." +
+            "All players will be forgiven when the bot dead.")
     }
 
     private angryBehaviour = new AngryBehaviour()

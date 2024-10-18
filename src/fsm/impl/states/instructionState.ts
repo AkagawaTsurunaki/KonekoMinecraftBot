@@ -9,13 +9,15 @@ const logger = getLogger("InstructionState")
 
 export class InstructionState extends AbstractState {
     constructor() {
-        super("InstructionState");
-        this.instructionMap.set("退出", this.quit)
-        this.instructionMap.set("停止", () => {
+        super("InstructionState", "When the master chat a instruction keyword, try to execute this skill first.");
+
+        // Register skills
+        this.instructionMap.set("exit", this.quit)
+        this.instructionMap.set("stop", () => {
             this.stopFlag = true
         })
-        this.instructionMap.set("种", this.sow)
-        this.instructionMap.set("收", this.farm)
+        this.instructionMap.set("sow", this.sow)
+        this.instructionMap.set("harvest", this.harvest)
     }
 
     private instructionMap = new Map<string, () => Promise<void> | void>
@@ -49,7 +51,7 @@ export class InstructionState extends AbstractState {
             }
         } catch (e: any) {
             logger.error(e)
-            bot.chat(`无法执行指令 ${this.shouldExecuteInstruction}，因为：${e.message}`)
+            bot.chat(`Can not execute the instruction ${this.shouldExecuteInstruction}, because: ${e.message}`)
         }
     }
 
@@ -63,10 +65,11 @@ export class InstructionState extends AbstractState {
 
     async sow() {
         this.stopFlag = false;
+        // Default wheat_seeds, you can try other corps.
         await FarmSkill.sow(64, "wheat_seeds", () => this.stopFlag)
     }
 
-    async farm() {
+    async harvest() {
         this.stopFlag = false;
         await FarmSkill.harvest(64, 1000, 5, () => this.stopFlag)
     }

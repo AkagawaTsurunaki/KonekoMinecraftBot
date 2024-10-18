@@ -9,7 +9,9 @@ import {lock} from "../../../common/decorator";
 export class SleepState extends AbstractState {
 
     constructor() {
-        super("SleepState");
+        super("SleepState",
+            "Based on information such as time and nearest bed, look for a bed to spend the night.",
+            "Instead of going through the door, it is possible to enter the room in search of a bed by breaking blocks.");
     }
 
     private searchRadius: number = 64

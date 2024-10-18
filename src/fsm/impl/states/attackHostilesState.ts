@@ -6,7 +6,9 @@ import {range} from "../../../common/decorator";
 
 export class AttackHostilesState extends AbstractState {
     constructor() {
-        super("AttackHostilesState");
+        super("AttackHostilesState",
+            "Attack hostiles approaching robots.",
+            "Probably not dodge from hostiles, but rather lunge aggressively");
     }
 
     /**

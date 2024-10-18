@@ -16,7 +16,8 @@ const logger = getLogger("HarvestState")
 export class HarvestState extends AbstractState {
 
     constructor() {
-        super("HarvestState");
+        super("HarvestState",
+            "If a player harvesting nearby, bot will also try to help harvest the crop.");
         this.harvestedIntent = new BlockUpdateIntent(3, 10)
     }
 
@@ -34,7 +35,7 @@ export class HarvestState extends AbstractState {
     onListen() {
         bot.on("blockUpdate", (oldBlock: Block | null, newBlock: Block) => {
             if (oldBlock && newBlock) {
-                // 作物被收割了
+                // A block (corp) was broken.
                 if (corpsNameList.includes(oldBlock.name) && newBlock.name.includes("air")) {
                     this.harvestedIntent.setIntent()
                 }
@@ -64,7 +65,6 @@ export class HarvestState extends AbstractState {
         }
 
         this.harvestedIntent.resetIntent()
-        bot.chat("收割完毕喵~")
         logger.info("Harvest action finished.")
     }
 }

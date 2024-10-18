@@ -59,9 +59,7 @@ export abstract class FSMImpl implements FiniteStateMachine {
             } else {
                 if (maxTransitionValueState !== null) {
                     this.currentState.onExit()
-                    // this.currentState.nextStates.forEach(state => state.removeEventListeners())
                     this.currentState = maxTransitionValueState
-                    // this.currentState.nextStates.forEach(state => state.registerEventListeners())
                     this.currentState.onEnter()
                 }
             }

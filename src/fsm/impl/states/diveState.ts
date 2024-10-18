@@ -7,7 +7,9 @@ import {bot} from "../../../../index";
 export class DiveState extends AbstractState {
 
     constructor() {
-        super("DiveState");
+        super("DiveState",
+            "Bot should surface or sink if in water. Oxygen level and health are also considered.",
+            "It may also oscillate up and down in shallow water.");
     }
 
     private inWaterWeight = 0.1
@@ -16,7 +18,7 @@ export class DiveState extends AbstractState {
 
     @range(0, 1)
     getTransitionValue(): number {
-        // 机器人是否在水中，氧气值含量，生命值
+        // Whether the bot is in water, oxygen level, health
         // @ts-ignore
         const inWater = bot.entity.isInWater
         if (!inWater) return 0

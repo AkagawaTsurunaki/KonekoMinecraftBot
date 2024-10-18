@@ -11,7 +11,9 @@ const logger = getLogger("OnFireState")
 
 export class OnFireState extends AbstractState {
     constructor() {
-        super("OnFireState");
+        super("OnFireState",
+            "Bot is on fire or in fire, trying to touch the nearest water block.",
+            "May take a very strange path to get close to the water block, resulting in being burned to death.");
     }
 
     private isOnFire: boolean = false

@@ -10,7 +10,7 @@ as **DB-Scan** and **Single Layer Perceptron**.
 
 > [!NOTE]
 >
-> This is the first release alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be fixed in later versions.
+> This is the first released alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be fixed in later versions.
 > Just think of your bot as a **Cute Neko Musume** to nurture but not a ~~Cold Dumb Machine~~ to oppress.
 
 **TODO LIST**

@@ -54,3 +54,12 @@ function initKoneko() {
 bot.once("login", () => {
     initKoneko()
 });
+
+bot.on("error", (e: any) => {
+    if (e.errno === -4077) {
+        logger.fatal("The Minecraft server does not correspond to your version.")
+    }
+
+    // Can not handle this situation. Crashed!
+    throw e
+})

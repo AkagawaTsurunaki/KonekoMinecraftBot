@@ -56,8 +56,24 @@ bot.once("login", () => {
 });
 
 bot.on("error", (e: any) => {
-    if (e.errno === -4077) {
-        logger.fatal("The Minecraft server does not correspond to your version.")
+    if (e.errno === -3008) {
+        logger.fatal("DNS error: \n" +
+            "Are you sure the address of the server is right?")
+    }
+    else if (e.errno === -4077) {
+        logger.fatal("Protocol version conflict: \n" +
+            "The Minecraft server does not correspond to your client version.")
+    } else if (e.errno === -4078) {
+        logger.fatal("Failed to connect the server:\n" +
+            " Possible solutions: \n" +
+            "1. Check if your host and port are right. \n" +
+            "2. Check if your Minecraft client (not bot) can join the game.")
+    } else if (e.errno === -4079) {
+        logger.fatal("Generic error: \n" +
+            "See detail")
+    } else {
+        logger.fatal("Unhandled error: \n" +
+            "I have no idea to deal with it except crashed, sorry nya...")
     }
 
     // Can not handle this situation. Crashed!

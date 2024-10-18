@@ -21,9 +21,20 @@ export class DocGenerator {
         let result = "| State ID | Description | Issues |\n" +
             "|----------|----|-------|\n"
         fsm.allStates.forEach(state => {
-            result += state.id + " | " + state.description + " | " + state.issue + "\n"
+            result += " | " + state.id + " | " + state.description + " | " + (state.issue ? state.issue : "-") + "| \n"
         })
         logger.info("State form generated")
+        logger.info(result)
+        return result
+    }
+
+    public static generateInstructionForm(m: Map<string, string>) {
+        let result = "| Instruction | Description |\n" +
+            "|----------|----|\n"
+        m.forEach((value, key) => {
+            result += "| " + key + "|" + value + "|" + "\n"
+        })
+        logger.info("Instruction form generated")
         logger.info(result)
         return result
     }

@@ -8,7 +8,6 @@ import {createExtendedBot} from "./src/extension/extendedBot";
 import {FaceToSoundSource} from "./src/behaviours/faceToSoundSource";
 import {CustomFSM} from "./src/fsm/impl/customFSM";
 import {DocGenerator} from "./src/common/mermaid";
-import * as fs from "node:fs";
 
 export const botOption: {
     "host": string,
@@ -47,9 +46,6 @@ function initKoneko() {
 
     // Some behaviours
     behaviours.push(new FaceToSoundSource())
-
-    // cognitions.push(new ObserveBlockCognition("water"))
-
 
     logger.info(`${bot.username} is running.`)
 }

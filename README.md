@@ -1,5 +1,6 @@
 # Koneko Minecraft Bot
 
+<img src="https://img.shields.io/badge/ver-0.1--alpha-purple" alt="npm">
 <img src="https://img.shields.io/badge/Minecraft-1.20.1|1.20.2|1.20.6-green" alt="TypeScript">
 <img src="https://img.shields.io/badge/TypeScript-5.6.3-blue" alt="TypeScript">
 <img src="https://img.shields.io/badge/Node.js-20.17.0-blue" alt="Node.js 20.17.0">
@@ -43,11 +44,12 @@ Download **Minecraft** in your computer and start the server.
 
 Minecraft 1.20.1, 1.20.2 and 1.20.6 are supported.
 
-> [!NOTE]
+> [!WARNING]
 > 
 > To support other version of Minecraft, you should download `registry_data.json` from [here](https://wiki.vg/Registry_Data#Damage_Type) (click the link and scroll down to the bottom of page)
 and put the JSON file in `./resource/protocol/{VERSION}/register_data.json`.
-Update the version of `mineflayer` if you want higher version supported.
+> Then implement the code how process the `DamageType` in this version.
+
 
 ### Download Dependencies
 
@@ -74,6 +76,15 @@ Find the config file `./resource/config/botConfig.json` and edit it.
   "masterName": "Akagawa" // The name of the master of your bot.
 }
 ```
+
+### Start!
+
+Run the command.
+```shell
+npx tsx ./index.ts
+```
+
+Your bot will join the game later if everything goes well. Enjoy Minecraft time together!
 
 ## Finite State Machine
 

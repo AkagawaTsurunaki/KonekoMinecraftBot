@@ -37,7 +37,7 @@ export class DamageType {
  * @Note: Default Minecraft version is 1.20.1, download from https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2.
  * You should download the corresponding version of protocol json file by yourself.
  */
-const protocol = require(`../protocol/ver${botOption.version}/registry_data.json`)
+const protocol = require(`../../resources/protocol/1.20.1/registry_data.json`)
 const damageTypeMap: Map<number, DamageType> = loadProtocolDamageTypes()
 
 /**

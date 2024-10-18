@@ -10,14 +10,26 @@ as **DB-Scan** and **Single Layer Perceptron**.
 
 > [!NOTE]
 >
-> This is the first released alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be fixed in later versions.
+> This is the first released alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be fixed in later versions (or not ///>_</// ).
 > Just think of your bot as a **Cute Neko Musume** to nurture but not a ~~Cold Dumb Machine~~ to oppress.
+
+## Features
+- 🛡️ Protect players from being attacked by hostiles around.
+- 👠 Follow players and move together. 
+- 🥕 Harvest corps and sow with players.
+- 🪵 Collect woods with players.
+- 🛏️ Find the bed to sleep to spend the night.
+- 💭 Follow some built-in instructions.
+- 🏊🏻‍♀️ Swim or float to avoid drowning.
+- 🔥 Look for water when on fire or after in lava.
+- 😡 Attack the players who provoke it.
+- 🧩 Implement your own skills, states, algorithms, FSM to create a bot!
 
 **TODO LIST**
 
 - Implement more states: FishState, CollectDroppedItemsState, StorageState...
-- Use neural network to remember the region of the player gathering place, structure of buildings, terrain around.
-- Advanced cognitive-behavioral, may connect to Large Language Model.
+- Use neural network to remember the region of the player gathering place, structure of buildings, terrain around...
+- Advanced cognitive-behavioral, may connect to some Large Language Models.
 
 ## Koneko Finite State Machine
 
@@ -147,7 +159,9 @@ See `./src/fsm/impl` for more details.
 
 ## Licence
 
-MIT
+Feel free to create your own bot!
+
+[Apache License - Version 2.0, January 2004](./LICENSE)
 
 ## Contact with Me
 

@@ -1,7 +1,6 @@
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {getLogger} from "./src/utils/logger";
-import {botOption} from "./src/common/const";
 import {startSecondEvent} from "./src/events/secondEvent";
 import {startDamageEvent} from "./src/events/damageEvent";
 import {startBotDamageEvent} from "./src/events/botHurtEvent";
@@ -9,6 +8,13 @@ import {createExtendedBot} from "./src/extension/extendedBot";
 import {FaceToSoundSource} from "./src/behaviours/faceToSoundSource";
 import {CustomFSM} from "./src/fsm/impl/customFSM";
 import {MermaidGenerator} from "./src/common/mermaid";
+
+export const botOption: {
+    "host": string,
+    "port": number,
+    "username": string,
+    "version": string
+} = require("./resources/config/botOption.json")
 
 const logger = getLogger("index")
 export const bot = createExtendedBot(botOption)

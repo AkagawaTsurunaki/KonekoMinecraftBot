@@ -4,3 +4,4 @@
 package-lock.json
 const.ts
 /.run
+botOption.json

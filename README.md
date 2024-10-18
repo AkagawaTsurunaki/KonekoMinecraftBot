@@ -1,17 +1,21 @@
 # Koneko Minecraft Bot
 
-<img src="https://img.shields.io/badge/Minecraft-1.20.1-green" alt="TypeScript">
+<img src="https://img.shields.io/badge/Minecraft-1.20.1|1.20.2|1.20.6-green" alt="TypeScript">
 <img src="https://img.shields.io/badge/TypeScript-5.6.3-blue" alt="TypeScript">
 <img src="https://img.shields.io/badge/Node.js-20.17.0-blue" alt="Node.js 20.17.0">
 <img src="https://img.shields.io/badge/npm-10.8.2-blue" alt="npm">
 
-`KonekoMinecraftBot` is a Minecraft bot based on **Finite State Machine** and some **Machine Learning Algorithms**, such
+`KonekoMinecraftBot` is an intelligent Minecraft bot based on **Finite State Machine** and some **Machine Learning Algorithms**, such
 as **DB-Scan** and **Single Layer Perceptron**.
 
 > [!NOTE]
 >
 > This is the first released alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be fixed in later versions (or not ///>_</// ).
 > Just think of your bot as a **Cute Neko Musume** to nurture but not a ~~Cold Dumb Machine~~ to oppress.
+
+<img src="./docs/koneko-logo-github.png" width="800" alt="koneko-logo-github.png" style="text-align: center;">
+
+> The logo and the illustration of Koneko are all designed by [AkagawaTsurunaki](https://github.com/AkagawaTsurunak). Doya?
 
 ## Features
 - 🛡️ Protect players from being attacked by hostiles around.
@@ -31,7 +35,47 @@ as **DB-Scan** and **Single Layer Perceptron**.
 - Use neural network to remember the region of the player gathering place, structure of buildings, terrain around...
 - Advanced cognitive-behavioral, may connect to some Large Language Models.
 
-## Koneko Finite State Machine
+## Get Started
+
+### Prepare Your Minecraft
+
+Download **Minecraft** in your computer and start the server.
+
+Minecraft 1.20.1, 1.20.2 and 1.20.6 are supported.
+
+> [!NOTE]
+> 
+> To support other version of Minecraft, you should download `registry_data.json` from [here](https://wiki.vg/Registry_Data#Damage_Type) (click the link and scroll down to the bottom of page)
+and put the JSON file in `./resource/protocol/{VERSION}/register_data.json`.
+Update the version of `mineflayer` if you want higher version supported.
+
+### Download Dependencies
+
+Suppose that **Node.js (20.17.0)** and **npm (10.8.2)** have been installed properly.
+
+Use command 
+
+```shell
+npm install
+```
+
+It will download all dependencies `KonekoMinecraftBot` need.
+
+### Config Your Bot Option
+
+Find the config file `./resource/config/botConfig.json` and edit it.
+
+```json5
+{
+  "host": "127.0.0.1", // Minecraft server host. 
+  "port": 25565, // Minecraft server port.
+  "username": "Koneko", // Your bot name.
+  "version": "1.20.1", // Minecraft version. Default to 1.20.1 if null is given.
+  "masterName": "Akagawa" // The name of the master of your bot.
+}
+```
+
+## Finite State Machine
 
 This state diagram show the relation between different states.
 Each state $S$ has a transition value $T_S \ (0 \leq T_S \leq 1) $ denoted the probability of whether the FSM should
@@ -140,17 +184,17 @@ Most of the parameters can be adjusted manually because it has some interpretabi
 
 ## Q&A
 
-### Supported Minecraft version
+### Bot can not join the game with no error shown
 
-Only **Minecraft 1.20.1** has been tested now, I don't know whether other versions are supported or not.
+Player with the same name of your bot has joined the game, so your bot can not login.
 
-You can download `registry_data.json` for your Minecraft version
-and put it in `./resource/protocol/{VERSION}/register_data.json`. 
-Update the version of `mineflayer` if you want higher version supported.
+### Bot joined, but can not move, even kill it
+
+Some servers need a player to input your password. Login using Minecraft client and try again.
 
 ### Bot exited from game abnormally
 
-Many situations will crash the bot, such as network connection or some bugs in code. 
+Many situations will crash the bot, such as network connection or some bugs in my code. 
 You can create an issue if your problem can be reproduced.
 
 ### How can I implement my own FSM?

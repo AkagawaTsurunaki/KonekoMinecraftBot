@@ -11,7 +11,6 @@
 import {bot} from "../../index";
 import {myEmitter} from "./extendedBotEvents";
 import assert from "node:assert";
-import {botOption} from "../common/const";
 
 
 export class DamageType {

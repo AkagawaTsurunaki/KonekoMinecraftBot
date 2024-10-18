@@ -1,5 +1,4 @@
-import {bot} from "../../index";
-import {masterName} from "../common/const";
+import {bot, botOption} from "../../index";
 
 export class QuitSkill {
 
@@ -10,6 +9,6 @@ export class QuitSkill {
     public static quitGame() {
         const index = Math.floor(Math.random() * this.responses.length);
         bot.chat(this.responses[index])
-        bot.quit(`${masterName} asked you to quit.`)
+        bot.quit(`${botOption.masterName} asked you to quit.`)
     }
 }

@@ -1,8 +1,7 @@
-import {bot} from "../../index";
+import {bot, botOption} from "../../index";
 import {Entity} from "prismarine-entity";
 import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
-import {masterName} from "../common/const";
 import {getLogger} from "../utils/logger";
 
 
@@ -43,7 +42,7 @@ export class FollowSkill {
      * @param masterFirst 是否优先跟随主人。
      */
     public static async followNearestPlayer(minFollowingDistance: number, masterFirst: boolean) {
-        const masterPlayer = bot.players[masterName];
+        const masterPlayer = bot.players[botOption.masterName];
         if (masterPlayer != null && masterFirst) {
             await this.followByUsername(masterPlayer.username, minFollowingDistance)
         } else {

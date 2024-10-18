@@ -13,7 +13,8 @@ export const botOption: {
     "host": string,
     "port": number,
     "username": string,
-    "version": string
+    "version": string,
+    "masterName": string
 } = require("./resources/config/botOption.json")
 
 const logger = getLogger("index")

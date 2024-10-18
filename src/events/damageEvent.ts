@@ -8,7 +8,7 @@
  * - Download "registry_data.json": https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2
  */
 
-import {bot} from "../../index";
+import {bot, botOption} from "../../index";
 import {myEmitter} from "./extendedBotEvents";
 import assert from "node:assert";
 
@@ -32,18 +32,17 @@ export class DamageType {
     }
 }
 
-/**
- * @Note: Default Minecraft version is 1.20.1, download from https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2.
- * You should download the corresponding version of protocol json file by yourself.
- */
-const protocol = require(`../../resources/protocol/1.20.1/registry_data.json`)
-const damageTypeMap: Map<number, DamageType> = loadProtocolDamageTypes()
 
 /**
  * Load registry data from the corresponding version of `registry_data.json` and parse the damage type data.
  */
 function loadProtocolDamageTypes() {
     const result = new Map<number, DamageType>;
+    /**
+     * @Note: Default Minecraft version is 1.20.1, download from https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2.
+     * You should download the corresponding version of protocol json file by yourself.
+     */
+    const protocol = require(`../../resources/protocol/${botOption.version}/registry_data.json`)
     protocol["minecraft:damage_type"].value.forEach((v: {
         element: {
             exhaustion: number,
@@ -66,6 +65,7 @@ function loadProtocolDamageTypes() {
  * See: https://wiki.vg/Protocol#Damage_Event
  */
 export function startDamageEvent() {
+    const damageTypeMap: Map<number, DamageType> = loadProtocolDamageTypes()
     bot._client.on('damage_event', async (packet) => {
         // The ID of the entity taking damage.
         const entityId = packet.entityId;

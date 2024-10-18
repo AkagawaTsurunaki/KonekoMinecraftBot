@@ -1,9 +1,8 @@
-import {bot} from "../../index";
+import {bot, botOption} from "../../index";
 import {Entity} from "prismarine-entity";
 import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
 import {randomNeg1ToPos1} from "./math";
-import {masterName} from "../common/const";
 
 export function findPlayerByUsername(username: string): Entity | null {
     if (bot && username) {
@@ -46,7 +45,7 @@ export function isOtherPlayer(entity: Entity) {
 
 export function isMaster(entity: Entity) {
     if (isOtherPlayer(entity)) {
-        if (entity.username === masterName) {
+        if (entity.username === botOption.masterName) {
             return true
         }
     }

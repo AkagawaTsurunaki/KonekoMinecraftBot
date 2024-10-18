@@ -1,5 +1,3 @@
-export const masterName: string = "Akagawa"
-
 export const BEGINNING_OF_SUNSET: number = 12000
 export const BEGINNING_OF_NIGHT: number = 13000
 export const BEGINNING_OF_SUNRISE: number = 23000

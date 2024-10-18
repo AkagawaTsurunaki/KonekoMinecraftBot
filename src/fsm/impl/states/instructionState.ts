@@ -1,6 +1,5 @@
 import {AbstractState} from "../../abstractState";
-import {bot} from "../../../../index";
-import {masterName} from "../../../common/const";
+import {bot, botOption} from "../../../../index";
 import {getLogger} from "../../../utils/logger";
 import {QuitSkill} from "../../../skills/quitSkill";
 import {FarmSkill} from "../../../skills/farmSkill";
@@ -43,7 +42,7 @@ export class InstructionState extends AbstractState {
     onListen() {
         super.onListen();
         bot.on("chat", (username, message, translate, jsonMsg, matches) => {
-            if (username === masterName) {
+            if (username === botOption.masterName) {
                 const args = message.split(" ");
                 this.shouldExecuteFunc = this.instructionMap.get(args[0]);
                 if (this.shouldExecuteFunc) {

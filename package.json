@@ -30,5 +30,8 @@
     "pino-pretty": "^11.2.2",
     "prismarine-registry": "^1.9.0",
     "prismarine-viewer": "^1.28.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.1"
   }
 }

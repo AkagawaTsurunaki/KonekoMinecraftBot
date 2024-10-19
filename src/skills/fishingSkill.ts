@@ -1,14 +1,14 @@
-import {bot} from "../../index";
 import {Entity} from "prismarine-entity";
 import {getLogger} from "../utils/logger";
+import {AbstractSkill} from "./abstractSkill";
 
 const logger = getLogger("FishingSkill")
 
-export class FishingSkill {
+export class FishingSkill extends AbstractSkill {
 
-    private async onCollect (player: Entity, entity: Entity) {
-        if (entity.kind === 'Drops' && player === bot.entity) {
-            bot.removeListener('playerCollect', this.onCollect)
+    private async onCollect(player: Entity, entity: Entity) {
+        if (entity.kind === 'Drops' && player === this.bot.entity) {
+            this.bot.removeListener('playerCollect', this.onCollect)
             await this.startFishing()
         }
     }
@@ -18,17 +18,17 @@ export class FishingSkill {
     public async startFishing() {
         logger.info('Fishing')
         try {
-            await bot.equip(bot.registry.itemsByName.fishing_rod.id, 'hand')
+            await this.bot.equip(this.bot.registry.itemsByName.fishing_rod.id, 'hand')
         } catch (err: any) {
             logger.error(err.message)
             return
         }
 
         this.nowFishing = true
-        bot.on('playerCollect', this.onCollect)
+        this.bot.on('playerCollect', this.onCollect)
 
         try {
-            await bot.fish()
+            await this.bot.fish()
         } catch (err: any) {
             logger.error(err.message)
         }
@@ -36,10 +36,10 @@ export class FishingSkill {
     }
 
     public stopFishing() {
-        bot.removeListener('playerCollect', this.onCollect)
+        this.bot.removeListener('playerCollect', this.onCollect)
 
         if (this.nowFishing) {
-            bot.activateItem()
+            this.bot.activateItem()
         }
     }
 }

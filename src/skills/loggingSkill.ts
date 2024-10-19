@@ -3,16 +3,15 @@ import {bot} from "../../index";
 import {tryGotoNear} from "../utils/helper";
 import {axeNameList, woodNameList} from "../common/const";
 import {getLogger} from "../utils/logger";
-
+import {AbstractSkill} from "./abstractSkill";
 
 const logger = getLogger("LoggingSkill")
 
+export class LoggingSkill extends AbstractSkill {
+    private maxSearchRadius = 128
+    private maxCollectCount = 1024
 
-export class LoggingSkill {
-    private static maxSearchRadius = 128
-    private static maxCollectCount = 1024
-
-    private static findWoodsToCollect(wood: string) {
+    private findWoodsToCollect(wood: string) {
         return bot.findBlocks({
             matching: block => block && block.type === bot.registry.blocksByName[wood].id,
             maxDistance: this.maxSearchRadius,
@@ -20,7 +19,7 @@ export class LoggingSkill {
         })
     }
 
-    private static async tryEquipAxe() {
+    private async tryEquipAxe() {
         const axeTypeList = axeNameList.map(axeName => bot.registry.itemsByName[axeName].id)
         const heldAxeTypeList = axeTypeList.filter(axeType =>
             bot.inventory.findInventoryItem(axeType, null, false) != null);
@@ -29,7 +28,7 @@ export class LoggingSkill {
         await bot.equip(heldAxeTypeList[0], 'hand')
     }
 
-    public static async logging(wood: string, stop: () => boolean) {
+    public async logging(wood: string, stop: () => boolean) {
         if (!woodNameList.includes(wood)) {
             logger.error(`Can not find "${wood}" in wood name list: Must be one of ${woodNameList}.`)
             return

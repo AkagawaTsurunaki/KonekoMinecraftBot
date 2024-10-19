@@ -4,6 +4,10 @@ import {Bot, createBot} from "mineflayer";
 import {AttackSkill} from "../skills/attackSkill";
 import {CraftSkill} from "../skills/craftSkill";
 import {FarmSkill} from "../skills/farmSkill";
+import {FishingSkill} from "../skills/fishingSkill";
+import {FollowSkill} from "../skills/followSkill";
+import {GotoWaterSkill} from "../skills/gotoWaterSkill";
+import {LoggingSkill} from "../skills/loggingSkill";
 
 const logger = getLogger("isEntityOnFire")
 
@@ -35,6 +39,10 @@ export interface ExtendedBot extends Bot {
         attack: AttackSkill
         craft: CraftSkill
         farm: FarmSkill
+        fishing: FishingSkill
+        follow: FollowSkill
+        gotoWater: GotoWaterSkill
+        logging: LoggingSkill
     }
 }
 

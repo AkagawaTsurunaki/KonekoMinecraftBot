@@ -1,16 +1,18 @@
-import {bot} from "../../index";
 import {Timer} from "../utils/timer";
-import {myEmitter} from "./extendedBotEvents";
+import {ExtendedEventEmitter, myEmitter} from "./extendedBotEvents";
 
-const timer = new Timer(20)
 
-export function startSecondEvent() {
-    bot.on("physicsTick", () => {
-        timer.onPhysicsTick()
-        if (timer.check()) {
-            myEmitter.emit("secondTick")
-            timer.reset()
-        }
-    })
+export class SecondEventEmitter extends ExtendedEventEmitter {
+    private readonly timer = new Timer(20)
+
+    startEventEmitter(): void {
+        this.bot.on("physicsTick", () => {
+            this.timer.onPhysicsTick()
+            if (this.timer.check()) {
+                myEmitter.emit("secondTick")
+                this.timer.reset()
+            }
+        })
+    }
+
 }
-

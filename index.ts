@@ -2,9 +2,6 @@ import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {loader as autoEat} from "mineflayer-auto-eat"
 import {getLogger} from "./src/utils/logger";
-import {startSecondEvent} from "./src/events/secondEvent";
-import {startDamageEvent} from "./src/events/damageEvent";
-import {startBotDamageEvent} from "./src/events/botHurtEvent";
 import {createExtendedBot} from "./src/extension/extendedBot";
 import {FaceToSoundSource} from "./src/behaviours/faceToSoundSource";
 import {AutoEat} from "./src/behaviours/autoEat";
@@ -14,6 +11,9 @@ import {instructionRegistry} from "./src/instruction/instruction";
 import {CustomFSM} from "./src/fsm/impl/customFSM";
 import {DocGenerator} from "./src/common/mermaid";
 import {DocumentManager} from "./src/document/documentManager";
+import {SecondEventEmitter} from "./src/events/secondEvent";
+import {DamageEventEventEmitter} from "./src/events/damageEvent";
+import {BotHurtEventEmitter} from "./src/events/botHurtEvent";
 
 export const botOption: {
     "host": string,
@@ -37,9 +37,13 @@ function initKoneko() {
     logger.info(`All plugins loaded.`)
 
     // Start custom event emitters.
-    startSecondEvent()
-    startDamageEvent()
-    startBotDamageEvent()
+    const secondEventEmitter = new SecondEventEmitter(bot);
+    const damageEventEventEmitter = new DamageEventEventEmitter(bot);
+    const botHurtEventEmitter = new BotHurtEventEmitter(bot);
+
+    secondEventEmitter.startEventEmitter()
+    damageEventEventEmitter.startEventEmitter()
+    botHurtEventEmitter.startEventEmitter()
     logger.info(`Extended event emitter started.`)
 
     // Start finite state machine.

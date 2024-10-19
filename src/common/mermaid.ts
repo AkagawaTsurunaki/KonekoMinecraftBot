@@ -17,17 +17,6 @@ export class DocGenerator {
         return result
     }
 
-    public static generateForm(fsm: FiniteStateMachine) {
-        let result = "| State ID | Description | Issues |\n" +
-            "|----------|----|-------|\n"
-        fsm.allStates.forEach(state => {
-            result += " | " + state.id + " | " + state.description + " | " + (state.issue ? state.issue : "-") + "| \n"
-        })
-        logger.info("State form generated")
-        logger.info(result)
-        return result
-    }
-
     public static generateInstructionForm(m: Map<string, string>) {
         let result = "| Instruction | Description |\n" +
             "|----------|----|\n"

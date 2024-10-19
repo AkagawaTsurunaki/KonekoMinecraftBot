@@ -1,5 +1,5 @@
 import {AbstractState} from "../../abstractState";
-import {clamp, dot} from "../../../utils/math";
+import {clamp, dot} from "../../../util/math";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {range} from "../../../common/decorator/range";
 import {stateDoc} from "../../../common/decorator/stateDoc";

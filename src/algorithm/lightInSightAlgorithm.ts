@@ -1,5 +1,5 @@
-import {sum} from "../utils/math";
-import {getLogger} from "../utils/logger";
+import {sum} from "../util/math";
+import {getLogger} from "../util/logger";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 import {ExtendedBot} from "../extension/extendedBot";
 

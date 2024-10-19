@@ -1,5 +1,5 @@
 import {Koneko} from "./src/koneko";
-import {getLogger} from "./src/utils/logger";
+import {getLogger} from "./src/util/logger";
 
 const logger = getLogger("koneko.ts")
 

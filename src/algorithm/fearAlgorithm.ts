@@ -1,4 +1,4 @@
-import {createLinearFunction} from "../utils/math";
+import {createLinearFunction} from "../util/math";
 import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../common/const";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 import {ExtendedBot} from "../extension/extendedBot";

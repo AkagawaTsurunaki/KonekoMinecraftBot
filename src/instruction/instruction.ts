@@ -1,7 +1,3 @@
-import {QuitInstruction} from "./impl/quitInstruction";
-import {StopInstruction} from "./impl/stopInstruction";
-import {SowInstruction} from "./impl/sowInstruction";
-import {HarvestInstruction} from "./impl/harvestInstruction";
 import {ExtendedBot} from "../extension/extendedBot";
 
 export class Instruction {

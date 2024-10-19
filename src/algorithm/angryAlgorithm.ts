@@ -1,7 +1,7 @@
 import {Entity} from "prismarine-entity";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 import {ExtendedBot} from "../extension/extendedBot";
-import {myEmitter} from "../extension/events/extendedEventEmitter";
+import {myEmitter} from "../extension/eventEmitter/extendedEventEmitter";
 
 export class AngryAlgorithm extends AbstractAlgorithm {
 

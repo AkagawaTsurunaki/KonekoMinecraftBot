@@ -1,8 +1,8 @@
 import {Block} from "prismarine-block";
 import {Vec3} from "vec3";
-import {sleep} from "../utils/sleep";
+import {sleep} from "../util/sleep";
 import {corpsNameList} from "../common/const";
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../util/logger";
 import {AbstractSkill} from "./abstractSkill";
 
 

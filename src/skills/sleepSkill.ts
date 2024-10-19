@@ -1,6 +1,6 @@
 import {Block} from "prismarine-block";
-import {sleep} from "../utils/sleep";
-import {getLogger} from "../utils/logger";
+import {sleep} from "../util/sleep";
+import {getLogger} from "../util/logger";
 import {AbstractSkill} from "./abstractSkill";
 
 const logger = getLogger("SleepSkill")

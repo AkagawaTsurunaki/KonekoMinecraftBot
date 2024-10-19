@@ -1,5 +1,5 @@
 import {axeNameList, woodNameList} from "../common/const";
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../util/logger";
 import {AbstractSkill} from "./abstractSkill";
 import {Vec3} from "vec3";
 import {DbscanAlgorithm} from "../algorithm/dbscanAlgorithm";

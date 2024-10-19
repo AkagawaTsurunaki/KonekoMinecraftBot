@@ -1,7 +1,7 @@
 import {Entity} from "prismarine-entity";
 import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
-import {randomNeg1ToPos1} from "../utils/math";
+import {randomNeg1ToPos1} from "../util/math";
 import {ExtendedBot} from "./extendedBot";
 
 export class ExtendedUtil {

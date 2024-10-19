@@ -1,4 +1,4 @@
-import {getLogger} from "../../utils/logger";
+import {getLogger} from "../../util/logger";
 
 import {InstructionDocument} from "./instructionDocument";
 import {StateDocument} from "./stateDocument";

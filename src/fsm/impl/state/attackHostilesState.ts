@@ -1,5 +1,5 @@
 import {AbstractState} from "../../abstractState";
-import {createLevelFuncByMap} from "../../../utils/math";
+import {createLevelFuncByMap} from "../../../util/math";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {range} from "../../../common/decorator/range";
 import {stateDoc} from "../../../common/decorator/stateDoc";

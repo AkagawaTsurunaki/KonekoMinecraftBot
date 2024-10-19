@@ -1,15 +1,15 @@
-import {IdleState} from "./states/idleState";
-import {AttackHostilesState} from "./states/attackHostilesState";
-import {AttackPlayerState} from "./states/attackPlayerState";
-import {DiveState} from "./states/diveState";
-import {FollowPlayerState} from "./states/followPlayerState";
-import {SleepState} from "./states/sleepState";
-import {HarvestState} from "./states/harvestState";
-import {LoggingState} from "./states/loggingState";
+import {IdleState} from "./state/idleState";
+import {AttackHostilesState} from "./state/attackHostilesState";
+import {AttackPlayerState} from "./state/attackPlayerState";
+import {DiveState} from "./state/diveState";
+import {FollowPlayerState} from "./state/followPlayerState";
+import {SleepState} from "./state/sleepState";
+import {HarvestState} from "./state/harvestState";
+import {LoggingState} from "./state/loggingState";
 import {FSMImpl} from "./fsmImpl";
-import {InLavaState} from "./states/inLavaState";
-import {OnFireState} from "./states/onFireState";
-import {InstructionState} from "./states/instructionState";
+import {InLavaState} from "./state/inLavaState";
+import {OnFireState} from "./state/onFireState";
+import {InstructionState} from "./state/instructionState";
 import {ExtendedBot} from "../../extension/extendedBot";
 
 export class CustomFSM extends FSMImpl {

@@ -1,5 +1,5 @@
 import {goals} from "mineflayer-pathfinder";
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../util/logger";
 import {Block} from "prismarine-block";
 import {AbstractSkill} from "./abstractSkill";
 

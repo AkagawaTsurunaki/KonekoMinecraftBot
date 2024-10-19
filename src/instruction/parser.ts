@@ -1,5 +1,5 @@
 import {instructionRegistry} from "./instruction";
-import {getLogger} from "../utils/logger";
+import {getLogger} from ".././util/logger";
 
 const logger = getLogger("StrictParser")
 

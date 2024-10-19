@@ -1,5 +1,5 @@
 import {AbstractState} from "../../abstractState";
-import {getLogger} from "../../../utils/logger";
+import {getLogger} from "../../../util/logger";
 import {StrictParser} from "../../../instruction/parser";
 import {instructionRegistry} from "../../../instruction/instruction";
 import {ExtendedBot} from "../../../extension/extendedBot";

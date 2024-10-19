@@ -1,4 +1,4 @@
-import {clamp} from "../../utils/math";
+import {clamp} from "../../util/math";
 
 export function range(min: number, max: number) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {

@@ -1,7 +1,7 @@
 import {Entity} from "prismarine-entity";
 import {Vec3} from "vec3";
 import {goals, Movements} from "mineflayer-pathfinder";
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../util/logger";
 import {AbstractSkill} from "./abstractSkill";
 
 const logger = getLogger("SleepSkill")

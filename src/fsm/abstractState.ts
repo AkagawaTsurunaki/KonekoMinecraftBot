@@ -1,4 +1,4 @@
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../util/logger";
 import {State} from "./fsm";
 import {ExtendedBot} from "../extension/extendedBot";
 

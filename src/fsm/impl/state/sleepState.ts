@@ -1,5 +1,5 @@
 import {AbstractState} from "../../abstractState";
-import {clamp, createLinearFunction} from "../../../utils/math";
+import {clamp, createLinearFunction} from "../../../util/math";
 import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../../common/const";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {lock} from "../../../common/decorator/lock";

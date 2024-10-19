@@ -1,9 +1,9 @@
 import assert from "node:assert";
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../util/logger";
 import {ExtendedVec3} from "../extension/extendedVec3";
 import {AbstractCognition} from "./abstractCognition";
 import {ExtendedBot} from "../extension/extendedBot";
-import {myEmitter} from "../extension/events/extendedEventEmitter";
+import {myEmitter} from "../extension/eventEmitter/extendedEventEmitter";
 
 const logger = getLogger("PlacedLavaBlockCognition")
 

@@ -1,4 +1,4 @@
-import {getLogger} from "../../../utils/logger";
+import {getLogger} from "../../../util/logger";
 import {AbstractState} from "../../abstractState";
 import {Block} from "prismarine-block";
 import {corpsNameList} from "../../../common/const";

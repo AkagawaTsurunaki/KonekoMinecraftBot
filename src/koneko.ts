@@ -2,23 +2,23 @@ import {createExtendedBot, ExtendedBot} from "./extension/extendedBot";
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {loader as autoEat} from "mineflayer-auto-eat";
-import {getLogger} from "./utils/logger";
+import {getLogger} from "./util/logger";
 import {CustomFSM} from "./fsm/impl/customFSM";
 import {FSMImpl} from "./fsm/impl/fsmImpl";
 import {DocGenerator} from "./common/mermaid";
-import {AbstractBehaviour} from "././behaviour/abstractBehaviour";
-import {FaceToSoundSourceBehaviour} from "././behaviour/faceToSoundSourceBehaviour";
-import {AutoEatBehaviour} from "././behaviour/autoEatBehaviour";
+import {AbstractBehaviour} from "./behaviour/abstractBehaviour";
+import {FaceToSoundSourceBehaviour} from "./behaviour/faceToSoundSourceBehaviour";
+import {AutoEatBehaviour} from "./behaviour/autoEatBehaviour";
 import {QuitInstruction} from "./instruction/impl/quitInstruction";
 import {StopInstruction} from "./instruction/impl/stopInstruction";
 import {SowInstruction} from "./instruction/impl/sowInstruction";
 import {HarvestInstruction} from "./instruction/impl/harvestInstruction";
 import {instructionRegistry} from "./instruction/instruction";
 import {DocumentManager} from "./common/doc/documentManager";
-import {BotHurtEventEmitter} from "./extension/events/botHurtEventEmitter";
-import {DamageEventEventEmitter} from "./extension/events/damageEventEmitter";
-import {ExtendedEventEmitter} from "./extension/events/extendedEventEmitter";
-import {SecondEventEmitter} from "./extension/events/secondEventEmitter";
+import {BotHurtEventEmitter} from "./extension/eventEmitter/botHurtEventEmitter";
+import {DamageEventEventEmitter} from "./extension/eventEmitter/damageEventEmitter";
+import {ExtendedEventEmitter} from "./extension/eventEmitter/extendedEventEmitter";
+import {SecondEventEmitter} from "./extension/eventEmitter/secondEventEmitter";
 
 const logger = getLogger("Koneko")
 

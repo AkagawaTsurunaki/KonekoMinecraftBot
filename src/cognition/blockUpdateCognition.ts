@@ -1,5 +1,5 @@
-import {LimitedArray} from "../utils/limitArray";
-import {getTimeDiff} from "../utils/math";
+import {LimitedArray} from "../util/limitArray";
+import {getTimeDiff} from "../util/math";
 
 export class BlockUpdateCognition {
     protected readonly blockBreakProgressEndEvents: LimitedArray<Date>

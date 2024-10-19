@@ -1,6 +1,6 @@
-import {LimitedArray} from "../utils/limitArray";
+import {LimitedArray} from "../util/limitArray";
 import {Vec3} from "vec3";
-import {Timer} from "../utils/timer";
+import {Timer} from "../util/timer";
 import {AbstractBehaviour} from "./abstractBehaviour";
 import {ExtendedBot} from "../extension/extendedBot";
 

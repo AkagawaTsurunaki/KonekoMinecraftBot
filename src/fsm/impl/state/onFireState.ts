@@ -1,12 +1,12 @@
 import {AbstractState} from "../../abstractState";
-import {getLogger} from "../../../utils/logger";
-import {clamp} from "../../../utils/math";
+import {getLogger} from "../../../util/logger";
+import {clamp} from "../../../util/math";
 import {GotoWaterSkill} from "../../../skills/gotoWaterSkill";
 import {Block} from "prismarine-block";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {lock} from "../../../common/decorator/lock";
 import {stateDoc} from "../../../common/decorator/stateDoc";
-import {myEmitter} from "../../../extension/events/extendedEventEmitter";
+import {myEmitter} from "../../../extension/eventEmitter/extendedEventEmitter";
 
 const logger = getLogger("OnFireState")
 

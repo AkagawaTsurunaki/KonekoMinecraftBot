@@ -1,5 +1,5 @@
 import {Instruction} from "../instruction";
-import {getLogger} from "../../utils/logger";
+import {getLogger} from "../../util/logger";
 import {setStopFlag} from "../../share/flags";
 import {ExtendedBot} from "../../extension/extendedBot";
 import {instructionDoc} from "../../common/decorator/instructionDoc";

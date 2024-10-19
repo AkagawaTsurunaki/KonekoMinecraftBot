@@ -1,6 +1,6 @@
 import {Block} from "prismarine-block";
 import {Entity} from "prismarine-entity";
-import {getLogger} from "../../../utils/logger";
+import {getLogger} from "../../../util/logger";
 import {AbstractState} from "../../abstractState";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {lock} from "../../../common/decorator/lock";

@@ -1,5 +1,5 @@
 import {AbstractState} from "../../abstractState";
-import {Timer} from "../../../utils/timer";
+import {Timer} from "../../../util/timer";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {range} from "../../../common/decorator/range";
 import {stateDoc} from "../../../common/decorator/stateDoc";

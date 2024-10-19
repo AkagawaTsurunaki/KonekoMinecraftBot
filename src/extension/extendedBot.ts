@@ -1,5 +1,5 @@
 import {Entity} from "prismarine-entity";
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../util/logger";
 import {Bot, createBot} from "mineflayer";
 import {AttackSkill} from "../skills/attackSkill";
 import {CraftSkill} from "../skills/craftSkill";

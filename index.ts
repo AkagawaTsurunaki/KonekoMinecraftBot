@@ -7,9 +7,12 @@ import {startDamageEvent} from "./src/events/damageEvent";
 import {startBotDamageEvent} from "./src/events/botHurtEvent";
 import {createExtendedBot} from "./src/extension/extendedBot";
 import {FaceToSoundSource} from "./src/behaviours/faceToSoundSource";
+import {AutoEat} from "./src/behaviours/autoEat";
+import {ChatMessage} from "prismarine-chat";
+import {StrictParser} from "./src/instruction/parser";
+import {instructionRegistry} from "./src/instruction/instruction";
 import {CustomFSM} from "./src/fsm/impl/customFSM";
 import {DocGenerator} from "./src/common/mermaid";
-import {AutoEat} from "./src/behaviours/autoEat";
 import {DocumentManager} from "./src/document/documentManager";
 
 export const botOption: {
@@ -47,7 +50,8 @@ function initKoneko() {
 
     // Generate documents
     DocGenerator.generateStateDiag(fsm)
-    DocumentManager.generateForm()
+    DocumentManager.generateStatesForm()
+    DocumentManager.generateInstructionsForm()
 
     // Some behaviours
     behaviours.push(new FaceToSoundSource())
@@ -59,6 +63,33 @@ function initKoneko() {
 bot.once("login", () => {
     initKoneko()
 });
+
+bot.on("chat", async (
+    username: string,
+    message: string,
+    translate: string | null,
+    jsonMsg: ChatMessage,
+    matches: string[] | null
+) => {
+    if (username === botOption.masterName) {
+        const parser = new StrictParser()
+        const {command, args} = parser.parse(message)
+        if (instructionRegistry.get(command)) {
+
+        }
+    }
+    // const command = message.split(" ")
+    // const fishingSkill = new FishingSkill();
+    // if (message === 'fish') {
+    //     await fishingSkill.startFishing()
+    // } else if (message === "stop") {
+    //     fishingSkill.stopFishing()
+    // } else if (/^toss \w+ \d+$/.test(message)) {
+    //     const amount = Number(command[2])
+    //     // await tossItem(command[1], amount === 0 ? null : amount)
+    // }
+});
+
 
 bot.on("error", (e: any) => {
     if (e.errno === -3008) {

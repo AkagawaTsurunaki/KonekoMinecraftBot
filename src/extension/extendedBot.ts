@@ -1,6 +1,7 @@
 import {Entity} from "prismarine-entity";
 import {getLogger} from "../utils/logger";
 import {Bot, createBot} from "mineflayer";
+import {AttackSkill} from "../skills/attackSkill";
 
 const logger = getLogger("isEntityOnFire")
 
@@ -27,6 +28,10 @@ function setEntityIsOnFire(entity: Entity, isOnFire: boolean) {
 
 export interface ExtendedBot extends Bot {
     isOnFire(): boolean
+
+    skills: {
+        attack: AttackSkill
+    }
 }
 
 export function createExtendedBot(botOption: any): ExtendedBot {

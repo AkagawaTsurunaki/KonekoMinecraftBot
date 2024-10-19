@@ -1,6 +1,5 @@
 import {AbstractState} from "../../abstractState";
 import {createLevelFuncByMap} from "../../../utils/math";
-import {AttackSkill} from "../../../skills/attackSkill";
 import {bot} from "../../../../index";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {range} from "../../../decorator/range";
@@ -49,9 +48,10 @@ export class AttackHostilesState extends AbstractState {
         [Infinity, 0]
     ]))
 
+
     @range(0, 1)
     getTransitionValue(): number {
-        const hostile = AttackSkill.findNearestHostile(this.searchRadius)
+        const hostile = bot.skills.attack.findNearestHostile(this.searchRadius)
         if (!hostile) return 0.0
         const dist = bot.entity.position.distanceTo(hostile.position)
         return this.radiusLevelFunc(dist)
@@ -60,13 +60,13 @@ export class AttackHostilesState extends AbstractState {
     async onEnter() {
         super.onEnter();
         // 切换武器
-        await AttackSkill.equipWeapon()
+        await bot.skills.attack.equipWeapon()
     }
 
     async onUpdate() {
         super.onUpdate()
         // 攻击怪物
-        await AttackSkill.attackNearestHostiles(this.attackRadius)
+        await bot.skills.attack.attackNearestHostiles(this.attackRadius)
     }
 
     async onExit() {

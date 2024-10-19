@@ -1,7 +1,7 @@
 import {AbstractState} from "../../abstractState";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {ExtendedBot} from "../../../extension/extendedBot";
-import {AngryBehaviour} from "../../../algorithm/angryAlgorithm";
+import {AngryAlgorithm} from "../../../algorithm/angryAlgorithm";
 
 @stateDoc({
     name: "AttackPlayerState",
@@ -14,7 +14,7 @@ export class AttackPlayerState extends AbstractState {
         super("AttackPlayerState", bot)
     }
 
-    private angryBehaviour = new AngryBehaviour()
+    private angryBehaviour = new AngryAlgorithm()
 
     getTransitionValue(): number {
         if (this.angryBehaviour.pvpTarget == null) {

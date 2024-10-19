@@ -4,7 +4,7 @@ import {findPlayerByUsername} from "../utils/helper";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 import {ExtendedBot} from "../extension/extendedBot";
 
-export class AngryBehaviour extends AbstractAlgorithm {
+export class AngryAlgorithm extends AbstractAlgorithm {
 
     private playerAngryDict: { [key: string]: number } = {};
     private forgiveThr: number = 100;

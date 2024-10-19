@@ -1,1 +1,0 @@
-This protocol is related to ZerolanLiveRobot, NOT Minecraft!

@@ -1,12 +1,12 @@
 import {AbstractState} from "../../abstractState";
 import {myEmitter} from "../../../events/extendedBotEvents";
-import {bot} from "../../../../index";
 import {getLogger} from "../../../utils/logger";
 import {clamp} from "../../../utils/math";
 import {GotoWaterSkill} from "../../../skills/gotoWaterSkill";
 import {Block} from "prismarine-block";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {lock} from "../../../decorator/lock";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 const logger = getLogger("OnFireState")
 
@@ -17,8 +17,8 @@ const logger = getLogger("OnFireState")
     issue: "May take a very strange path to get close to the water block, resulting in being burned to death."
 })
 export class OnFireState extends AbstractState {
-    constructor() {
-        super("OnFireState");
+    constructor(bot: ExtendedBot) {
+        super("OnFireState", bot);
     }
 
     private isOnFire: boolean = false
@@ -26,7 +26,7 @@ export class OnFireState extends AbstractState {
     private waterBlock: Block | null = null
 
     getTransitionValue(): number {
-        this.isOnFire = bot.isOnFire()
+        this.isOnFire = this.bot.isOnFire()
         return clamp((this.isOnFire ? 0.6 : 0) + (this.isInFire ? 0.9 : 0), 0, 1)
     }
 
@@ -44,7 +44,7 @@ export class OnFireState extends AbstractState {
     async onEnter() {
         super.onEnter();
         logger.info("Searching for water blocks nearby.")
-        this.waterBlock = GotoWaterSkill.findWaterBlockGoal()
+        this.waterBlock = this.bot.skills.gotoWater.findWaterBlockGoal()
     }
 
     @lock()
@@ -56,8 +56,8 @@ export class OnFireState extends AbstractState {
 
     onExit() {
         super.onExit();
-        if (!bot.isOnFire()) {
-            bot.pathfinder.stop()
+        if (!this.bot.isOnFire()) {
+            this.bot.pathfinder.stop()
         }
     }
 

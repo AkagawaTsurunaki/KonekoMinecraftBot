@@ -1,10 +1,9 @@
 import {AbstractState} from "../../abstractState";
 import {clamp, createLinearFunction} from "../../../utils/math";
 import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../../common/const";
-import {bot} from "../../../../index";
-import {SleepSkill} from "../../../skills/sleepSkill";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {lock} from "../../../decorator/lock";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 
 @stateDoc({
@@ -14,8 +13,8 @@ import {lock} from "../../../decorator/lock";
 })
 export class SleepState extends AbstractState {
 
-    constructor() {
-        super("SleepState");
+    constructor(bot: ExtendedBot) {
+        super("SleepState", bot);
     }
 
     private searchRadius: number = 64
@@ -23,7 +22,7 @@ export class SleepState extends AbstractState {
     private readonly midnightToSunrise = createLinearFunction(BEGINNING_OF_SUNRISE, 1, BEGINNING_OF_DAY, 0.2,)
 
     private time(): number {
-        const timeOfDay = bot.time.timeOfDay;
+        const timeOfDay = this.bot.time.timeOfDay;
         if (timeOfDay < BEGINNING_OF_SUNSET) {
             return 0
         } else if (BEGINNING_OF_SUNSET <= timeOfDay && timeOfDay < BEGINNING_OF_NIGHT) {
@@ -41,7 +40,7 @@ export class SleepState extends AbstractState {
 
     getTransitionValue(): number {
         const timeVal = this.time()
-        if (SleepSkill.findBedBlock(this.searchRadius, 1)) {
+        if (this.bot.skills.sleep.findBedBlock(this.searchRadius, 1)) {
             return clamp(timeVal, 0, 1) * (timeVal === 0 ? 0 : 1)
         }
         return 0
@@ -50,7 +49,7 @@ export class SleepState extends AbstractState {
     @lock()
     async onUpdate() {
         super.onUpdate();
-        await SleepSkill.gotoSleep(this.searchRadius, 1)
+        await this.bot.skills.sleep.gotoSleep(this.searchRadius, 1)
     }
 
 }

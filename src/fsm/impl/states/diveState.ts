@@ -1,8 +1,8 @@
 import {AbstractState} from "../../abstractState";
 import {clamp, dot} from "../../../utils/math";
-import {bot} from "../../../../index";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {range} from "../../../decorator/range";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 @stateDoc({
     name: "DiveState",
@@ -11,8 +11,8 @@ import {range} from "../../../decorator/range";
 })
 export class DiveState extends AbstractState {
 
-    constructor() {
-        super("DiveState");
+    constructor(bot: ExtendedBot) {
+        super("DiveState", bot);
     }
 
     private inWaterWeight = 0.1
@@ -23,21 +23,21 @@ export class DiveState extends AbstractState {
     getTransitionValue(): number {
         // Whether the bot is in water, oxygen level, health
         // @ts-ignore
-        const inWater = bot.entity.isInWater
+        const inWater = this.bot.entity.isInWater
         if (!inWater) return 0
         const condVal = dot([this.inWaterWeight, this.oxygenLevelWeight, this.healthWeight],
-            [inWater ? 1 : 0, Math.abs(bot.oxygenLevel - 20) / 20, Math.abs(bot.health - 20) / 20])
+            [inWater ? 1 : 0, Math.abs(this.bot.oxygenLevel - 20) / 20, Math.abs(this.bot.health - 20) / 20])
         return clamp(condVal ? condVal : 0, 0, 1);
     }
 
     onEnter() {
         super.onEnter();
-        bot.setControlState('jump', true)
+        this.bot.setControlState('jump', true)
     }
 
     onExit() {
         super.onExit();
-        bot.setControlState('jump', false)
+        this.bot.setControlState('jump', false)
     }
 
 }

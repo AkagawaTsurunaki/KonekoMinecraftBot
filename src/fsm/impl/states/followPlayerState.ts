@@ -1,11 +1,10 @@
 import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
-import {FollowSkill} from "../../../skills/followSkill";
-import {bot} from "../../../../index";
 import {clamp} from "../../../utils/math";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {lock} from "../../../decorator/lock";
 import {range} from "../../../decorator/range";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 const logger = getLogger("FollowPlayerState")
 
@@ -14,8 +13,8 @@ const logger = getLogger("FollowPlayerState")
     description: "Follow the nearest player until the bot thinks it is close enough."
 })
 export class FollowPlayerState extends AbstractState {
-    constructor() {
-        super("FollowPlayerState");
+    constructor(bot: ExtendedBot) {
+        super("FollowPlayerState", bot);
     }
 
     /**
@@ -31,10 +30,10 @@ export class FollowPlayerState extends AbstractState {
 
     @range(0, 1)
     getTransitionValue(): number {
-        const player = FollowSkill.findNearestPlayer(0, this.searchRadius);
+        const player = this.bot.skills.follow.findNearestPlayer(0, this.searchRadius);
         // If not player around. State transition.
         if (player == null) return 0
-        const dist = bot.entity.position.distanceTo(player.position)
+        const dist = this.bot.entity.position.distanceTo(player.position)
         // Too close to follow. State transition
         if (dist <= this.contactRadius) return 0
         return clamp(dist / this.searchRadius, 0, 1)
@@ -44,7 +43,7 @@ export class FollowPlayerState extends AbstractState {
     async onUpdate() {
         super.onUpdate();
         logger.debug("Following nearest player...")
-        await FollowSkill.followNearestPlayer(this.contactRadius, true)
+        await this.bot.skills.follow.followNearestPlayer(this.contactRadius, true)
         logger.debug("Followed nearest player.")
     }
 }

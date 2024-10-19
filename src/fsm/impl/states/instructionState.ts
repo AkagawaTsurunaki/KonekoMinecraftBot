@@ -1,9 +1,10 @@
 import {AbstractState} from "../../abstractState";
-import {bot, botOption} from "../../../../index";
+import {botOption} from "../../../../index";
 import {getLogger} from "../../../utils/logger";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {StrictParser} from "../../../instruction/parser";
 import {instructionRegistry} from "../../../instruction/instruction";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 const logger = getLogger("InstructionState")
 
@@ -12,8 +13,8 @@ const logger = getLogger("InstructionState")
     description: "When the master chat a instruction keyword, try to execute this skill first."
 })
 export class InstructionState extends AbstractState {
-    constructor() {
-        super("InstructionState");
+    constructor(bot: ExtendedBot) {
+        super("InstructionState", bot);
     }
 
     private instructionFlag = false
@@ -24,7 +25,7 @@ export class InstructionState extends AbstractState {
 
     onListen() {
         super.onListen();
-        bot.on("chat", async (username, message, translate, jsonMsg, matches) => {
+        this.bot.on("chat", async (username, message) => {
             if (username === botOption.masterName) {
                 const parser = new StrictParser()
                 const {command, args} = parser.parse(message)

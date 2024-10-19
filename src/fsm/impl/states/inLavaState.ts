@@ -1,8 +1,8 @@
 import {AbstractState} from "../../abstractState";
 import {getLogger} from "../../../utils/logger";
-import {bot} from "../../../../index";
 import {myEmitter} from "../../../events/extendedBotEvents";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 const logger = getLogger("InLavaState")
 
@@ -11,15 +11,15 @@ const logger = getLogger("InLavaState")
     description: "The robot panics in the lava and will randomly jump around."
 })
 export class InLavaState extends AbstractState {
-    constructor() {
-        super("InLavaState");
+    constructor(bot: ExtendedBot) {
+        super("InLavaState", bot);
     }
 
     isInLava = false
 
     getTransitionValue(): number {
         // @ts-ignore
-        if (bot.entity.isInLava) {
+        if (this.bot.entity.isInLava) {
             return 0.99
         }
         if (this.isInLava) {
@@ -30,22 +30,22 @@ export class InLavaState extends AbstractState {
 
     onListen() {
         super.onListen();
-        myEmitter.on("botDamageEvent", async (sourceType, sourceCause, sourceDirect) => {
+        myEmitter.on("botDamageEvent", async (sourceType) => {
             this.isInLava = sourceType.name === "lava";
         })
     }
 
     onEnter() {
         super.onEnter();
-        bot.pathfinder.stop()
+        this.bot.pathfinder.stop()
         logger.info("Insane control state mode.")
-        bot.setControlState("jump", true)
-        bot.setControlState("forward", true)
+        this.bot.setControlState("jump", true)
+        this.bot.setControlState("forward", true)
     }
 
     onExit() {
         super.onExit();
-        bot.setControlState("forward", false)
-        bot.setControlState("jump", false)
+        this.bot.setControlState("forward", false)
+        this.bot.setControlState("jump", false)
     }
 }

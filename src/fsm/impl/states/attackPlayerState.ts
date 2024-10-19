@@ -1,7 +1,7 @@
 import {AbstractState} from "../../abstractState";
 import {AngryBehaviour} from "../../../behaviours/angry";
-import {bot} from "../../../../index";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 @stateDoc({
     name: "AttackPlayerState",
@@ -10,8 +10,8 @@ import {stateDoc} from "../../../decorator/stateDoc";
         "All players will be forgiven when the bot dead."
 })
 export class AttackPlayerState extends AbstractState {
-    constructor() {
-        super("AttackPlayerState")
+    constructor(bot: ExtendedBot) {
+        super("AttackPlayerState", bot)
     }
 
     private angryBehaviour = new AngryBehaviour()
@@ -31,12 +31,12 @@ export class AttackPlayerState extends AbstractState {
         super.onUpdate();
         const pvpTarget = this.angryBehaviour.pvpTarget;
         if (pvpTarget) {
-            await bot.pvp.attack(pvpTarget)
+            await this.bot.pvp.attack(pvpTarget)
         }
     }
 
     async onExit() {
         super.onExit();
-        await bot.pvp.stop()
+        await this.bot.pvp.stop()
     }
 }

@@ -3,11 +3,9 @@ import {Entity} from "prismarine-entity";
 import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
 import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
-import {bot} from "../../../../index";
-import {LoggingSkill} from "../../../skills/loggingSkill";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {lock} from "../../../decorator/lock";
-
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 const logger = getLogger("LoggingState")
 
@@ -17,8 +15,8 @@ const logger = getLogger("LoggingState")
         "bot will also try to help collect the wood with the axe equipped."
 })
 export class LoggingState extends AbstractState {
-    constructor() {
-        super("LoggingState");
+    constructor(bot: ExtendedBot) {
+        super("LoggingState", bot);
     }
 
     private loggingIntent = new BlockUpdateIntent(3, 30)
@@ -36,7 +34,7 @@ export class LoggingState extends AbstractState {
         // @ts-ignore
         bot.on("blockBreakProgressEnd", (block: Block, entity: Entity) => {
             logger.debug(entity.type, block.name)
-            if (entity.type === "player" && entity.username !== bot.username && block.name.includes("log")) {
+            if (entity.type === "player" && entity.username !== this.bot.username && block.name.includes("log")) {
                 this.loggingIntent.setIntent()
                 this.logName = block.name
             }
@@ -47,7 +45,7 @@ export class LoggingState extends AbstractState {
     async onUpdate() {
         super.onUpdate();
         if (this.logName != null) {
-            await LoggingSkill.logging(this.logName, () => false)
+            await this.bot.skills.logging.logging(this.logName, () => false)
         }
         this.loggingIntent.resetIntent()
     }

@@ -1,15 +1,14 @@
 import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
 import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
-import {bot} from "../../../../index";
 import {Block} from "prismarine-block";
 import {corpsNameList} from "../../../common/const";
-import {FarmSkill} from "../../../skills/farmSkill";
 import {dbscan} from "../../../algorithm/dbscan";
 import {getVec3ListFromClusters} from "../../../algorithm/clustersProcessAlgorithm";
 import {tryGotoNear} from "../../../utils/helper";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {lock} from "../../../decorator/lock";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 
 const logger = getLogger("HarvestState")
@@ -20,8 +19,8 @@ const logger = getLogger("HarvestState")
 })
 export class HarvestState extends AbstractState {
 
-    constructor() {
-        super("HarvestState");
+    constructor(bot: ExtendedBot) {
+        super("HarvestState", bot)
         this.harvestedIntent = new BlockUpdateIntent(3, 10)
     }
 
@@ -37,7 +36,7 @@ export class HarvestState extends AbstractState {
     }
 
     onListen() {
-        bot.on("blockUpdate", (oldBlock: Block | null, newBlock: Block) => {
+        this.bot.on("blockUpdate", (oldBlock: Block | null, newBlock: Block) => {
             if (oldBlock && newBlock) {
                 // A block (corp) was broken.
                 if (corpsNameList.includes(oldBlock.name) && newBlock.name.includes("air")) {
@@ -50,20 +49,20 @@ export class HarvestState extends AbstractState {
     @lock()
     async onUpdate() {
         super.onUpdate();
-        let corpBlocks = FarmSkill.findBlocksToHarvest(this.searchRadius, 1000)
+        let corpBlocks = this.bot.skills.farm.findBlocksToHarvest(this.searchRadius, 1000)
         if (corpBlocks == null || corpBlocks.length == 0) return
 
         let clusters = dbscan(corpBlocks, 1, 1)
         const vec3clusters = getVec3ListFromClusters(clusters, corpBlocks);
         for (let corpBlocks of vec3clusters) {
             for (let corpBlock of corpBlocks) {
-                const dist = bot.entity.position.distanceTo(corpBlock);
+                const dist = this.bot.entity.position.distanceTo(corpBlock);
                 if (dist > this.contactRadius) {
                     await tryGotoNear(corpBlock)
                 }
-                const corpBlock1 = bot.blockAt(corpBlock)
+                const corpBlock1 = this.bot.blockAt(corpBlock)
                 if (corpBlock1) {
-                    await bot.dig(corpBlock1, true);
+                    await this.bot.dig(corpBlock1, true);
                 }
             }
         }

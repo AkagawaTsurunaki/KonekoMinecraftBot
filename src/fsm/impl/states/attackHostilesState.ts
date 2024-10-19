@@ -1,8 +1,8 @@
 import {AbstractState} from "../../abstractState";
 import {createLevelFuncByMap} from "../../../utils/math";
-import {bot} from "../../../../index";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {range} from "../../../decorator/range";
+import {ExtendedBot} from "../../../extension/extendedBot";
 
 @stateDoc({
     name: "AttackHostilesState",
@@ -10,8 +10,8 @@ import {range} from "../../../decorator/range";
     issue: "Probably not dodge from hostiles, but rather lunge aggressively"
 })
 export class AttackHostilesState extends AbstractState {
-    constructor() {
-        super("AttackHostilesState");
+    constructor(bot: ExtendedBot) {
+        super("AttackHostilesState", bot);
     }
 
     /**
@@ -51,26 +51,26 @@ export class AttackHostilesState extends AbstractState {
 
     @range(0, 1)
     getTransitionValue(): number {
-        const hostile = bot.skills.attack.findNearestHostile(this.searchRadius)
+        const hostile = this.bot.skills.attack.findNearestHostile(this.searchRadius)
         if (!hostile) return 0.0
-        const dist = bot.entity.position.distanceTo(hostile.position)
+        const dist = this.bot.entity.position.distanceTo(hostile.position)
         return this.radiusLevelFunc(dist)
     }
 
     async onEnter() {
         super.onEnter();
         // 切换武器
-        await bot.skills.attack.equipWeapon()
+        await this.bot.skills.attack.equipWeapon()
     }
 
     async onUpdate() {
         super.onUpdate()
         // 攻击怪物
-        await bot.skills.attack.attackNearestHostiles(this.attackRadius)
+        await this.bot.skills.attack.attackNearestHostiles(this.attackRadius)
     }
 
     async onExit() {
         super.onExit();
-        await bot.pvp.stop()
+        await this.bot.pvp.stop()
     }
 }

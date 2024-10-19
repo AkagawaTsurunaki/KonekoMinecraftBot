@@ -51,3 +51,9 @@ export function isMaster(entity: Entity) {
     }
     return false
 }
+
+export function itemByName(name: string) {
+    const items = bot.inventory.items()
+    if (bot.registry.isNewerOrEqualTo('1.9') && bot.inventory.slots[45]) items.push(bot.inventory.slots[45])
+    return items.filter(item => item.name === name)[0]
+}

@@ -1,5 +1,6 @@
 import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
+import {loader as autoEat} from "mineflayer-auto-eat"
 import {getLogger} from "./src/utils/logger";
 import {startSecondEvent} from "./src/events/secondEvent";
 import {startDamageEvent} from "./src/events/damageEvent";
@@ -8,6 +9,7 @@ import {createExtendedBot} from "./src/extension/extendedBot";
 import {FaceToSoundSource} from "./src/behaviours/faceToSoundSource";
 import {CustomFSM} from "./src/fsm/impl/customFSM";
 import {DocGenerator} from "./src/common/mermaid";
+import {AutoEat} from "./src/behaviours/autoEat";
 
 export const botOption: {
     "host": string,
@@ -27,6 +29,7 @@ function initKoneko() {
     // Load all plugins.
     bot.loadPlugin(pathfinder)
     bot.loadPlugin(pvp)
+    bot.loadPlugin(autoEat)
     logger.info(`All plugins loaded.`)
 
     // Start custom event emitters.
@@ -47,6 +50,7 @@ function initKoneko() {
 
     // Some behaviours
     behaviours.push(new FaceToSoundSource())
+    behaviours.push(new AutoEat())
 
     logger.info(`${bot.username} is running.`)
 }
@@ -59,8 +63,7 @@ bot.on("error", (e: any) => {
     if (e.errno === -3008) {
         logger.fatal("DNS error: \n" +
             "Are you sure the address of the server is right?")
-    }
-    else if (e.errno === -4077) {
+    } else if (e.errno === -4077) {
         logger.fatal("Protocol version conflict: \n" +
             "The Minecraft server does not correspond to your client version.")
     } else if (e.errno === -4078) {

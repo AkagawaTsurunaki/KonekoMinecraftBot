@@ -1,8 +1,9 @@
 import assert from "node:assert";
 import {myEmitter} from "../events/extendedBotEvents";
-import {bot} from "../../index";
 import {getLogger} from "../utils/logger";
 import {ExtendedVec3} from "../extension/extendedVec3";
+import {AbstractCognition} from "./abstractCognition";
+import {ExtendedBot} from "../extension/extendedBot";
 
 const logger = getLogger("PlacedLavaBlockCognition")
 
@@ -13,12 +14,13 @@ const logger = getLogger("PlacedLavaBlockCognition")
  * The bot will update their records of the water blocks (updated).
  * The water blockUpdate event emitted before `ObserveBlockCognition` was created will be ignored.
  */
-export class ObserveBlockCognition {
+export class ObserveBlockCognition extends AbstractCognition {
 
     private readonly observeBlockName: string
     private updatedBlockPositions: Set<string>
 
-    constructor(observeBlockName: string) {
+    constructor(bot: ExtendedBot, observeBlockName: string) {
+        super(bot)
         this.observeBlockName = observeBlockName
         this.updatedBlockPositions = new Set()
         this.onListen()
@@ -26,7 +28,7 @@ export class ObserveBlockCognition {
 
     onListen() {
         logger.info(`Listening for blockUpdate for ${this.observeBlockName}`)
-        bot.on("blockUpdate", (oldBlock, newBlock) => {
+        this.bot.on("blockUpdate", (oldBlock, newBlock) => {
             assert(oldBlock)
             if (oldBlock.name !== this.observeBlockName && newBlock.name === this.observeBlockName) {
                 const position = newBlock.position
@@ -41,7 +43,7 @@ export class ObserveBlockCognition {
         myEmitter.on("secondTick", () => {
             this.updatedBlockPositions.forEach(posStr => {
                 const pos = ExtendedVec3.fromCommaSplitString(posStr)
-                const blockAt = bot.blockAt(pos);
+                const blockAt = this.bot.blockAt(pos);
                 assert(blockAt)
                 if (blockAt.name !== this.observeBlockName) {
                     this.updatedBlockPositions.delete(posStr)

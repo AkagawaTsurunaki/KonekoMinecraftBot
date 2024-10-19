@@ -3,9 +3,7 @@ import {FiniteStateMachine} from "../fsm";
 import {getLogger} from "../../utils/logger";
 import {myEmitter} from "../../events/extendedBotEvents";
 
-
 const logger = getLogger("FiniteStateMachineImpl")
-
 
 export abstract class FSMImpl implements FiniteStateMachine {
     resetWhenException: boolean

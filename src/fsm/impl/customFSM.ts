@@ -10,34 +10,44 @@ import {FSMImpl} from "./fsmImpl";
 import {InLavaState} from "./states/inLavaState";
 import {OnFireState} from "./states/onFireState";
 import {InstructionState} from "./states/instructionState";
+import {ExtendedBot} from "../../extension/extendedBot";
 
 export class CustomFSM extends FSMImpl {
 
-    private idleState: IdleState | null = null
-    private attackHostilesState: AttackHostilesState | null = null
-    private attackPlayerState: AttackPlayerState | null = null
-    private diveState: DiveState | null = null;
-    private followPlayerState: FollowPlayerState | null = null;
-    private sleepState: SleepState | null = null;
-    private harvestState: HarvestState | null = null;
-    private loggingState: LoggingState | null = null;
-    private inLavaState: InLavaState | null = null;
-    private onFireState: OnFireState | null = null;
-    private instructionState: InstructionState | null = null;
+    protected bot: ExtendedBot
+
+    private readonly idleState: IdleState;
+    private readonly attackHostilesState: AttackHostilesState;
+    private readonly attackPlayerState: AttackPlayerState;
+    private readonly diveState: DiveState;
+    private readonly followPlayerState: FollowPlayerState;
+    private readonly sleepState: SleepState;
+    private readonly harvestState: HarvestState;
+    private readonly loggingState: LoggingState;
+    private readonly inLavaState: InLavaState;
+    private readonly onFireState: OnFireState;
+    private readonly instructionState: InstructionState;
+
+
+    constructor(bot: ExtendedBot) {
+        super();
+        this.bot = bot
+
+        this.idleState = new IdleState(this.bot)
+        this.attackHostilesState = new AttackHostilesState(this.bot)
+        this.attackPlayerState = new AttackPlayerState(this.bot);
+        this.diveState = new DiveState(this.bot);
+        this.followPlayerState = new FollowPlayerState(this.bot)
+        this.sleepState = new SleepState(this.bot)
+        this.harvestState = new HarvestState(this.bot)
+        this.loggingState = new LoggingState(this.bot)
+        this.inLavaState = new InLavaState(this.bot)
+        this.onFireState = new OnFireState(this.bot)
+        this.instructionState = new InstructionState(this.bot)
+    }
+
 
     init() {
-        this.idleState = new IdleState()
-        this.attackHostilesState = new AttackHostilesState()
-        this.attackPlayerState = new AttackPlayerState();
-        this.diveState = new DiveState();
-        this.followPlayerState = new FollowPlayerState()
-        this.sleepState = new SleepState()
-        this.harvestState = new HarvestState()
-        this.loggingState = new LoggingState()
-        this.inLavaState = new InLavaState()
-        this.onFireState = new OnFireState()
-        this.instructionState = new InstructionState()
-
         this.allStates.push(this.idleState)
         this.allStates.push(this.attackHostilesState)
         this.allStates.push(this.attackPlayerState)

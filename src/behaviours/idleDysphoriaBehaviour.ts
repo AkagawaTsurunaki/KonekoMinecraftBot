@@ -1,9 +1,10 @@
-import {bot} from "../../index";
 import {LimitedArray} from "../utils/limitArray";
 import {Vec3} from "vec3";
 import {Timer} from "../utils/timer";
+import {AbstractBehaviour} from "./abstractBehaviour";
+import {ExtendedBot} from "../extension/extendedBot";
 
-export class IdleDysphoria {
+export class IdleDysphoriaBehaviour extends AbstractBehaviour {
     private readonly maxTimeSampleNum = 3
     private readonly epsilon = 1
     private readonly posSamples = new LimitedArray<Vec3>(this.maxTimeSampleNum)
@@ -27,8 +28,9 @@ export class IdleDysphoria {
         return absSum
     }
 
-    constructor() {
-        bot.on("physicsTick", () => {
+    constructor(bot: ExtendedBot) {
+        super(bot)
+        this.bot.on("physicsTick", () => {
             this.timer.onPhysicsTick()
             if (this.timer.check()) {
                 this.posSamples.add(bot.entity.position)

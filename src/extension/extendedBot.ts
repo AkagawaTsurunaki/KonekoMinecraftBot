@@ -1,6 +1,6 @@
 import {Entity} from "prismarine-entity";
 import {getLogger} from "../utils/logger";
-import {Bot, createBot, Player} from "mineflayer";
+import {Bot, createBot} from "mineflayer";
 import {AttackSkill} from "../skills/attackSkill";
 import {CraftSkill} from "../skills/craftSkill";
 import {FarmSkill} from "../skills/farmSkill";
@@ -12,6 +12,7 @@ import {PlaceBlockSkill} from "../skills/placeBlockSkill";
 import {QuitSkill} from "../skills/quitSkill";
 import {SleepSkill} from "../skills/sleepSkill";
 import {TossSkill} from "../skills/tossSkill";
+import {ExtendedUtil} from "./extendedUtil";
 
 const logger = getLogger("isEntityOnFire")
 
@@ -51,6 +52,16 @@ export interface ExtendedBot extends Bot {
         quit: QuitSkill
         sleep: SleepSkill
         toss: TossSkill
+    }
+
+    utils: ExtendedUtil
+
+    option: {
+        "host": string,
+        "port": number,
+        "username": string,
+        "version": string,
+        "masterName": string
     }
 }
 

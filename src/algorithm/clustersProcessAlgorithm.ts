@@ -1,5 +1,4 @@
 import {Vec3} from "vec3";
-import {bot} from "../../index";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 import {ExtendedBot} from "../extension/extendedBot";
 
@@ -46,7 +45,7 @@ export class ClustersProcessAlgorithm extends AbstractAlgorithm {
             }
         });
         pointsInfo.sort((pA, pB) => {
-            const curPos = bot.entity.position
+            const curPos = this.bot.entity.position
             return curPos.distanceTo(pB.centerPoint) - curPos.distanceTo(pA.centerPoint);
         })
         return pointsInfo.map(info => info.points)

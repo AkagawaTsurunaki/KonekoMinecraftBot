@@ -4,12 +4,12 @@ import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
 import {bot} from "../../../../index";
 import {Block} from "prismarine-block";
 import {corpsNameList} from "../../../common/const";
-import {lock} from "../../../common/decorator";
 import {FarmSkill} from "../../../skills/farmSkill";
 import {dbscan} from "../../../algorithm/dbscan";
 import {getVec3ListFromClusters} from "../../../algorithm/clustersProcessAlgorithm";
 import {tryGotoNear} from "../../../utils/helper";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {lock} from "../../../decorator/lock";
 
 
 const logger = getLogger("HarvestState")

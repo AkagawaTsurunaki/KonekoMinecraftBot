@@ -1,10 +1,11 @@
 import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
-import {lock, range} from "../../../common/decorator";
+import {range} from "../../../common/decorator";
 import {FollowSkill} from "../../../skills/followSkill";
 import {bot} from "../../../../index";
 import {clamp} from "../../../utils/math";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {lock} from "../../../decorator/lock";
 
 const logger = getLogger("FollowPlayerState")
 

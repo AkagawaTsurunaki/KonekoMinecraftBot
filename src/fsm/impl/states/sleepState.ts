@@ -3,8 +3,8 @@ import {clamp, createLinearFunction} from "../../../utils/math";
 import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../../common/const";
 import {bot} from "../../../../index";
 import {SleepSkill} from "../../../skills/sleepSkill";
-import {lock} from "../../../common/decorator";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {lock} from "../../../decorator/lock";
 
 
 @stateDoc({

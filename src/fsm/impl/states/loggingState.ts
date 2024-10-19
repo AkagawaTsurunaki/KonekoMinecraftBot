@@ -5,8 +5,8 @@ import {AbstractState} from "../../abstractState";
 import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
 import {bot} from "../../../../index";
 import {LoggingSkill} from "../../../skills/loggingSkill";
-import {lock} from "../../../common/decorator";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {lock} from "../../../decorator/lock";
 
 
 const logger = getLogger("LoggingState")

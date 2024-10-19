@@ -4,8 +4,14 @@ import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF
 import {bot} from "../../../../index";
 import {SleepSkill} from "../../../skills/sleepSkill";
 import {lock} from "../../../common/decorator";
+import {stateDoc} from "../../../decorator/stateDoc";
 
 
+@stateDoc({
+    name: "SleepState",
+    description: "Based on information such as time and nearest bed, look for a bed to spend the night.",
+    issue: "Instead of going through the door, it is possible to enter the room in search of a bed by breaking blocks."
+})
 export class SleepState extends AbstractState {
 
     constructor() {

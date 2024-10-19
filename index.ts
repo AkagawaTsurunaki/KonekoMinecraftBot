@@ -10,6 +10,7 @@ import {FaceToSoundSource} from "./src/behaviours/faceToSoundSource";
 import {CustomFSM} from "./src/fsm/impl/customFSM";
 import {DocGenerator} from "./src/common/mermaid";
 import {AutoEat} from "./src/behaviours/autoEat";
+import {DocumentManager} from "./src/document/documentManager";
 
 export const botOption: {
     "host": string,
@@ -46,7 +47,7 @@ function initKoneko() {
 
     // Generate documents
     DocGenerator.generateStateDiag(fsm)
-    DocGenerator.generateForm(fsm)
+    DocumentManager.generateForm()
 
     // Some behaviours
     behaviours.push(new FaceToSoundSource())

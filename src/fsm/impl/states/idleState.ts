@@ -1,7 +1,7 @@
 import {AbstractState} from "../../abstractState";
 import {Timer} from "../../../utils/timer";
-import {range} from "../../../common/decorator";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {range} from "../../../decorator/range";
 
 
 @stateDoc({

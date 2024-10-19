@@ -1,8 +1,8 @@
 import {AbstractState} from "../../abstractState";
-import {range} from "../../../common/decorator";
 import {clamp, dot} from "../../../utils/math";
 import {bot} from "../../../../index";
 import {stateDoc} from "../../../decorator/stateDoc";
+import {range} from "../../../decorator/range";
 
 @stateDoc({
     name: "DiveState",

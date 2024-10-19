@@ -12,9 +12,10 @@ import {AngryAlgorithm} from "../../../algorithm/angryAlgorithm";
 export class AttackPlayerState extends AbstractState {
     constructor(bot: ExtendedBot) {
         super("AttackPlayerState", bot)
+        this.angryBehaviour = new AngryAlgorithm(this.bot);
     }
 
-    private angryBehaviour = new AngryAlgorithm()
+    private angryBehaviour: AngryAlgorithm
 
     getTransitionValue(): number {
         if (this.angryBehaviour.pvpTarget == null) {

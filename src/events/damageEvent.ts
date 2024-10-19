@@ -8,7 +8,6 @@
  * - Download "registry_data.json": https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2
  */
 
-import {botOption} from "../../index";
 import {ExtendedEventEmitter, myEmitter} from "./extendedBotEvents";
 import {getLogger} from "../utils/logger";
 import {ExtendedBot} from "../extension/extendedBot";
@@ -47,7 +46,7 @@ export class DamageEventEventEmitter extends ExtendedEventEmitter {
          * @Note: Default Minecraft version is 1.20.1, download from https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2.
          * You should download the corresponding version of protocol json file by yourself.
          */
-        const version = botOption.version
+        const version = this.bot.option.version
 
         let damageTypes: any = null
         if (version === "1.20.1" || version === "1.20.2" || version === "1.20.6") {
@@ -110,7 +109,7 @@ export class DamageEventEventEmitter extends ExtendedEventEmitter {
                 myEmitter.emit("entityHurt", entity)
             })
         } catch (e: any) {
-            logger.error(`Fail to load the protocol of Minecraft ${botOption.version}. The bot will not crash but may behaviour abnormally.`)
+            logger.error(`Fail to load the protocol of Minecraft ${this.bot.option.version}. The bot will not crash but may behaviour abnormally.`)
             return
         }
     }

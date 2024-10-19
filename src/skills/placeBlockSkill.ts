@@ -1,4 +1,3 @@
-import {botOption} from "../../index";
 import {Vec3} from "vec3";
 import {getLogger} from "../utils/logger";
 import {AbstractSkill} from "./abstractSkill";
@@ -12,7 +11,7 @@ export class PlaceBlockSkill extends AbstractSkill{
         return this.bot.blockAtEntityCursor(player, lookAtDistance)
     }
 
-    public async placeBlockOtherPlayerLookedAt(username: string = botOption.masterName, lookAtDistance: number = 256) {
+    public async placeBlockOtherPlayerLookedAt(username: string, lookAtDistance: number = 256) {
         const lookAtBlock = this.getPlayerLookAt(username, lookAtDistance);
         if (!lookAtBlock) return
         try {

@@ -1,5 +1,4 @@
 import {Block} from "prismarine-block";
-import {tryGotoNear} from "../utils/helper";
 import {sleep} from "../utils/sleep";
 import {getLogger} from "../utils/logger";
 import {AbstractSkill} from "./abstractSkill";
@@ -25,7 +24,7 @@ export class SleepSkill extends AbstractSkill {
                 logger.warn("Sleep skill stopped: Can not find any bed block nearby.")
                 return
             }
-            await tryGotoNear(bedBlock.position)
+            await this.bot.utils.tryGotoNear(bedBlock.position)
 
             logger.info(`Found the bed, ready to sleep.`)
             let tryCount = 0

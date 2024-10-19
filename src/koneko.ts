@@ -14,6 +14,11 @@ import {DocumentManager} from "./document/documentManager";
 import {AbstractBehaviour} from "./behaviours/abstractBehaviour";
 import {FaceToSoundSourceBehaviour} from "./behaviours/faceToSoundSourceBehaviour";
 import {AutoEatBehaviour} from "./behaviours/autoEatBehaviour";
+import {QuitInstruction} from "./instruction/impl/quitInstruction";
+import {StopInstruction} from "./instruction/impl/stopInstruction";
+import {SowInstruction} from "./instruction/impl/sowInstruction";
+import {HarvestInstruction} from "./instruction/impl/harvestInstruction";
+import {instructionRegistry} from "./instruction/instruction";
 
 const logger = getLogger("Koneko")
 
@@ -44,6 +49,7 @@ export class Koneko {
             this.listenUnhandledError()
             this.loadPlugins()
             this.startEventEmitters()
+            this.initAllInstructions()
             this.enableBehaviours()
             this.startFiniteStateMachine()
             this.generateDocuments()
@@ -85,6 +91,17 @@ export class Koneko {
         this.behaviours.push(autoEatBehaviour)
     }
 
+    initAllInstructions() {
+        const quit = new QuitInstruction(this.bot)
+        const stop = new StopInstruction(this.bot)
+        const sow = new SowInstruction(this.bot)
+        const harvest = new HarvestInstruction(this.bot)
+
+        instructionRegistry.set(quit.command, quit)
+        instructionRegistry.set(stop.command, stop)
+        instructionRegistry.set(sow.command, sow)
+        instructionRegistry.set(harvest.command, harvest)
+    }
 
     /**
      * Start finite state machine.

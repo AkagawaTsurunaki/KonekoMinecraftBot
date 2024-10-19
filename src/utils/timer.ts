@@ -1,7 +1,7 @@
 export class Timer {
 
     private _time = 0
-    private interval = 0
+    private readonly interval: number;
 
     constructor(interval: number = 20) {
         this.interval = interval

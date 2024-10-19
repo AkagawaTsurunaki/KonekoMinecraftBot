@@ -1,14 +1,16 @@
-import {dbscan} from "../algorithm/dbscan";
-import {tryGotoNear} from "../utils/helper";
 import {axeNameList, woodNameList} from "../common/const";
 import {getLogger} from "../utils/logger";
 import {AbstractSkill} from "./abstractSkill";
+import {Vec3} from "vec3";
+import {DbscanAlgorithm} from "../algorithm/dbscanAlgorithm";
 
 const logger = getLogger("LoggingSkill")
 
 export class LoggingSkill extends AbstractSkill {
     private maxSearchRadius = 128
     private maxCollectCount = 1024
+
+    private dbscanAlgorithm = new DbscanAlgorithm(this.bot)
 
     private findWoodsToCollect(wood: string) {
         return this.bot.findBlocks({
@@ -34,10 +36,10 @@ export class LoggingSkill extends AbstractSkill {
         }
         logger.info(`Logging skill executing...`)
         const woodPositions = this.findWoodsToCollect(wood);
-        const clusters = dbscan(woodPositions, 1, 1)
+        const clusters = this.dbscanAlgorithm.dbscan(woodPositions, 1, 1)
         for (const cluster of clusters) {
-            const loggingPosList = cluster.map(index => woodPositions[index])
-                .sort((a, b) => a.y - b.y)
+            const loggingPosList = cluster.map((index: number) => woodPositions[index])
+                .sort((a: Vec3, b: Vec3) => a.y - b.y)
             for (const woodPos of loggingPosList) {
                 if (stop()) {
                     this.bot.stopDigging()
@@ -46,7 +48,7 @@ export class LoggingSkill extends AbstractSkill {
                 }
                 const woodBlock = this.bot.blockAt(woodPos)
                 if (woodBlock) {
-                    await tryGotoNear(woodBlock.position)
+                    await this.bot.utils.tryGotoNear(woodBlock.position)
                     await this.tryEquipAxe()
                     try {
                         await this.bot.dig(woodBlock)

@@ -2,7 +2,7 @@ import {Vec3} from "vec3";
 import {ExtendedBot} from "../extension/extendedBot";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 
-export class Dbscan extends AbstractAlgorithm {
+export class DbscanAlgorithm extends AbstractAlgorithm {
     constructor(bot: ExtendedBot) {
         super(bot)
     }

@@ -1,5 +1,4 @@
 import {AbstractState} from "../../abstractState";
-import {botOption} from "../../../../index";
 import {getLogger} from "../../../utils/logger";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {StrictParser} from "../../../instruction/parser";
@@ -26,7 +25,7 @@ export class InstructionState extends AbstractState {
     onListen() {
         super.onListen();
         this.bot.on("chat", async (username, message) => {
-            if (username === botOption.masterName) {
+            if (username === this.bot.option.masterName) {
                 const parser = new StrictParser()
                 const {command, args} = parser.parse(message)
                 const ins = instructionRegistry.get(command)

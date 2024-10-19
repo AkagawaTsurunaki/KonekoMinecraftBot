@@ -26,7 +26,7 @@ export class ClustersProcessAlgorithm extends AbstractAlgorithm {
         return new Vec3(sumX / vectors.length, sumY / vectors.length, sumZ / vectors.length)
     }
 
-    private getVec3ListFromClusters(clusters: number[][], origin: Vec3[]): Vec3[][] {
+    public getVec3ListFromClusters(clusters: number[][], origin: Vec3[]): Vec3[][] {
         let elementsLen = 0;
         clusters.forEach(arr => elementsLen += arr.length)
         if (elementsLen !== origin.length) {

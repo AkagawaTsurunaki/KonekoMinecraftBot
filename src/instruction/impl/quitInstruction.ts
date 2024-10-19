@@ -1,13 +1,13 @@
 import {Instruction} from "../instruction";
-import {QuitSkill} from "../../skills/quitSkill";
 import {instructionDoc} from "../../decorator/instructionDoc";
+import {ExtendedBot} from "../../extension/extendedBot";
 
 
 @instructionDoc({name: "Quit Game", description: "Ask bot to quit from the game."})
 export class QuitInstruction extends Instruction {
-    constructor() {
-        super({
-            command: "quit", func: () => QuitSkill.quitGame()
+    constructor(bot: ExtendedBot) {
+        super(bot, {
+            command: "quit", func: () => bot.skills.quit.quitGame()
         })
     }
 }

@@ -1,7 +1,6 @@
 import {Block} from "prismarine-block";
 import {Vec3} from "vec3";
 import {sleep} from "../utils/sleep";
-import {goto, tryGotoNear} from "../utils/helper";
 import {corpsNameList} from "../common/const";
 import {getLogger} from "../utils/logger";
 import {AbstractSkill} from "./abstractSkill";
@@ -78,7 +77,7 @@ export class FarmSkill extends AbstractSkill {
                 for (let corpPos of corpPosList) {
                     const dist = this.bot.entity.position.distanceTo(corpPos);
                     if (dist > contactRadius) {
-                        await tryGotoNear(corpPos)
+                        await this.bot.utils.tryGotoNear(corpPos)
                     }
                     const corpBlock = this.bot.blockAt(corpPos)
                     if (corpBlock) {
@@ -99,7 +98,7 @@ export class FarmSkill extends AbstractSkill {
             if (!blockToSow) {
                 break
             }
-            goto(blockToSow.position.offset(0, 1, 0))
+            this.bot.utils.goto(blockToSow.position.offset(0, 1, 0))
             try {
                 await this.bot.equip(this.bot.registry.itemsByName[cropName].id, 'hand')
             } catch (e) {
@@ -126,7 +125,7 @@ export class FarmSkill extends AbstractSkill {
             if (!blockToFertilize) {
                 break
             }
-            goto(blockToFertilize.position)
+            this.bot.utils.goto(blockToFertilize.position)
             try {
                 await this.bot.equip(this.bot.registry.itemsByName['bone_meal'].id, 'hand')
             } catch (ignore) {
@@ -148,7 +147,7 @@ export class FarmSkill extends AbstractSkill {
         const composterBlock = this.findComposter()
         while (listener()) {
             if (composterBlock) {
-                goto(composterBlock.position)
+                this.bot.utils.goto(composterBlock.position)
                 try {
                     await this.bot.equip(this.bot.registry.itemsByName[itemName].id, 'hand')
                 } catch (ignore) {

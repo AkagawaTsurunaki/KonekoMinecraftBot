@@ -1,4 +1,3 @@
-import {itemByName} from "../utils/helper";
 import {getLogger} from "../utils/logger";
 import {AbstractSkill} from "./abstractSkill";
 
@@ -6,7 +5,7 @@ const logger = getLogger("TossSkill")
 
 export class TossSkill extends AbstractSkill {
     public async tossItem(itemName: string, amount: number | null) {
-        const item = itemByName(itemName)
+        const item = this.bot.utils.itemByName(itemName)
         if (!item) {
             logger.warn(`No item in the inventory: ${itemName}`)
         } else {

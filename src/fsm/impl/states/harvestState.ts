@@ -3,12 +3,11 @@ import {AbstractState} from "../../abstractState";
 import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
 import {Block} from "prismarine-block";
 import {corpsNameList} from "../../../common/const";
-import {dbscan} from "../../../algorithm/dbscan";
-import {getVec3ListFromClusters} from "../../../algorithm/clustersProcessAlgorithm";
-import {tryGotoNear} from "../../../utils/helper";
 import {stateDoc} from "../../../decorator/stateDoc";
 import {lock} from "../../../decorator/lock";
 import {ExtendedBot} from "../../../extension/extendedBot";
+import {DbscanAlgorithm} from "../../../algorithm/dbscanAlgorithm";
+import {ClustersProcessAlgorithm} from "../../../algorithm/clustersProcessAlgorithm";
 
 
 const logger = getLogger("HarvestState")
@@ -18,15 +17,19 @@ const logger = getLogger("HarvestState")
     description: "If a player harvesting nearby, bot will also try to help harvest the crop."
 })
 export class HarvestState extends AbstractState {
+    private clusterProcessAlgorithm: ClustersProcessAlgorithm;
+    private readonly dbscanAlgorithm: DbscanAlgorithm
+    private readonly harvestedIntent: BlockUpdateIntent
+    private searchRadius = 16;
+    private contactRadius = 5;
 
     constructor(bot: ExtendedBot) {
         super("HarvestState", bot)
         this.harvestedIntent = new BlockUpdateIntent(3, 10)
+        this.dbscanAlgorithm = new DbscanAlgorithm(this.bot);
+        this.clusterProcessAlgorithm = new ClustersProcessAlgorithm(this.bot)
     }
 
-    private readonly harvestedIntent: BlockUpdateIntent
-    private searchRadius = 16;
-    private contactRadius = 5;
 
     getTransitionValue(): number {
         if (this.harvestedIntent.getIntent()) {
@@ -52,13 +55,13 @@ export class HarvestState extends AbstractState {
         let corpBlocks = this.bot.skills.farm.findBlocksToHarvest(this.searchRadius, 1000)
         if (corpBlocks == null || corpBlocks.length == 0) return
 
-        let clusters = dbscan(corpBlocks, 1, 1)
-        const vec3clusters = getVec3ListFromClusters(clusters, corpBlocks);
+        let clusters = this.dbscanAlgorithm.dbscan(corpBlocks, 1, 1)
+        const vec3clusters = this.clusterProcessAlgorithm.getVec3ListFromClusters(clusters, corpBlocks);
         for (let corpBlocks of vec3clusters) {
             for (let corpBlock of corpBlocks) {
                 const dist = this.bot.entity.position.distanceTo(corpBlock);
                 if (dist > this.contactRadius) {
-                    await tryGotoNear(corpBlock)
+                    await this.bot.utils.tryGotoNear(corpBlock)
                 }
                 const corpBlock1 = this.bot.blockAt(corpBlock)
                 if (corpBlock1) {

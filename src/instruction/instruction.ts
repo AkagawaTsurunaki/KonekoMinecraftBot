@@ -2,6 +2,7 @@ import {QuitInstruction} from "./impl/quitInstruction";
 import {StopInstruction} from "./impl/stopInstruction";
 import {SowInstruction} from "./impl/sowInstruction";
 import {HarvestInstruction} from "./impl/harvestInstruction";
+import {ExtendedBot} from "../extension/extendedBot";
 
 export class Instruction {
     command: string
@@ -9,7 +10,7 @@ export class Instruction {
     argTypes: Array<string | boolean | number> | null = null
     func: (...args: any) => Promise<void> | void
 
-    constructor(v: {
+    constructor(bot: ExtendedBot, v: {
         command: string,
         args?: Array<string> | null, argTypes?: Array<string | boolean | number> | null,
         func: (...args: any) => Promise<void> | void
@@ -29,16 +30,6 @@ export class Instruction {
 
 export const instructionRegistry = new Map<string, Instruction>()
 
-function initAllInstructions() {
-    const quit = new QuitInstruction()
-    const stop = new StopInstruction()
-    const sow = new SowInstruction()
-    const harvest = new HarvestInstruction()
 
-    instructionRegistry.set(quit.command, quit)
-    instructionRegistry.set(stop.command, stop)
-    instructionRegistry.set(sow.command, sow)
-    instructionRegistry.set(harvest.command, harvest)
-}
 
-initAllInstructions()
+

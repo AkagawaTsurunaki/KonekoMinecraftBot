@@ -1,4 +1,3 @@
-import {botOption} from "../../index";
 import {getLogger} from "../utils/logger";
 import {AbstractSkill} from "./abstractSkill";
 
@@ -13,7 +12,7 @@ export class QuitSkill extends AbstractSkill {
     public quitGame() {
         const index = Math.floor(Math.random() * this.responses.length);
         this.bot.chat(this.responses[index])
-        this.bot.quit(`${botOption.masterName} asked you to quit.`)
+        this.bot.quit(`${this.bot.option.masterName} asked you to quit.`)
         logger.info("Bot exited the game.")
     }
 }

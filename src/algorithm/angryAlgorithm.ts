@@ -1,6 +1,5 @@
 import {Entity} from "prismarine-entity";
 import {myEmitter} from "../events/extendedBotEvents";
-import {findPlayerByUsername} from "../utils/helper";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 import {ExtendedBot} from "../extension/extendedBot";
 
@@ -105,7 +104,7 @@ export class AngryAlgorithm extends AbstractAlgorithm {
     private updatePvpTarget() {
         const {username, maxValue} = this.getMaxAngryPlayer()
         if (username) {
-            const maxAngryValuePlayer = findPlayerByUsername(username)
+            const maxAngryValuePlayer = this.bot.utils.findPlayerByUsername(username)
             if (maxAngryValuePlayer && maxValue > this.attackThr) {
                 this.pvpTarget = maxAngryValuePlayer
             }

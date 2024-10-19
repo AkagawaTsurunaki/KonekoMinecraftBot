@@ -29,7 +29,8 @@
     "pino": "^9.4.0",
     "pino-pretty": "^11.2.2",
     "prismarine-registry": "^1.9.0",
-    "prismarine-viewer": "^1.28.0"
+    "prismarine-viewer": "^1.28.0",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "tsx": "^4.19.1"

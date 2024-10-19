@@ -4,12 +4,17 @@ import {getLogger} from "../../../utils/logger";
 import {QuitSkill} from "../../../skills/quitSkill";
 import {FarmSkill} from "../../../skills/farmSkill";
 import {DocGenerator} from "../../../common/mermaid";
+import {stateDoc} from "../../../decorator/stateDoc";
 
 const logger = getLogger("InstructionState")
 
+@stateDoc({
+    name: "InstructionState",
+    description: "When the master chat a instruction keyword, try to execute this skill first."
+})
 export class InstructionState extends AbstractState {
     constructor() {
-        super("InstructionState", "When the master chat a instruction keyword, try to execute this skill first.");
+        super("InstructionState");
 
         // Register skills
         this.instructionMap.set("quit", this.quit)

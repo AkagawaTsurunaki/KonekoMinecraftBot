@@ -9,15 +9,19 @@ import {FarmSkill} from "../../../skills/farmSkill";
 import {dbscan} from "../../../algorithm/dbscan";
 import {getVec3ListFromClusters} from "../../../algorithm/clustersProcessAlgorithm";
 import {tryGotoNear} from "../../../utils/helper";
+import {stateDoc} from "../../../decorator/stateDoc";
 
 
 const logger = getLogger("HarvestState")
 
+@stateDoc({
+    name: "HarvestState",
+    description: "If a player harvesting nearby, bot will also try to help harvest the crop."
+})
 export class HarvestState extends AbstractState {
 
     constructor() {
-        super("HarvestState",
-            "If a player harvesting nearby, bot will also try to help harvest the crop.");
+        super("HarvestState");
         this.harvestedIntent = new BlockUpdateIntent(3, 10)
     }
 

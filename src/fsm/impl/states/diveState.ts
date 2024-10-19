@@ -2,14 +2,17 @@ import {AbstractState} from "../../abstractState";
 import {range} from "../../../common/decorator";
 import {clamp, dot} from "../../../utils/math";
 import {bot} from "../../../../index";
+import {stateDoc} from "../../../decorator/stateDoc";
 
-
+@stateDoc({
+    name: "DiveState",
+    description: "Bot should surface or sink if in water. Oxygen level and health are also considered.",
+    issue: "It may also oscillate up and down in shallow water."
+})
 export class DiveState extends AbstractState {
 
     constructor() {
-        super("DiveState",
-            "Bot should surface or sink if in water. Oxygen level and health are also considered.",
-            "It may also oscillate up and down in shallow water.");
+        super("DiveState");
     }
 
     private inWaterWeight = 0.1

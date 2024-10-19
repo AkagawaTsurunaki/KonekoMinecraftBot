@@ -4,14 +4,17 @@ import {lock, range} from "../../../common/decorator";
 import {FollowSkill} from "../../../skills/followSkill";
 import {bot} from "../../../../index";
 import {clamp} from "../../../utils/math";
-
+import {stateDoc} from "../../../decorator/stateDoc";
 
 const logger = getLogger("FollowPlayerState")
 
+@stateDoc({
+    name: "FollowPlayerState",
+    description: "Follow the nearest player until the bot thinks it is close enough."
+})
 export class FollowPlayerState extends AbstractState {
     constructor() {
-        super("FollowPlayerState",
-            "Follow the nearest player until the bot thinks it is close enough.");
+        super("FollowPlayerState");
     }
 
     /**

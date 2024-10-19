@@ -3,12 +3,16 @@ import {createLevelFuncByMap} from "../../../utils/math";
 import {AttackSkill} from "../../../skills/attackSkill";
 import {bot} from "../../../../index";
 import {range} from "../../../common/decorator";
+import {stateDoc} from "../../../decorator/stateDoc";
 
+@stateDoc({
+    name: "AttackHostilesState",
+    description: "Attack hostiles approaching robots.",
+    issue: "Probably not dodge from hostiles, but rather lunge aggressively"
+})
 export class AttackHostilesState extends AbstractState {
     constructor() {
-        super("AttackHostilesState",
-            "Attack hostiles approaching robots.",
-            "Probably not dodge from hostiles, but rather lunge aggressively");
+        super("AttackHostilesState");
     }
 
     /**

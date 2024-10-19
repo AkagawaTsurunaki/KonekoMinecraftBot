@@ -6,15 +6,19 @@ import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
 import {bot} from "../../../../index";
 import {LoggingSkill} from "../../../skills/loggingSkill";
 import {lock} from "../../../common/decorator";
+import {stateDoc} from "../../../decorator/stateDoc";
 
 
 const logger = getLogger("LoggingState")
 
-
+@stateDoc({
+    name: "LoggingState",
+    description: "If a player broke some log blocks nearby, " +
+        "bot will also try to help collect the wood with the axe equipped."
+})
 export class LoggingState extends AbstractState {
     constructor() {
-        super("LoggingState", "If a player broke some log blocks nearby, " +
-            "bot will also try to help collect the wood with the axe equipped.");
+        super("LoggingState");
     }
 
     private loggingIntent = new BlockUpdateIntent(3, 30)

@@ -6,14 +6,19 @@ import {clamp} from "../../../utils/math";
 import {GotoWaterSkill} from "../../../skills/gotoWaterSkill";
 import {Block} from "prismarine-block";
 import {lock} from "../../../common/decorator";
+import {stateDoc} from "../../../decorator/stateDoc";
 
 const logger = getLogger("OnFireState")
 
+
+@stateDoc({
+    name: "OnFireState",
+    description: "Bot is on fire or in fire, trying to touch the nearest water block.",
+    issue: "May take a very strange path to get close to the water block, resulting in being burned to death."
+})
 export class OnFireState extends AbstractState {
     constructor() {
-        super("OnFireState",
-            "Bot is on fire or in fire, trying to touch the nearest water block.",
-            "May take a very strange path to get close to the water block, resulting in being burned to death.");
+        super("OnFireState");
     }
 
     private isOnFire: boolean = false

@@ -1,14 +1,17 @@
 import {AbstractState} from "../../abstractState";
 import {AngryBehaviour} from "../../../behaviours/angry";
 import {bot} from "../../../../index";
+import {stateDoc} from "../../../decorator/stateDoc";
 
-
+@stateDoc({
+    name: "AttackPlayerState",
+    description: "Players who has maximum angry value will be attacked first. " +
+        "Player who has dead or has angry value below the threshold of attacking will be forgiven." +
+        "All players will be forgiven when the bot dead."
+})
 export class AttackPlayerState extends AbstractState {
     constructor() {
-        super("AttackPlayerState",
-            "Players who has maximum angry value will be attacked first. " +
-            "Player who has dead or has angry value below the threshold of attacking will be forgiven." +
-            "All players will be forgiven when the bot dead.")
+        super("AttackPlayerState")
     }
 
     private angryBehaviour = new AngryBehaviour()

@@ -7,14 +7,10 @@ const logger = getLogger("AbstractState")
 
 export abstract class AbstractState implements State {
     id: string;
-    description: string
-    issue: string | null
     nextStates: AbstractState[]
 
-    constructor(id: string, description: string, issue: string | null = null) {
+    constructor(id: string) {
         this.id = id
-        this.description = description
-        this.issue = issue
         this.nextStates = []
     }
 

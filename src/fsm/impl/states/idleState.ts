@@ -1,14 +1,20 @@
 import {AbstractState} from "../../abstractState";
 import {Timer} from "../../../utils/timer";
 import {range} from "../../../common/decorator";
+import {stateDoc} from "../../../decorator/stateDoc";
 
+
+@stateDoc({
+    name: "IdleState",
+    description: "Do nothing. It is also an entry node for other states."
+})
 export class IdleState extends AbstractState {
 
     private timer: Timer
     private scaleFactor: number = 0.1
 
     constructor() {
-        super("IdleState", "Do nothing. It is also an entry node for other states.");
+        super("IdleState");
         this.timer = new Timer()
     }
 

@@ -2,12 +2,17 @@ import {AbstractState} from "../../abstractState";
 import {getLogger} from "../../../utils/logger";
 import {bot} from "../../../../index";
 import {myEmitter} from "../../../events/extendedBotEvents";
+import {stateDoc} from "../../../decorator/stateDoc";
 
 const logger = getLogger("InLavaState")
 
+@stateDoc({
+    name: "InLavaState",
+    description: "The robot panics in the lava and will randomly jump around."
+})
 export class InLavaState extends AbstractState {
     constructor() {
-        super("InLavaState", "The robot panics in the lava and will randomly jump around.");
+        super("InLavaState");
     }
 
     isInLava = false

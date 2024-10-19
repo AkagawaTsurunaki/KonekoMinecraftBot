@@ -40,7 +40,7 @@ function initKoneko() {
     logger.info(`Extended event emitter started.`)
 
     // Start finite state machine.
-    const fsm = new CustomFSM()
+    const fsm = CustomFSM.instance
     fsm.init()
     fsm.start()
     logger.info(`Finite state machine started.`)

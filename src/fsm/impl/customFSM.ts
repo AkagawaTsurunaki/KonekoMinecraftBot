@@ -13,6 +13,13 @@ import {InstructionState} from "./states/instructionState";
 
 export class CustomFSM extends FSMImpl {
 
+    public static readonly instance = new CustomFSM()
+
+    private constructor() {
+        super();
+    }
+
+
     private idleState: IdleState | null = null
     private attackHostilesState: AttackHostilesState | null = null
     private attackPlayerState: AttackPlayerState | null = null

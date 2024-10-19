@@ -2,10 +2,10 @@ import {Block} from "prismarine-block";
 import {Entity} from "prismarine-entity";
 import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
-import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {lock} from "../../../common/decorator/lock";
 import {stateDoc} from "../../../common/decorator/stateDoc";
+import {BlockUpdateCognition} from "../../../cognition/blockUpdateCognition";
 
 const logger = getLogger("LoggingState")
 
@@ -19,7 +19,7 @@ export class LoggingState extends AbstractState {
         super("LoggingState", bot);
     }
 
-    private loggingIntent = new BlockUpdateIntent(3, 30)
+    private loggingIntent = new BlockUpdateCognition(3, 30)
     private logName: string | null = null
 
     getTransitionValue(): number {

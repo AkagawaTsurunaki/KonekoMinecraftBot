@@ -1,7 +1,7 @@
 import {LimitedArray} from "../utils/limitArray";
 import {getTimeDiff} from "../utils/math";
 
-export class BlockUpdateIntent {
+export class BlockUpdateCognition {
     protected readonly blockBreakProgressEndEvents: LimitedArray<Date>
     protected readonly continuousDiggingCount: number
     protected readonly continuousDiggingTime: number

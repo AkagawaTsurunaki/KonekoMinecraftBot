@@ -1,6 +1,5 @@
 import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
-import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
 import {Block} from "prismarine-block";
 import {corpsNameList} from "../../../common/const";
 import {ExtendedBot} from "../../../extension/extendedBot";
@@ -8,6 +7,7 @@ import {DbscanAlgorithm} from "../../../algorithm/dbscanAlgorithm";
 import {ClustersProcessAlgorithm} from "../../../algorithm/clustersProcessAlgorithm";
 import {lock} from "../../../common/decorator/lock";
 import {stateDoc} from "../../../common/decorator/stateDoc";
+import {BlockUpdateCognition} from "../../../cognition/blockUpdateCognition";
 
 
 const logger = getLogger("HarvestState")
@@ -19,13 +19,13 @@ const logger = getLogger("HarvestState")
 export class HarvestState extends AbstractState {
     private clusterProcessAlgorithm: ClustersProcessAlgorithm;
     private readonly dbscanAlgorithm: DbscanAlgorithm
-    private readonly harvestedIntent: BlockUpdateIntent
+    private readonly harvestedIntent: BlockUpdateCognition
     private searchRadius = 16;
     private contactRadius = 5;
 
     constructor(bot: ExtendedBot) {
         super("HarvestState", bot)
-        this.harvestedIntent = new BlockUpdateIntent(3, 10)
+        this.harvestedIntent = new BlockUpdateCognition(3, 10)
         this.dbscanAlgorithm = new DbscanAlgorithm(this.bot);
         this.clusterProcessAlgorithm = new ClustersProcessAlgorithm(this.bot)
     }

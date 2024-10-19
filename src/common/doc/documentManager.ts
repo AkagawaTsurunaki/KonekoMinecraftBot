@@ -1,6 +1,7 @@
-import {StateDocument} from "./stateDocument";
-import {getLogger} from "../utils/logger";
+import {getLogger} from "../../utils/logger";
+
 import {InstructionDocument} from "./instructionDocument";
+import {StateDocument} from "./stateDocument";
 
 const logger = getLogger("DocumentManager")
 

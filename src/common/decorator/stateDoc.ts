@@ -1,5 +1,5 @@
-import {StateDocument} from "../../document/stateDocument";
-import {DocumentManager} from "../../document/documentManager";
+import {DocumentManager} from "../doc/documentManager";
+import {StateDocument} from "../doc/stateDocument";
 
 export function stateDoc(doc: { name: string, description: string, issue?: string }) {
     return (target: any) => {

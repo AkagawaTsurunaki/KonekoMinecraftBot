@@ -9,4 +9,3 @@ export class StateDocument {
         this.issue = issue ? issue : "-";
     }
 }
-

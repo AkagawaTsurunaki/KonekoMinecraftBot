@@ -10,7 +10,6 @@ import {ExtendedEventEmitter} from "./events/extendedBotEvents";
 import {CustomFSM} from "./fsm/impl/customFSM";
 import {FSMImpl} from "./fsm/impl/fsmImpl";
 import {DocGenerator} from "./common/mermaid";
-import {DocumentManager} from "./document/documentManager";
 import {AbstractBehaviour} from "./behaviours/abstractBehaviour";
 import {FaceToSoundSourceBehaviour} from "./behaviours/faceToSoundSourceBehaviour";
 import {AutoEatBehaviour} from "./behaviours/autoEatBehaviour";
@@ -19,6 +18,7 @@ import {StopInstruction} from "./instruction/impl/stopInstruction";
 import {SowInstruction} from "./instruction/impl/sowInstruction";
 import {HarvestInstruction} from "./instruction/impl/harvestInstruction";
 import {instructionRegistry} from "./instruction/instruction";
+import {DocumentManager} from "./common/doc/documentManager";
 
 const logger = getLogger("Koneko")
 

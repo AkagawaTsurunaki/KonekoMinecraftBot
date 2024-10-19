@@ -1,6 +1,5 @@
-import {Timer} from "../utils/timer";
-import {ExtendedEventEmitter, myEmitter} from "./extendedBotEvents";
-
+import {ExtendedEventEmitter, myEmitter} from "./extendedEventEmitter";
+import {Timer} from "../../utils/timer";
 
 export class SecondEventEmitter extends ExtendedEventEmitter {
     private readonly timer = new Timer(20)

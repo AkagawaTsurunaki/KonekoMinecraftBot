@@ -1,3 +1,9 @@
+import {getLogger} from "../../utils/logger";
+import {ExtendedBot} from "../extendedBot";
+import {ExtendedEventEmitter, myEmitter} from "./extendedEventEmitter";
+
+const logger = getLogger("DamageEvent")
+
 /**
  * @Author: AkagawaTsrunaki
  *
@@ -8,13 +14,7 @@
  * - Download "registry_data.json": https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2
  */
 
-import {ExtendedEventEmitter, myEmitter} from "./extendedBotEvents";
-import {getLogger} from "../utils/logger";
-import {ExtendedBot} from "../extension/extendedBot";
-
-const logger = getLogger("DamageEvent")
-
-export class DamageType {
+export class DamageEventEmitter {
     public readonly element: {
         exhaustion: number,
         messageId: string
@@ -33,15 +33,17 @@ export class DamageType {
     }
 }
 
+
 export class DamageEventEventEmitter extends ExtendedEventEmitter {
     public constructor(bot: ExtendedBot) {
         super(bot);
     }
+
     /**
      * Load registry data from the corresponding version of `registry_data.json` and parse the damage type data.
      */
     private loadProtocolDamageTypes() {
-        const result = new Map<number, DamageType>;
+        const result = new Map<number, DamageEventEmitter>;
         /**
          * @Note: Default Minecraft version is 1.20.1, download from https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2.
          * You should download the corresponding version of protocol json file by yourself.
@@ -60,7 +62,7 @@ export class DamageEventEventEmitter extends ExtendedEventEmitter {
                 }, id: number, name: string
             }) => {
                 const key = v.id
-                const value = new DamageType({
+                const value = new DamageEventEmitter({
                     exhaustion: v.element.exhaustion,
                     messageId: v.element.message_id,
                     scaling: v.element.scaling
@@ -79,7 +81,7 @@ export class DamageEventEventEmitter extends ExtendedEventEmitter {
      */
     public startEventEmitter() {
         try {
-            const damageTypeMap: Map<number, DamageType> = this.loadProtocolDamageTypes()
+            const damageTypeMap: Map<number, DamageEventEmitter> = this.loadProtocolDamageTypes()
             this.bot._client.on('damage_event', async (packet) => {
                 // The ID of the entity taking damage.
                 const entityId = packet.entityId;

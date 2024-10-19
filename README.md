@@ -48,7 +48,7 @@ Minecraft 1.20.1, 1.20.2 and 1.20.6 are supported.
 > 
 > To support other version of Minecraft, you should download `registry_data.json` from [here](https://wiki.vg/Registry_Data#Damage_Type) (click the link and scroll down to the bottom of page)
 and put the JSON file in `./resource/protocol/{VERSION}/register_data.json`.
-> Then implement the code how process the `DamageType` in this version.
+> Then implement the code how process the `DamageEventEmitter` in this version.
 
 
 ### Download Dependencies

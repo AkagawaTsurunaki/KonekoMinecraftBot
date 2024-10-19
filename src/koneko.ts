@@ -3,10 +3,6 @@ import {pathfinder} from "mineflayer-pathfinder";
 import {plugin as pvp} from "mineflayer-pvp";
 import {loader as autoEat} from "mineflayer-auto-eat";
 import {getLogger} from "./utils/logger";
-import {SecondEventEmitter} from "./events/secondEvent";
-import {DamageEventEventEmitter} from "./events/damageEvent";
-import {BotHurtEventEmitter} from "./events/botHurtEvent";
-import {ExtendedEventEmitter} from "./events/extendedBotEvents";
 import {CustomFSM} from "./fsm/impl/customFSM";
 import {FSMImpl} from "./fsm/impl/fsmImpl";
 import {DocGenerator} from "./common/mermaid";
@@ -19,6 +15,10 @@ import {SowInstruction} from "./instruction/impl/sowInstruction";
 import {HarvestInstruction} from "./instruction/impl/harvestInstruction";
 import {instructionRegistry} from "./instruction/instruction";
 import {DocumentManager} from "./common/doc/documentManager";
+import {BotHurtEventEmitter} from "./extension/events/botHurtEventEmitter";
+import {DamageEventEventEmitter} from "./extension/events/damageEventEmitter";
+import {ExtendedEventEmitter} from "./extension/events/extendedEventEmitter";
+import {SecondEventEmitter} from "./extension/events/secondEventEmitter";
 
 const logger = getLogger("Koneko")
 

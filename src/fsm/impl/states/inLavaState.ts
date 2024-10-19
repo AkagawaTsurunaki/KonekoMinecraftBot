@@ -1,8 +1,8 @@
 import {AbstractState} from "../../abstractState";
 import {getLogger} from "../../../utils/logger";
-import {myEmitter} from "../../../events/extendedBotEvents";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {stateDoc} from "../../../common/decorator/stateDoc";
+import {myEmitter} from "../../../extension/events/extendedEventEmitter";
 
 const logger = getLogger("InLavaState")
 

@@ -1,4 +1,4 @@
-import {ExtendedEventEmitter, myEmitter} from "./extendedBotEvents";
+import {ExtendedEventEmitter, myEmitter} from "./extendedEventEmitter";
 
 export class BotHurtEventEmitter extends ExtendedEventEmitter {
 
@@ -10,4 +10,3 @@ export class BotHurtEventEmitter extends ExtendedEventEmitter {
         })
     }
 }
-

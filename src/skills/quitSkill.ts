@@ -1,14 +1,19 @@
-import {bot, botOption} from "../../index";
+import {botOption} from "../../index";
+import {getLogger} from "../utils/logger";
+import {AbstractSkill} from "./abstractSkill";
 
-export class QuitSkill {
+const logger = getLogger("QuitSkill")
 
-    private static readonly responses: string[] = [
-        "那我走喵~", "拜拜喵~", "下班儿了喵~"
+export class QuitSkill extends AbstractSkill {
+
+    private readonly responses: string[] = [
+        "那我走喵~", "拜拜喵~", "下班儿了喵~", "Bye!"
     ]
 
-    public static quitGame() {
+    public quitGame() {
         const index = Math.floor(Math.random() * this.responses.length);
-        bot.chat(this.responses[index])
-        bot.quit(`${botOption.masterName} asked you to quit.`)
+        this.bot.chat(this.responses[index])
+        this.bot.quit(`${botOption.masterName} asked you to quit.`)
+        logger.info("Bot exited the game.")
     }
 }

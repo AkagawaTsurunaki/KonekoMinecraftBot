@@ -1,5 +1,4 @@
 import {dbscan} from "../algorithm/dbscan";
-import {bot} from "../../index";
 import {tryGotoNear} from "../utils/helper";
 import {axeNameList, woodNameList} from "../common/const";
 import {getLogger} from "../utils/logger";
@@ -12,20 +11,20 @@ export class LoggingSkill extends AbstractSkill {
     private maxCollectCount = 1024
 
     private findWoodsToCollect(wood: string) {
-        return bot.findBlocks({
-            matching: block => block && block.type === bot.registry.blocksByName[wood].id,
+        return this.bot.findBlocks({
+            matching: block => block && block.type === this.bot.registry.blocksByName[wood].id,
             maxDistance: this.maxSearchRadius,
             count: this.maxCollectCount
         })
     }
 
     private async tryEquipAxe() {
-        const axeTypeList = axeNameList.map(axeName => bot.registry.itemsByName[axeName].id)
+        const axeTypeList = axeNameList.map(axeName => this.bot.registry.itemsByName[axeName].id)
         const heldAxeTypeList = axeTypeList.filter(axeType =>
-            bot.inventory.findInventoryItem(axeType, null, false) != null);
+            this.bot.inventory.findInventoryItem(axeType, null, false) != null);
         if (heldAxeTypeList.length == 0)
             return
-        await bot.equip(heldAxeTypeList[0], 'hand')
+        await this.bot.equip(heldAxeTypeList[0], 'hand')
     }
 
     public async logging(wood: string, stop: () => boolean) {
@@ -41,16 +40,16 @@ export class LoggingSkill extends AbstractSkill {
                 .sort((a, b) => a.y - b.y)
             for (const woodPos of loggingPosList) {
                 if (stop()) {
-                    bot.stopDigging()
+                    this.bot.stopDigging()
                     logger.warn(`Logging skill stopped: Stop function called.`)
                     return
                 }
-                const woodBlock = bot.blockAt(woodPos)
+                const woodBlock = this.bot.blockAt(woodPos)
                 if (woodBlock) {
                     await tryGotoNear(woodBlock.position)
                     await this.tryEquipAxe()
                     try {
-                        await bot.dig(woodBlock)
+                        await this.bot.dig(woodBlock)
                     } catch (ignore) {
                     }
                 }

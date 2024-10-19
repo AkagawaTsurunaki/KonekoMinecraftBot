@@ -1,10 +1,10 @@
 import {itemByName} from "../utils/helper";
-import {bot} from "../../index";
 import {getLogger} from "../utils/logger";
+import {AbstractSkill} from "./abstractSkill";
 
 const logger = getLogger("TossSkill")
 
-export class TossSkill {
+export class TossSkill extends AbstractSkill {
     public async tossItem(itemName: string, amount: number | null) {
         const item = itemByName(itemName)
         if (!item) {
@@ -12,10 +12,10 @@ export class TossSkill {
         } else {
             try {
                 if (amount) {
-                    await bot.toss(item.type, null, amount)
+                    await this.bot.toss(item.type, null, amount)
                     logger.info(`Tossed ${amount} x ${itemName}`)
                 } else {
-                    await bot.tossStack(item)
+                    await this.bot.tossStack(item)
                     logger.info(`Tossed ${itemName}`)
                 }
             } catch (e: any) {

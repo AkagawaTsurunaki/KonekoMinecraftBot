@@ -1,7 +1,6 @@
+import Logger = pino.Logger;
 import {hrtime} from "node:process";
 import pino from "pino";
-import Logger = pino.Logger;
-
 
 /**
  * 用于记录函数运行时间的装饰器。

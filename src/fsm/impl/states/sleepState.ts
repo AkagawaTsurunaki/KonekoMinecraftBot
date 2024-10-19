@@ -1,9 +1,9 @@
 import {AbstractState} from "../../abstractState";
 import {clamp, createLinearFunction} from "../../../utils/math";
 import {BEGINNING_OF_DAY, BEGINNING_OF_NIGHT, BEGINNING_OF_SUNRISE, BEGINNING_OF_SUNSET} from "../../../common/const";
-import {stateDoc} from "../../../decorator/stateDoc";
-import {lock} from "../../../decorator/lock";
 import {ExtendedBot} from "../../../extension/extendedBot";
+import {lock} from "../../../common/decorator/lock";
+import {stateDoc} from "../../../common/decorator/stateDoc";
 
 
 @stateDoc({

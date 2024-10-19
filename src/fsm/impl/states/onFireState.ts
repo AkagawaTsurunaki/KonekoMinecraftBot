@@ -4,9 +4,9 @@ import {getLogger} from "../../../utils/logger";
 import {clamp} from "../../../utils/math";
 import {GotoWaterSkill} from "../../../skills/gotoWaterSkill";
 import {Block} from "prismarine-block";
-import {stateDoc} from "../../../decorator/stateDoc";
-import {lock} from "../../../decorator/lock";
 import {ExtendedBot} from "../../../extension/extendedBot";
+import {lock} from "../../../common/decorator/lock";
+import {stateDoc} from "../../../common/decorator/stateDoc";
 
 const logger = getLogger("OnFireState")
 

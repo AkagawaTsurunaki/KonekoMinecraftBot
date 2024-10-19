@@ -1,7 +1,7 @@
 import {Instruction} from "../instruction";
-import {instructionDoc} from "../../decorator/instructionDoc";
 import {getStopFlag, setStopFlag} from "../../share/flags";
 import { ExtendedBot } from "../../extension/extendedBot";
+import {instructionDoc} from "../../common/decorator/instructionDoc";
 
 @instructionDoc({name: "Harvest Corps", description: "Ask bot to harvest."})
 export class HarvestInstruction extends Instruction {

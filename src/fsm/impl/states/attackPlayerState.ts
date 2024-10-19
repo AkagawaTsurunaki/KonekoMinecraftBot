@@ -1,7 +1,7 @@
 import {AbstractState} from "../../abstractState";
-import {stateDoc} from "../../../decorator/stateDoc";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {AngryAlgorithm} from "../../../algorithm/angryAlgorithm";
+import {stateDoc} from "../../../common/decorator/stateDoc";
 
 @stateDoc({
     name: "AttackPlayerState",

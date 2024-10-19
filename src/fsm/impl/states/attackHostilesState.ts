@@ -1,8 +1,8 @@
 import {AbstractState} from "../../abstractState";
 import {createLevelFuncByMap} from "../../../utils/math";
-import {stateDoc} from "../../../decorator/stateDoc";
-import {range} from "../../../decorator/range";
 import {ExtendedBot} from "../../../extension/extendedBot";
+import {range} from "../../../common/decorator/range";
+import {stateDoc} from "../../../common/decorator/stateDoc";
 
 @stateDoc({
     name: "AttackHostilesState",

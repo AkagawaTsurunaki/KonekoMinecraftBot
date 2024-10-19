@@ -1,6 +1,6 @@
 import {Instruction} from "../instruction";
-import {instructionDoc} from "../../decorator/instructionDoc";
 import {ExtendedBot} from "../../extension/extendedBot";
+import {instructionDoc} from "../../common/decorator/instructionDoc";
 
 
 @instructionDoc({name: "Quit Game", description: "Ask bot to quit from the game."})

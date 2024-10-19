@@ -1,5 +1,5 @@
-import {InstructionDocument} from "../document/instructionDocument";
-import {DocumentManager} from "../document/documentManager";
+import {InstructionDocument} from "../../document/instructionDocument";
+import {DocumentManager} from "../../document/documentManager";
 
 export function instructionDoc(info: { name: string, description: string, usage?: string }) {
     return (constructor: Function) => {

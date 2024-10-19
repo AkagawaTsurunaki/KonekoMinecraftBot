@@ -3,9 +3,9 @@ import {Entity} from "prismarine-entity";
 import {getLogger} from "../../../utils/logger";
 import {AbstractState} from "../../abstractState";
 import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
-import {stateDoc} from "../../../decorator/stateDoc";
-import {lock} from "../../../decorator/lock";
 import {ExtendedBot} from "../../../extension/extendedBot";
+import {lock} from "../../../common/decorator/lock";
+import {stateDoc} from "../../../common/decorator/stateDoc";
 
 const logger = getLogger("LoggingState")
 

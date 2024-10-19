@@ -1,8 +1,8 @@
-import {instructionDoc} from "../../decorator/instructionDoc";
 import {Instruction} from "../instruction";
 import {getLogger} from "../../utils/logger";
 import {setStopFlag} from "../../share/flags";
 import {ExtendedBot} from "../../extension/extendedBot";
+import {instructionDoc} from "../../common/decorator/instructionDoc";
 
 const logger = getLogger("StopInstruction")
 

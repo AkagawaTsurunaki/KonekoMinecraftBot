@@ -3,11 +3,11 @@ import {AbstractState} from "../../abstractState";
 import {BlockUpdateIntent} from "../../../intent/blockUpdateIntent";
 import {Block} from "prismarine-block";
 import {corpsNameList} from "../../../common/const";
-import {stateDoc} from "../../../decorator/stateDoc";
-import {lock} from "../../../decorator/lock";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {DbscanAlgorithm} from "../../../algorithm/dbscanAlgorithm";
 import {ClustersProcessAlgorithm} from "../../../algorithm/clustersProcessAlgorithm";
+import {lock} from "../../../common/decorator/lock";
+import {stateDoc} from "../../../common/decorator/stateDoc";
 
 
 const logger = getLogger("HarvestState")

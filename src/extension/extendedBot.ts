@@ -16,6 +16,7 @@ import {ExtendedUtil} from "./extendedUtil";
 import TypedEmitter from "typed-emitter";
 import {ExtendedBotEvents} from "./eventEmitter/extendedEventEmitter";
 import {EventEmitter} from "events";
+import {ChatHistory} from "../share/chatHistory";
 
 const logger = getLogger("isEntityOnFire")
 
@@ -68,6 +69,10 @@ export interface ExtendedBot extends Bot {
     }
 
     events: TypedEmitter<ExtendedBotEvents>
+
+    shares: {
+        chatHistory: ChatHistory
+    }
 }
 
 export function createExtendedBot(botOption: any): ExtendedBot {
@@ -96,6 +101,10 @@ export function createExtendedBot(botOption: any): ExtendedBot {
     bot.utils = new ExtendedUtil(bot)
 
     bot.events = new EventEmitter() as TypedEmitter<ExtendedBotEvents>
+
+    bot.shares = {
+        chatHistory: new ChatHistory(bot)
+    }
 
     // The metadata of `isOnFire` for the bot will not update after its re-spawning.
     bot.on("death", () => {

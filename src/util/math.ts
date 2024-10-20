@@ -31,6 +31,13 @@ export function clamp(val: number, min: number, max: number): number {
     }
 }
 
+export function clampVector(vec: number[], min: number, max: number): number[] {
+    for (let i = 0; i < vec.length; i++) {
+        vec[i] = clamp(vec[i], min, max)
+    }
+    return vec
+}
+
 export function createLevelFuncByMap(map: Map<number, number>): (x: number) => number {
     const xs = new Array<number>
     const ys = new Array<number>

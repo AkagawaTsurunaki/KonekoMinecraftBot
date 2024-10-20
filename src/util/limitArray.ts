@@ -23,4 +23,8 @@ export class LimitedArray<T> {
     getArray(): T[] {
         return this.array;
     }
+
+    get length() {
+        return this.array.length
+    }
 }

@@ -24,7 +24,7 @@ export class InstructionState extends AbstractState {
 
     onListen() {
         super.onListen();
-        this.bot.on("chat", async (username, message) => {
+        this.bot.on("whisper", async (username, message) => {
             if (username === this.bot.option.masterName) {
                 const parser = new StrictParser()
                 const {command, args} = parser.parse(message)

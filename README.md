@@ -93,8 +93,8 @@ Find the config file `./resource/config/botConfig.json` and edit it.
 
 Run the command.
 
-By click the link and open your browser. You will see the whole dynamically updating state diagram for
-`KonekoMinecraftBot`.
+By click the link and open your browser. You will see the whole dynamically updating state diagram of
+`KonekoMinecraftBot` by visiting the link `http:127.0.0.1:5689/stateDiagram.html` by default.
 Purple indicates the current active state, blue indicates states that are connected to the current state,
 and gray indicates states that are not connected to the current state.
 

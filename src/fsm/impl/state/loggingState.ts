@@ -33,7 +33,8 @@ export class LoggingState extends AbstractState {
         super.onListen();
         // @ts-ignore
         this.bot.on("blockBreakProgressEnd", (block: Block, entity: Entity) => {
-            logger.debug(entity.type, block.name)
+            if (!entity) return;
+            if (!entity.type) return;
             if (entity.type === "player" && entity.username !== this.bot.username && block.name.includes("log")) {
                 this.loggingIntent.setIntent()
                 this.logName = block.name

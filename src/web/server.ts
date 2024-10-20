@@ -1,23 +1,51 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import WebSocket from 'ws';
+import {getLogger} from "../util/logger";
+
+const logger = getLogger("WebServer")
 
 export class WebServer {
-    private readonly hostname: string = '127.0.0.1';
-    private readonly port: number = 5689;
-    private readonly websocketPort: number = 5690
     private readonly httpServer: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>
     private readonly websocketServer: WebSocket.Server<typeof WebSocket, typeof http.IncomingMessage>
     private readonly clients: Set<WebSocket> = new Set();
+    private config: { http: { host: string, port: number }, websocket: { host: string, port: number } };
 
     constructor() {
+        this.config = require("../../resources/config/webServer.json");
         this.httpServer = this.createHttpServer()
         this.websocketServer = this.createWebsocketServer()
     }
 
     startServer() {
-        this.httpServer.listen(this.port, this.hostname, () => {
-            console.log(`Server running at http://${this.hostname}:${this.port}/`);
+        const port = this.config.http.port
+        const host = this.config.http.host
+        this.httpServer.listen(port, host, () => {
+            const link = `http://${host}:${port}`
+            logger.info(`Http server running at ${link}`)
+            logger.info(`Click the link to open dynamic state diagram in your browser: ${link}/stateDiagram.html`)
+        });
+
+        this.httpServer.on("error", (e) => {
+            if (e.message.includes("listen EACCES: permission denied")) {
+                logger.fatal("Http server can not start.\n" +
+                    `Possible solution: Port ${this.config.http.port} has been used by other process, please change another port.`)
+                throw e
+            }
+        })
+        this.websocketServer.on("error", (e) => {
+            if (e.message.includes("listen EACCES: permission denied")) {
+                logger.fatal("Websocket server can not start.\n" +
+                `Possible solution: Port ${this.config.websocket.port} has been used by other process, please change another port.`)
+                throw e
+            }
+        })
+        this.websocketServer.on('connection', (ws: any) => {
+            this.clients.add(ws);
+            logger.info(`Websocket connected: ${this.clients.size}`)
+            ws.on('close', () => {
+                this.clients.delete(ws);
+            });
         });
     }
 
@@ -41,22 +69,14 @@ export class WebServer {
     }
 
     private createWebsocketServer() {
-        const wss = new WebSocket.Server({port: this.websocketPort})
-
-        wss.on('connection', (ws: any) => {
-            this.clients.add(ws);
-            console.log("Connected")
-            console.log(this.clients.size);
-            ws.on('close', () => {
-                this.clients.delete(ws);
-            });
-        });
-
-        return wss
+        return new WebSocket.Server({port: this.config.websocket.port, host: this.config.websocket.host})
     }
 
-    public pushMessage(data: any) {
-        // 向所有客户端推送数据
+    /**
+     * Send message to all websocket clients connected.
+     * @param data Any data that can be converted to JSON format.
+     */
+    public sendMessage(data: any) {
         this.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(data));

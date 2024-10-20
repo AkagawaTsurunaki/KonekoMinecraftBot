@@ -1,4 +1,4 @@
-import {ExtendedEventEmitter, myEmitter} from "./extendedEventEmitter";
+import {ExtendedEventEmitter} from "./extendedEventEmitter";
 import {Timer} from "../../util/timer";
 
 export class SecondEventEmitter extends ExtendedEventEmitter {
@@ -8,7 +8,7 @@ export class SecondEventEmitter extends ExtendedEventEmitter {
         this.bot.on("physicsTick", () => {
             this.timer.onPhysicsTick()
             if (this.timer.check()) {
-                myEmitter.emit("secondTick")
+                this.bot.events.emit("secondTick")
                 this.timer.reset()
             }
         })

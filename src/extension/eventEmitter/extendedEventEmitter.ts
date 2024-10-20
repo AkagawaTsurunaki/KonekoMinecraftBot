@@ -1,8 +1,6 @@
 import {BotEvents} from "mineflayer";
 import {DamageEventEmitter} from "./damageEventEmitter";
 import {Entity} from "prismarine-entity";
-import {EventEmitter} from "events";
-import TypedEmitter from "typed-emitter";
 import {ExtendedBot} from "../extendedBot";
 
 export interface ExtendedBotEvents extends BotEvents {
@@ -26,5 +24,3 @@ export abstract class ExtendedEventEmitter {
 
     public abstract startEventEmitter(): void
 }
-
-export const myEmitter = new EventEmitter() as TypedEmitter<ExtendedBotEvents>

@@ -1,6 +1,6 @@
 import {getLogger} from "../../util/logger";
 import {ExtendedBot} from "../extendedBot";
-import {ExtendedEventEmitter, myEmitter} from "./extendedEventEmitter";
+import {ExtendedEventEmitter} from "./extendedEventEmitter";
 
 const logger = getLogger("DamageEvent")
 
@@ -105,10 +105,10 @@ export class DamageEventEventEmitter extends ExtendedEventEmitter {
                 const sourceDirect = this.bot.entities[sourceDirectId - 1];
 
                 // Enhance the raw damage_event event emitter.
-                myEmitter.emit("damageEvent", entity, sourceType, sourceCause, sourceDirect)
+                this.bot.events.emit("damageEvent", entity, sourceType, sourceCause, sourceDirect)
 
                 // Replace the original entityHurt event emitter.
-                myEmitter.emit("entityHurt", entity)
+                this.bot.events.emit("entityHurt", entity)
             })
         } catch (e: any) {
             logger.error(`Fail to load the protocol of Minecraft ${this.bot.option.version}. The bot will not crash but may behaviour abnormally.`)

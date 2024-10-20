@@ -1,7 +1,6 @@
 import {Entity} from "prismarine-entity";
 import {AbstractAlgorithm} from "./abstractAlgorithm";
 import {ExtendedBot} from "../extension/extendedBot";
-import {myEmitter} from "../extension/eventEmitter/extendedEventEmitter";
 
 export class AngryAlgorithm extends AbstractAlgorithm {
 
@@ -39,7 +38,7 @@ export class AngryAlgorithm extends AbstractAlgorithm {
             }
         })
 
-        myEmitter.on("botDamageEvent", (_sourceType, sourceCause) => {
+        this.bot.events.on("botDamageEvent", (_sourceType, sourceCause) => {
             if (sourceCause?.type === "player" && sourceCause.username) {
                 this.rile(sourceCause.username)
             } else if (sourceCause?.type === "hostile" || "mob") {

@@ -3,7 +3,6 @@ import {getLogger} from "../util/logger";
 import {ExtendedVec3} from "../extension/extendedVec3";
 import {AbstractCognition} from "./abstractCognition";
 import {ExtendedBot} from "../extension/extendedBot";
-import {myEmitter} from "../extension/eventEmitter/extendedEventEmitter";
 
 const logger = getLogger("PlacedLavaBlockCognition")
 
@@ -40,7 +39,7 @@ export class ObserveBlockCognition extends AbstractCognition {
             }
         })
 
-        myEmitter.on("secondTick", () => {
+        this.bot.events.on("secondTick", () => {
             this.updatedBlockPositions.forEach(posStr => {
                 const pos = ExtendedVec3.fromCommaSplitString(posStr)
                 const blockAt = this.bot.blockAt(pos);

@@ -1,11 +1,11 @@
-import {ExtendedEventEmitter, myEmitter} from "./extendedEventEmitter";
+import {ExtendedEventEmitter} from "./extendedEventEmitter";
 
 export class BotHurtEventEmitter extends ExtendedEventEmitter {
 
     startEventEmitter(): void {
-        myEmitter.on("damageEvent", (entity, sourceType, sourceCause, sourceDirect) => {
+        this.bot.events.on("damageEvent", (entity, sourceType, sourceCause, sourceDirect) => {
             if (entity.type === 'player' && entity.username === this.bot.username) {
-                myEmitter.emit("botDamageEvent", sourceType, sourceCause, sourceDirect)
+                this.bot.events.emit("botDamageEvent", sourceType, sourceCause, sourceDirect)
             }
         })
     }

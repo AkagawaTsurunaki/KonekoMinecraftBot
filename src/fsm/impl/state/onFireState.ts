@@ -6,7 +6,6 @@ import {Block} from "prismarine-block";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {lock} from "../../../common/decorator/lock";
 import {stateDoc} from "../../../common/decorator/stateDoc";
-import {myEmitter} from "../../../extension/eventEmitter/extendedEventEmitter";
 
 const logger = getLogger("OnFireState")
 
@@ -32,7 +31,7 @@ export class OnFireState extends AbstractState {
 
     onListen() {
         super.onListen();
-        myEmitter.on("botDamageEvent", async (sourceType, sourceCause, sourceDirect) => {
+        this.bot.events.on("botDamageEvent", async (sourceType) => {
             if (sourceType.name === "on_fire") {
                 this.isOnFire = true
             } else if (sourceType.name === "in_fire") {

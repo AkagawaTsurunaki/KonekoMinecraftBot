@@ -2,7 +2,6 @@ import {AbstractState} from "../../abstractState";
 import {getLogger} from "../../../util/logger";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {stateDoc} from "../../../common/decorator/stateDoc";
-import {myEmitter} from "../../../extension/eventEmitter/extendedEventEmitter";
 
 const logger = getLogger("InLavaState")
 
@@ -30,7 +29,7 @@ export class InLavaState extends AbstractState {
 
     onListen() {
         super.onListen();
-        myEmitter.on("botDamageEvent", async (sourceType) => {
+        this.bot.events.on("botDamageEvent", async (sourceType) => {
             this.isInLava = sourceType.name === "lava";
         })
     }

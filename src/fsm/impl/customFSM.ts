@@ -78,4 +78,11 @@ export class CustomFSM extends FSMImpl {
     reset() {
         this.currentState = this.idleState
     }
+
+    start(): void {
+        this.bot.events.on("secondTick", () => {
+            this.update()
+        })
+        this.allStates.forEach(state => state.onListen())
+    }
 }

@@ -2,8 +2,6 @@ import {AbstractState} from "../abstractState";
 import {FiniteStateMachine} from "../fsm";
 import {getLogger} from "../../util/logger";
 
-import {myEmitter} from "../../extension/eventEmitter/extendedEventEmitter";
-
 const logger = getLogger("FiniteStateMachineImpl")
 
 export abstract class FSMImpl implements FiniteStateMachine {
@@ -21,12 +19,7 @@ export abstract class FSMImpl implements FiniteStateMachine {
 
     abstract reset(): void
 
-    start(): void {
-        myEmitter.on("secondTick", () => {
-            this.update()
-        })
-        this.allStates.forEach(state => state.onListen())
-    }
+    abstract start(): void
 
     private getMaxTransitionValueState(): [AbstractState | null, number] {
         let maxTransitionValue = 0

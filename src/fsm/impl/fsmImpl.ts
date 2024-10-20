@@ -26,19 +26,16 @@ export abstract class FSMImpl implements FiniteStateMachine {
     private getMaxTransitionValueState(): [AbstractState | null, number] {
         let maxTransitionValue = 0
         let maxTransitionValueState = null
-        let statesMessage = ""
 
         this.currentState?.nextStates.forEach(state => {
             const transitionValue = state.getTransitionValue();
             this.statesTransitionValueMap.set(state.id, transitionValue)
-            statesMessage += `${state.id}: ${transitionValue}  `
             if (transitionValue > maxTransitionValue) {
                 maxTransitionValueState = state
                 maxTransitionValue = transitionValue
             }
         })
 
-        logger.info(statesMessage)
         return [maxTransitionValueState, maxTransitionValue]
     }
 
@@ -48,7 +45,6 @@ export abstract class FSMImpl implements FiniteStateMachine {
             const currentStateTransitionValue = this.currentState.getTransitionValue();
             this.statesTransitionValueMap.set(this.currentState.id, currentStateTransitionValue)
 
-            logger.info(`--> ${this.currentState.id}: ${currentStateTransitionValue} <--`)
             const [maxTransitionValueState, maxTransitionValue] = this.getMaxTransitionValueState();
 
             if (currentStateTransitionValue > maxTransitionValue) {

@@ -3,10 +3,16 @@ import {Vec3} from "vec3";
 import {Timer} from "../util/timer";
 import {AbstractBehaviour} from "./abstractBehaviour";
 import {ExtendedBot} from "../extension/extendedBot";
+import {behaviourDoc} from "../common/decorator/behaviourDoc";
 
+
+@behaviourDoc({
+    name: "IdleDysphoriaBehaviour",
+    description: "When bot keep in IdleState or stuck, try to go to the other place."
+})
 export class IdleDysphoriaBehaviour extends AbstractBehaviour {
     private readonly maxTimeSampleNum = 3
-    private readonly epsilon = 1
+    private readonly epsilon = 2
     private readonly posSamples = new LimitedArray<Vec3>(this.maxTimeSampleNum)
     private timer: Timer = new Timer(120)
 

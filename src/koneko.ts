@@ -127,6 +127,7 @@ export class Koneko {
         DocGenerator.generateStateDiag(this.fsm)
         DocumentManager.generateStatesForm()
         DocumentManager.generateInstructionsForm()
+        DocumentManager.generateBehavioursForm()
     }
 
 }

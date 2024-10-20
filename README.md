@@ -31,7 +31,7 @@ as **DB-Scan** and **Single Layer Perceptron**.
 - 🛏️ Find the bed to sleep to spend the night.
 - 💭 Follow some built-in instructions.
 - 🏊🏻‍♀️ Swim or float to avoid drowning.
-- 🔥 Look for water when on fire or after in lava.
+- 🔥 Look for water when on fire or stuck in lava.
 - 🎣 Fish with rod when lake or river is found.
 - 😡 Attack the players who provoke it.
 - 🧩 Implement your own skills, states, algorithms, FSM to create a bot!

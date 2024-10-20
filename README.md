@@ -6,23 +6,28 @@
 <img src="https://img.shields.io/badge/Node.js-20.17.0-blue" alt="Node.js 20.17.0">
 <img src="https://img.shields.io/badge/npm-10.8.2-blue" alt="npm">
 
-`KonekoMinecraftBot` is an intelligent Minecraft bot based on **Finite State Machine** and some **Machine Learning Algorithms**, such
+`KonekoMinecraftBot` is an intelligent Minecraft bot based on **Finite State Machine** and some **Machine Learning
+Algorithms**, such
 as **DB-Scan** and **Single Layer Perceptron**.
 
 > [!NOTE]
 >
-> This is the first released alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be fixed in later versions (or not ///>_</// ).
+> This is the first released alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be
+> fixed in later versions (or not ///>_</// ).
 > Just think of your bot as a **Cute Neko Musume** to nurture but not a ~~Cold Dumb Machine~~ to oppress.
 
 <img src="./docs/koneko-logo-github.png" width="800" alt="koneko-logo-github.png" style="text-align: center;">
 
-> The logo and the illustration of Koneko are all designed by [AkagawaTsurunaki](https://github.com/AkagawaTsurunak). Doya?
+> The logo and the illustration of Koneko are all designed by [AkagawaTsurunaki](https://github.com/AkagawaTsurunak).
+> Doya?
 
 ## Features
+
 - 🛡️ Protect players from being attacked by hostiles around.
-- 👠 Follow players and move together. 
+- 👠 Follow players and move together.
 - 🥕 Harvest corps and sow with players.
 - 🪵 Collect woods with players.
+- 🍽️ Automatically eat food when feeling hungry.
 - 🛏️ Find the bed to sleep to spend the night.
 - 💭 Follow some built-in instructions.
 - 🏊🏻‍♀️ Swim or float to avoid drowning.
@@ -45,17 +50,17 @@ Download **Minecraft** in your computer and start the server.
 Minecraft 1.20.1, 1.20.2 and 1.20.6 are supported.
 
 > [!WARNING]
-> 
-> To support other version of Minecraft, you should download `registry_data.json` from [here](https://wiki.vg/Registry_Data#Damage_Type) (click the link and scroll down to the bottom of page)
-and put the JSON file in `./resource/protocol/{VERSION}/register_data.json`.
+>
+> To support other version of Minecraft, you should download `registry_data.json`
+> from [here](https://wiki.vg/Registry_Data#Damage_Type) (click the link and scroll down to the bottom of page)
+> and put the JSON file in `./resource/protocol/{VERSION}/register_data.json`.
 > Then implement the code how process the `DamageEventEmitter` in this version.
-
 
 ### Download Dependencies
 
 Suppose that **Node.js (20.17.0)** and **npm (10.8.2)** have been installed properly.
 
-Use command 
+Use command
 
 ```shell
 npm install
@@ -69,17 +74,23 @@ Find the config file `./resource/config/botConfig.json` and edit it.
 
 ```json5
 {
-  "host": "127.0.0.1", // Minecraft server host. 
-  "port": 25565, // Minecraft server port.
-  "username": "Koneko", // Your bot name.
-  "version": "1.20.1", // Minecraft version. Default to 1.20.1 if null is given.
-  "masterName": "Akagawa" // The name of the master of your bot.
+  "host": "127.0.0.1",
+  // Minecraft server host. 
+  "port": 25565,
+  // Minecraft server port.
+  "username": "Koneko",
+  // Your bot name.
+  "version": "1.20.1",
+  // Minecraft version. Default to 1.20.1 if null is given.
+  "masterName": "Akagawa"
+  // The name of the master of your bot.
 }
 ```
 
 ### Start!
 
 Run the command.
+
 ```shell
 npx tsx ./index.ts
 ```
@@ -106,6 +117,8 @@ But remember, some updates of transition value of specific states may depend on 
 You should consider memory leak when implementing your custom states or FSM.
 
 ### State Diagram
+
+Bot enter different states to take actions when specific condition held.
 
 > The state diagram is generated from source code.
 
@@ -152,6 +165,13 @@ stateDiagram
 
 ### State Form
 
+The detail of all states are shown here.
+
+> [!WARNING]
+> 
+> Sometimes, bot will take weird or bad actions (break your house, dig a hole in your way, or trample your farmland). 
+> Therefore, please be careful when you are on a multiplayer server so as not to cause trouble to other players.
+
 > The state form is generated from source code.
 
 | State ID            | Description                                                                                                                                                                                          | Issues                                                                                                     |
@@ -166,20 +186,32 @@ stateDiagram
 | LoggingState        | If a player broke some log blocks nearby, bot will also try to help collect the wood with the axe equipped.                                                                                          | -                                                                                                          |
 | InLavaState         | The robot panics in the lava and will randomly jump around.                                                                                                                                          | -                                                                                                          |
 | OnFireState         | Bot is on fire or in fire, trying to touch the nearest water block.                                                                                                                                  | May take a very strange path to get close to the water block, resulting in being burned to death.          |
-| InstructionState    | When the master chat a instruction keyword, try to execute this skill first.                                                                                                                         | -                                                                                                          |
+| InstructionState    | When the master chat a instruction keyword, try to execute this skill first.                                                                                                                         | -                                                                                                          |                                                                                                                       | -                                                                                                          |
 
-### Some instructions
+### Instructions
 
 Chat with bot in Minecraft, the bot will prioritize the execution of your instruction.
 
-> The instruction form is generated from source code.
+> The instructions form is generated from source code.
 
-| Instruction | Description                                                                                          |
-|-------------|------------------------------------------------------------------------------------------------------|
-| quit        | Ask bot to quit from the game. Usage: `quit`                                                         |
-| stop        | Ask bot to stop current instruction executing. Note that it will not shutdown the FSM. Usage: `stop` |
-| sow         | Ask bot to sow. Usage: `sow <item_name>`                                                             |
-| harvest     | Ask bot to sow. Usage: `harvest`                                                                     |
+| Instruction   | Description             | Usage                                                                                  |
+|---------------|-------------------------|----------------------------------------------------------------------------------------|
+| Quit Game     | quit                    | Ask bot to quit from the game.                                                         |
+| Stop          | stop                    | Ask bot to stop current instruction executing. Note that it will not shutdown the FSM. |
+| Sow Corps     | sow \<itemName:string\> | Ask bot to sow.                                                                        |
+| Harvest Corps | harvest                 | Ask bot to harvest.                                                                    |
+
+### Behaviours
+
+Behaviors are usually not controlled by FSM and are autonomous and unconscious.
+You are **UNABLE** to force the robot from taking these behaviours with instructions.
+
+> The behaviours form is generated from source code.
+
+| Name                       | Description                                                               |
+|----------------------------|---------------------------------------------------------------------------|
+| FaceToSoundSourceBehaviour | Bot will face to the sound source that made by players, hostiles or mobs. |
+| AutoEatBehaviour           | Thanks to `mineflayer-auto-eat`, auto eat supported.                      |
 
 ## Machine Learning Algorithm
 
@@ -205,7 +237,7 @@ Some servers need a player to input your password. Login using Minecraft client 
 
 ### Bot exited from game abnormally
 
-Many situations will crash the bot, such as network connection or some bugs in my code. 
+Many situations will crash the bot, such as network connection or some bugs in my code.
 You can create an issue if your problem can be reproduced.
 
 ### How can I implement my own FSM?

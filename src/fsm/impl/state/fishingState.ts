@@ -4,7 +4,14 @@ import {Vec3} from "vec3";
 import {clampVector, dot} from "../../../util/math";
 import {range} from "../../../common/decorator/range";
 import {ExtendedBot} from "../../../extension/extendedBot";
+import {stateDoc} from "../../../common/decorator/stateDoc";
 
+@stateDoc({
+    name: "FishingState",
+    description: "If bot has a fishing rod in the inventory and thinks it is close to a certain size of water, " +
+        "it will throw the rod tat where it is facing.",
+    issue: "Bot may throw the fishing rod onto the surface of ground instead of the water."
+})
 export class FishingState extends AbstractState {
     constructor(bot: ExtendedBot) {
         super("FishingState", bot);

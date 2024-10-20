@@ -134,6 +134,7 @@ stateDiagram
     IdleState --> InLavaState
     IdleState --> OnFireState
     IdleState --> InstructionState
+    IdleState --> FishingState
     AttackHostilesState --> IdleState
     AttackHostilesState --> FollowPlayerState
     AttackHostilesState --> InstructionState
@@ -160,6 +161,15 @@ stateDiagram
     OnFireState --> IdleState
     OnFireState --> InstructionState
     InstructionState --> IdleState
+    FishingState --> IdleState
+    FishingState --> AttackHostilesState
+    FishingState --> DiveState
+    FishingState --> FollowPlayerState
+    FishingState --> SleepState
+    FishingState --> InLavaState
+    FishingState --> OnFireState
+    FishingState --> InstructionState
+
 
 ```
 
@@ -168,8 +178,8 @@ stateDiagram
 The detail of all states are shown here.
 
 > [!WARNING]
-> 
-> Sometimes, bot will take weird or bad actions (break your house, dig a hole in your way, or trample your farmland). 
+>
+> Sometimes, bot will take weird or bad actions (break your house, dig a hole in your way, or trample your farmland).
 > Therefore, please be careful when you are on a multiplayer server so as not to cause trouble to other players.
 
 > The state form is generated from source code.
@@ -186,7 +196,8 @@ The detail of all states are shown here.
 | LoggingState        | If a player broke some log blocks nearby, bot will also try to help collect the wood with the axe equipped.                                                                                          | -                                                                                                          |
 | InLavaState         | The robot panics in the lava and will randomly jump around.                                                                                                                                          | -                                                                                                          |
 | OnFireState         | Bot is on fire or in fire, trying to touch the nearest water block.                                                                                                                                  | May take a very strange path to get close to the water block, resulting in being burned to death.          |
-| InstructionState    | When the master chat a instruction keyword, try to execute this skill first.                                                                                                                         | -                                                                                                          |                                                                                                                       | -                                                                                                          |
+| InstructionState    | When the master chat a instruction keyword, try to execute this skill first.                                                                                                                         | -                                                                                                          |
+| FishingState        | If bot has a fishing rod in the inventory and thinks it is close to a certain size of water, it will throw the rod tat where it is facing.                                                           | Bot may throw the fishing rod onto the surface of ground instead of the water.                             |
 
 ### Instructions
 

@@ -95,7 +95,7 @@ export class CustomFSM extends FSMImpl {
                 mermaid: this.getStateDiagramMermaid()
             }
         }
-        server.pushMessage(data)
+        server.sendMessage(data)
     }
 
     private getStateDiagramMermaid() {

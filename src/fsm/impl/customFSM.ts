@@ -99,10 +99,25 @@ export class CustomFSM extends FSMImpl {
     }
 
     private getStateDiagramMermaid() {
+        const purple = {
+            stroke: "#af7eec",
+            fill: "#e2d0f8",
+            color: "#7030a0"
+        }
+        const blue = {
+            stroke: "#46b1e1",
+            fill: "#c1e5f5",
+            color: "#156285"
+        }
+        const gray = {
+            stroke: "#7f7f7f",
+            fill: "#d9d9d9",
+            color: "#404040"
+        }
         return "stateDiagram\n" +
-            "classDef activateState fill:#dd4c39,color:white,font-weight:bold,stroke-width:2px,stroke:#a80000\n" +
-            "classDef nextState fill:#945fd7,color:white,font-weight:bold,stroke-width:2px,stroke:#a80000\n" +
-            "classDef deactivateState fill:#f3f4f5,color:gray,stroke:gray" + "\n" +
+            `classDef activateState fill:${purple.fill},color:${purple.color},stroke:${purple.stroke}\n` +
+            `classDef nextState fill:${blue.fill},color:${blue.color},stroke:${blue.stroke}\n` +
+            `classDef deactivateState fill:${gray.fill},color:${gray.color},stroke:${gray.stroke}` + "\n" +
             this.defineStatesStyle() + "\n" +
             this.getStateConnection() + "\n" + this.getStatesActivateStyle()
     }

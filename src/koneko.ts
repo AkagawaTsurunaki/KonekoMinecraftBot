@@ -19,6 +19,7 @@ import {BotHurtEventEmitter} from "./extension/eventEmitter/botHurtEventEmitter"
 import {DamageEventEventEmitter} from "./extension/eventEmitter/damageEventEmitter";
 import {ExtendedEventEmitter} from "./extension/eventEmitter/extendedEventEmitter";
 import {SecondEventEmitter} from "./extension/eventEmitter/secondEventEmitter";
+import {TossInstruction} from "./instruction/impl/tossInstruction";
 
 const logger = getLogger("Koneko")
 
@@ -104,11 +105,13 @@ export class Koneko {
         const stop = new StopInstruction(this.bot)
         const sow = new SowInstruction(this.bot)
         const harvest = new HarvestInstruction(this.bot)
+        const toss = new TossInstruction(this.bot)
 
         instructionRegistry.set(quit.command, quit)
         instructionRegistry.set(stop.command, stop)
         instructionRegistry.set(sow.command, sow)
         instructionRegistry.set(harvest.command, harvest)
+        instructionRegistry.set(toss.command, toss)
     }
 
     /**

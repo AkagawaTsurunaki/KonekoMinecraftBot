@@ -12,7 +12,7 @@ as **DB-Scan** and **Single Layer Perceptron**.
 
 > [!NOTE]
 >
-> This is the first released alpha version of `KonekoMinecraftBot`, some unexpected behaviours still exist, and may be
+> I am new to TypeScript and `mineflayer`, so some unexpected behaviours of bot still exist, and may be
 > fixed in later versions (or not ///>_</// ).
 > Just think of your bot as a **Cute Neko Musume** to nurture but not a ~~Cold Dumb Machine~~ to oppress.
 

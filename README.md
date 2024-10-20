@@ -92,6 +92,88 @@ Find the config file `./resource/config/botConfig.json` and edit it.
 
 Run the command.
 
+By click the link and open your browser. You will see the whole dynamically updating state diagram for
+`KonekoMinecraftBot`.
+Purple indicates the current active state, blue indicates states that are connected to the current state,
+and gray indicates states that are not connected to the current state.
+
+```mermaid
+stateDiagram
+    classDef activateState fill: #e2d0f8, color: #7030a0, stroke: #af7eec
+    classDef nextState fill: #c1e5f5, color: #156285, stroke: #46b1e1
+    classDef deactivateState fill: #d9d9d9, color: #404040, stroke: #7f7f7f
+    state "IdleState<br>0.18268286794901034" as IdleState
+    state "AttackHostilesState<br>1" as AttackHostilesState
+    state "AttackPlayerState<br>0" as AttackPlayerState
+    state "DiveState<br>0" as DiveState
+    state "FollowPlayerState<br>0" as FollowPlayerState
+    state "SleepState<br>0" as SleepState
+    state "HarvestState<br>0" as HarvestState
+    state "LoggingState<br>0" as LoggingState
+    state "InLavaState<br>0" as InLavaState
+    state "OnFireState<br>0" as OnFireState
+    state "InstructionState<br>0" as InstructionState
+    state "FishingState<br>0" as FishingState
+    IdleState --> AttackHostilesState
+    IdleState --> AttackPlayerState
+    IdleState --> DiveState
+    IdleState --> FollowPlayerState
+    IdleState --> SleepState
+    IdleState --> HarvestState
+    IdleState --> LoggingState
+    IdleState --> InLavaState
+    IdleState --> OnFireState
+    IdleState --> InstructionState
+    IdleState --> FishingState
+    AttackHostilesState --> IdleState
+    AttackHostilesState --> FollowPlayerState
+    AttackHostilesState --> InstructionState
+    AttackPlayerState --> IdleState
+    AttackPlayerState --> AttackHostilesState
+    AttackPlayerState --> InstructionState
+    DiveState --> IdleState
+    DiveState --> FollowPlayerState
+    DiveState --> InstructionState
+    FollowPlayerState --> IdleState
+    FollowPlayerState --> DiveState
+    FollowPlayerState --> AttackHostilesState
+    FollowPlayerState --> InstructionState
+    SleepState --> IdleState
+    SleepState --> InstructionState
+    HarvestState --> IdleState
+    HarvestState --> AttackPlayerState
+    HarvestState --> InstructionState
+    LoggingState --> IdleState
+    LoggingState --> InstructionState
+    InLavaState --> IdleState
+    InLavaState --> OnFireState
+    InLavaState --> InstructionState
+    OnFireState --> IdleState
+    OnFireState --> InstructionState
+    InstructionState --> IdleState
+    FishingState --> IdleState
+    FishingState --> AttackHostilesState
+    FishingState --> DiveState
+    FishingState --> FollowPlayerState
+    FishingState --> SleepState
+    FishingState --> InLavaState
+    FishingState --> OnFireState
+    FishingState --> InstructionState
+    IdleState:::nextState
+    AttackHostilesState:::activateState
+    AttackPlayerState:::deactivateState
+    DiveState:::deactivateState
+    FollowPlayerState:::nextState
+    SleepState:::deactivateState
+    HarvestState:::deactivateState
+    LoggingState:::deactivateState
+    InLavaState:::deactivateState
+    OnFireState:::deactivateState
+    InstructionState:::nextState
+    FishingState:::deactivateState
+
+```
+
 ```shell
 npx tsx ./index.ts
 ```

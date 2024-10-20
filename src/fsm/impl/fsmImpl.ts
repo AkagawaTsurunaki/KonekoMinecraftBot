@@ -8,11 +8,13 @@ export abstract class FSMImpl implements FiniteStateMachine {
     resetWhenException: boolean
     currentState: AbstractState | null;
     allStates: AbstractState[]
+    protected statesTransitionValueMap: Map<string, number>
 
     constructor() {
         this.resetWhenException = false
         this.currentState = null
         this.allStates = []
+        this.statesTransitionValueMap = new Map<string, number>()
     }
 
     abstract init(): void
@@ -28,6 +30,7 @@ export abstract class FSMImpl implements FiniteStateMachine {
 
         this.currentState?.nextStates.forEach(state => {
             const transitionValue = state.getTransitionValue();
+            this.statesTransitionValueMap.set(state.id, transitionValue)
             statesMessage += `${state.id}: ${transitionValue}  `
             if (transitionValue > maxTransitionValue) {
                 maxTransitionValueState = state
@@ -43,6 +46,8 @@ export abstract class FSMImpl implements FiniteStateMachine {
         try {
             if (this.currentState == null) return;
             const currentStateTransitionValue = this.currentState.getTransitionValue();
+            this.statesTransitionValueMap.set(this.currentState.id, currentStateTransitionValue)
+
             logger.info(`--> ${this.currentState.id}: ${currentStateTransitionValue} <--`)
             const [maxTransitionValueState, maxTransitionValue] = this.getMaxTransitionValueState();
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Koneko Minecraft Bot State Diagram</title>
+</head>
+<body>
+<h1>Koneko Minecraft Bot State Diagram</h1>
+<div>
+    All states in FSM will be updated and shown here automatically.
+</div>
+<span id="state-diagram" class='mermaid'>
+        stateDiagram
+        Start --> End
+    </span>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.3.0/mermaid.min.js"></script>
+<script>
+    // Example of using the bindFunctions
+    const drawDiagram = async function (element, graphDefinition) {
+        const { svg, bindFunctions } = await mermaid.render('graphDiv', graphDefinition);
+        element.innerHTML = svg;
+        // This can also be written as `bindFunctions?.(element);` using the `?` shorthand.
+        if (bindFunctions) {
+            bindFunctions(element);
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ws = new WebSocket('ws://127.0.0.1:5690');
+        ws.onmessage = function (event) {
+            // 处理从服务器接收到的数据
+            console.log('Message from server:', event.data);
+            const result = JSON.parse(event.data)
+            console.log(result.type === "stateDiagram")
+            if (result.type === "stateDiagram") {
+                const stateDiagram = document.getElementById("state-diagram");
+                // stateDiagram.textContent = result.data.mermaid
+                drawDiagram(stateDiagram, result.data.mermaid)
+            }
+        };
+        ws.onclose = function (event) {
+            console.warn('Connection lost: WebSocket server closed.');
+        };
+        ws.onerror = function (error) {
+            console.error('WebSocket error observed:', error);
+        };
+
+    });
+</script>
+</html>

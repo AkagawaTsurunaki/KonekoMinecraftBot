@@ -12,6 +12,8 @@ import {OnFireState} from "./state/onFireState";
 import {InstructionState} from "./state/instructionState";
 import {ExtendedBot} from "../../extension/extendedBot";
 import {FishingState} from "./state/fishingState";
+import assert from "node:assert";
+import {server} from "../../../index";
 
 export class CustomFSM extends FSMImpl {
 
@@ -28,8 +30,7 @@ export class CustomFSM extends FSMImpl {
     private readonly inLavaState: InLavaState;
     private readonly onFireState: OnFireState;
     private readonly instructionState: InstructionState;
-    private readonly finshingState: FishingState
-
+    private readonly fishingState: FishingState
 
     constructor(bot: ExtendedBot) {
         super();
@@ -46,25 +47,16 @@ export class CustomFSM extends FSMImpl {
         this.inLavaState = new InLavaState(this.bot)
         this.onFireState = new OnFireState(this.bot)
         this.instructionState = new InstructionState(this.bot)
-        this.finshingState = new FishingState(this.bot)
+        this.fishingState = new FishingState(this.bot)
+
+        this.allStates = [this.idleState, this.attackHostilesState, this.attackPlayerState, this.diveState,
+            this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState,
+            this.onFireState, this.instructionState, this.fishingState,]
     }
 
 
     init() {
-        this.allStates.push(this.idleState)
-        this.allStates.push(this.attackHostilesState)
-        this.allStates.push(this.attackPlayerState)
-        this.allStates.push(this.diveState)
-        this.allStates.push(this.followPlayerState)
-        this.allStates.push(this.sleepState)
-        this.allStates.push(this.harvestState)
-        this.allStates.push(this.loggingState)
-        this.allStates.push(this.inLavaState)
-        this.allStates.push(this.onFireState)
-        this.allStates.push(this.instructionState)
-        this.allStates.push(this.finshingState)
-
-        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState, this.onFireState, this.instructionState, this.finshingState]
+        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState, this.onFireState, this.instructionState, this.fishingState]
         this.attackHostilesState.nextStates = [this.idleState, this.followPlayerState, this.instructionState]
         this.attackPlayerState.nextStates = [this.idleState, this.attackHostilesState, this.instructionState]
         this.diveState.nextStates = [this.idleState, this.followPlayerState, this.instructionState]
@@ -75,7 +67,7 @@ export class CustomFSM extends FSMImpl {
         this.inLavaState.nextStates = [this.idleState, this.onFireState, this.instructionState]
         this.onFireState.nextStates = [this.idleState, this.instructionState]
         this.instructionState.nextStates = [this.idleState]
-        this.finshingState.nextStates = [this.idleState, this.attackHostilesState, this.diveState, this.followPlayerState, this.sleepState, this.inLavaState, this.onFireState, this.instructionState]
+        this.fishingState.nextStates = [this.idleState, this.attackHostilesState, this.diveState, this.followPlayerState, this.sleepState, this.inLavaState, this.onFireState, this.instructionState]
 
         this.currentState = this.idleState
     }
@@ -89,5 +81,66 @@ export class CustomFSM extends FSMImpl {
             this.update()
         })
         this.allStates.forEach(state => state.onListen())
+    }
+
+    update() {
+        super.update();
+        this.updateMermaid()
+    }
+
+    private updateMermaid() {
+        const data = {
+            type: "stateDiagram",
+            data: {
+                mermaid: this.getStateDiagramMermaid()
+            }
+        }
+        server.pushMessage(data)
+    }
+
+    private getStateDiagramMermaid() {
+        return "stateDiagram\n" +
+            "classDef activateState fill:#dd4c39,color:white,font-weight:bold,stroke-width:2px,stroke:#a80000\n" +
+            "classDef nextState fill:#945fd7,color:white,font-weight:bold,stroke-width:2px,stroke:#a80000\n" +
+            "classDef deactivateState fill:#f3f4f5,color:gray,stroke:gray" + "\n" +
+            this.defineStatesStyle() + "\n" +
+            this.getStateConnection() + "\n" + this.getStatesActivateStyle()
+    }
+
+    private defineStatesStyle(): string {
+        let mermaid = ""
+        this.allStates.forEach(state => {
+            const transVal = this.statesTransitionValueMap.get(state.id);
+            mermaid += `state "${state.id}` + "<br>" + `${transVal}" as ${state.id}` + "\n"
+        })
+        return mermaid
+    }
+
+    public getStateConnection(): string {
+        let lines = this.allStates.flatMap(state =>
+            state.nextStates.map(nextState => `${state.id} --> ${nextState.id}`)
+        );
+        lines = Array.from(new Set(lines));
+        let mermaid = ""
+        lines.forEach(line => mermaid += line + "\n")
+        return mermaid
+    }
+
+    private getStatesActivateStyle(): string {
+        const statesStyleMap = new Map<string, string>()
+        this.allStates.forEach(state => {
+            statesStyleMap.set(state.id, "deactivateState")
+        })
+        const currentState = this.currentState
+        assert(currentState, `"currentState" should not be null.`)
+        statesStyleMap.set(currentState.id, "activateState")
+        currentState.nextStates.forEach(state => {
+            statesStyleMap.set(state.id, "nextState")
+        })
+        let mermaid = ""
+        statesStyleMap.forEach((style, stateId) => {
+            mermaid += `${stateId}:::${style}` + "\n"
+        })
+        return mermaid
     }
 }

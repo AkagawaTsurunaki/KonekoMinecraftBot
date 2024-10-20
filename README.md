@@ -34,6 +34,7 @@ as **DB-Scan** and **Single Layer Perceptron**.
 - 🔥 Look for water when on fire or stuck in lava.
 - 🎣 Fish with rod when lake or river is found.
 - 😡 Attack the players who provoke it.
+- 📺️ View all states of FSM in your local browser.
 - 🧩 Implement your own skills, states, algorithms, FSM to create a bot!
 
 **TODO LIST**

@@ -13,6 +13,9 @@ import {QuitSkill} from "../skill/quitSkill";
 import {SleepSkill} from "../skill/sleepSkill";
 import {TossSkill} from "../skill/tossSkill";
 import {ExtendedUtil} from "./extendedUtil";
+import TypedEmitter from "typed-emitter";
+import {ExtendedBotEvents} from "./eventEmitter/extendedEventEmitter";
+import {EventEmitter} from "events";
 
 const logger = getLogger("isEntityOnFire")
 
@@ -63,6 +66,8 @@ export interface ExtendedBot extends Bot {
         "version": string,
         "masterName": string
     }
+
+    events: TypedEmitter<ExtendedBotEvents>
 }
 
 export function createExtendedBot(botOption: any): ExtendedBot {
@@ -89,6 +94,9 @@ export function createExtendedBot(botOption: any): ExtendedBot {
     }
 
     bot.utils = new ExtendedUtil(bot)
+
+    bot.events = new EventEmitter() as TypedEmitter<ExtendedBotEvents>
+
     // The metadata of `isOnFire` for the bot will not update after its re-spawning.
     bot.on("death", () => {
         setEntityIsOnFire(bot.entity, false)

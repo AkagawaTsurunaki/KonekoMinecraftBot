@@ -53,6 +53,7 @@ export class Koneko {
             this.startFiniteStateMachine()
             this.generateDocuments()
 
+
             logger.info(`Koneko Minecraft Bot is running!`)
         })
     }
@@ -67,8 +68,11 @@ export class Koneko {
         logger.info(`All plugins loaded.`)
     }
 
+    /**
+     * Start all extended emitters.
+     */
     startEventEmitters() {
-        // Start custom event emitters.
+        // Register custom event emitters.
         const secondEventEmitter = new SecondEventEmitter(this.bot);
         const damageEventEventEmitter = new DamageEventEventEmitter(this.bot);
         const botHurtEventEmitter = new BotHurtEventEmitter(this.bot);
@@ -76,6 +80,11 @@ export class Koneko {
         this.eventEmitters.push(secondEventEmitter)
         this.eventEmitters.push(damageEventEventEmitter)
         this.eventEmitters.push(botHurtEventEmitter)
+
+        // Start the emitters.
+        this.eventEmitters.forEach(emitter => {
+            emitter.startEventEmitter()
+        })
 
         logger.info(`Extended event emitter started.`)
     }

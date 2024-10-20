@@ -52,7 +52,7 @@ export class DamageEventEventEmitter extends ExtendedEventEmitter {
 
         let damageTypes: any = null
         if (version === "1.20.1" || version === "1.20.2" || version === "1.20.6") {
-            const protocol = require(`../../resources/protocol/1.20.1/registry_data.json`)
+            const protocol = require(`../../../resources/protocol/1.20.1/registry_data.json`)
             damageTypes = protocol["minecraft:damage_type"].value
             damageTypes.forEach((v: {
                 element: {

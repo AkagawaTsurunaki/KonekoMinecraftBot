@@ -10,7 +10,7 @@ export class StrictParser {
 
     parse(str: string) {
         const strings = str.split(/\s+/);
-        const instruction = instructionRegistry.get(str)
+        const instruction = instructionRegistry.get(strings[0])
         if (!instruction) {
             throw Error(`Failed to parse ${instruction}: No such instruction found.`)
         }
@@ -18,15 +18,20 @@ export class StrictParser {
             const args = strings.slice(1)
 
             const argTypes = instruction.argTypes;
-            if (args.length === instruction.args?.length && argTypes) {
+            if (instruction.args && argTypes) {
                 let typedArgs = []
                 for (let i = 0; i < args.length; i++) {
-                    if (argTypes[i] === "string") {
-                        typedArgs.push(instruction.args[i])
-                    } else if (argTypes[i] === "number") {
-                        typedArgs.push(Number(instruction.args[i]))
-                    } else if (argTypes[i] === "boolean") {
-                        typedArgs.push(Boolean(instruction.args[i]))
+                    try {
+                        const arg = strings[i + 1];
+                        if (argTypes[i] === "string") {
+                            typedArgs.push(arg)
+                        } else if (argTypes[i] === "number") {
+                            typedArgs.push(Number(arg))
+                        } else if (argTypes[i] === "boolean") {
+                            typedArgs.push(Boolean(arg))
+                        }
+                    } catch (e) {
+                        typedArgs.push(undefined)
                     }
                 }
                 logger.info(`Parse instruction: ${instruction.command} ${typedArgs}`)

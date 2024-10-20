@@ -32,7 +32,7 @@ export class InstructionState extends AbstractState {
                 if (ins) {
                     this.instructionFlag = true
                     logger.info(`Instruction ${command} executing...`)
-                    await ins.func(args)
+                    await ins.func(...args)
                     logger.info(`Instruction ${command} execution finished.`)
                     this.instructionFlag = false
                 }

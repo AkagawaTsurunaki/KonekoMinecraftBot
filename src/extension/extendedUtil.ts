@@ -11,7 +11,7 @@ export class ExtendedUtil {
     constructor(bot: ExtendedBot) {
         this.bot = bot
     }
-    
+
     public findPlayerByUsername(username: string): Entity | null {
         if (this.bot && username) {
             for (const id in this.bot.entities) {
@@ -64,5 +64,24 @@ export class ExtendedUtil {
         const items = this.bot.inventory.items()
         if (this.bot.registry.isNewerOrEqualTo('1.9') && this.bot.inventory.slots[45]) items.push(this.bot.inventory.slots[45])
         return items.filter(item => item.name === name)[0]
+    }
+
+    public distanceTo(entity: Entity) {
+        if (entity) {
+            return this.bot.entity.position.distanceTo(entity.position)
+        }
+        return Infinity
+    }
+
+    public distanceToMaster() {
+        const player = this.bot.utils.master();
+        if (player) {
+            return this.bot.utils.distanceTo(player.entity)
+        }
+        return Infinity
+    }
+
+    public master() {
+        return this.bot.players[this.bot.option.masterName]
     }
 }

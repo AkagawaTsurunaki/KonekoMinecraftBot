@@ -16,6 +16,15 @@ export class SleepSkill extends AbstractSkill {
         })
     }
 
+    public findBedBlocks(searchRadius: number, count: number) {
+        return this.bot.findBlocks({
+            point: this.bot.entity.position,
+            matching: (block: Block) => block && block.name.includes("bed"),
+            maxDistance: searchRadius,
+            count: count
+        })
+    }
+
     public async gotoSleep(searchRadius: number, count: number, maxTry = 5) {
         logger.info(`Sleep skill executing...`)
         try {

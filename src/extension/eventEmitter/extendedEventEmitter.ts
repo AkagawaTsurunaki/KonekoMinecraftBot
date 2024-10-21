@@ -2,6 +2,7 @@ import {BotEvents} from "mineflayer";
 import {DamageEvent} from "./damageEventEmitter";
 import {Entity} from "prismarine-entity";
 import {ExtendedBot} from "../extendedBot";
+import {ChatMessage} from "prismarine-chat";
 
 export interface ExtendedBotEvents extends BotEvents {
     secondTick: () => Promise<void> | void
@@ -13,6 +14,13 @@ export interface ExtendedBotEvents extends BotEvents {
                   sourceType: DamageEvent,
                   sourceCause: Entity | null,
                   sourceDirect: Entity | null) => Promise<void> | void
+    masterPlainChat: (
+        username: string,
+        message: string,
+        translate: string | null,
+        jsonMsg: ChatMessage,
+        matches: string[] | null
+    ) => Promise<void> | void
 }
 
 export abstract class ExtendedEventEmitter {

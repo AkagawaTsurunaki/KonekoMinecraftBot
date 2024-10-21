@@ -20,6 +20,7 @@ import {DamageEventEventEmitter} from "./extension/eventEmitter/damageEventEmitt
 import {ExtendedEventEmitter} from "./extension/eventEmitter/extendedEventEmitter";
 import {SecondEventEmitter} from "./extension/eventEmitter/secondEventEmitter";
 import {TossInstruction} from "./instruction/impl/tossInstruction";
+import {MasterPlainChatEventEmitter} from "./extension/eventEmitter/masterPlainChatEventEmitter";
 
 const logger = getLogger("Koneko")
 
@@ -77,10 +78,12 @@ export class Koneko {
         const secondEventEmitter = new SecondEventEmitter(this.bot);
         const damageEventEventEmitter = new DamageEventEventEmitter(this.bot);
         const botHurtEventEmitter = new BotHurtEventEmitter(this.bot);
+        const masterPlainChatEventEmitter = new MasterPlainChatEventEmitter(this.bot);
 
         this.eventEmitters.push(secondEventEmitter)
         this.eventEmitters.push(damageEventEventEmitter)
         this.eventEmitters.push(botHurtEventEmitter)
+        this.eventEmitters.push(masterPlainChatEventEmitter)
 
         // Start the emitters.
         this.eventEmitters.forEach(emitter => {

@@ -14,6 +14,7 @@ import {ExtendedBot} from "../../extension/extendedBot";
 import {FishingState} from "./state/fishingState";
 import assert from "node:assert";
 import {server} from "../../../index";
+import {LoveState} from "./state/loveState";
 
 export class CustomFSM extends FSMImpl {
 
@@ -31,6 +32,7 @@ export class CustomFSM extends FSMImpl {
     private readonly onFireState: OnFireState;
     private readonly instructionState: InstructionState;
     private readonly fishingState: FishingState
+    private readonly loveState: LoveState;
 
     constructor(bot: ExtendedBot) {
         super();
@@ -48,15 +50,16 @@ export class CustomFSM extends FSMImpl {
         this.onFireState = new OnFireState(this.bot)
         this.instructionState = new InstructionState(this.bot)
         this.fishingState = new FishingState(this.bot)
+        this.loveState = new LoveState(this.bot)
 
         this.allStates = [this.idleState, this.attackHostilesState, this.attackPlayerState, this.diveState,
             this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState,
-            this.onFireState, this.instructionState, this.fishingState,]
+            this.onFireState, this.instructionState, this.fishingState, this.loveState]
     }
 
 
     init() {
-        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState, this.onFireState, this.instructionState, this.fishingState]
+        this.idleState.nextStates = [this.attackHostilesState, this.attackPlayerState, this.diveState, this.followPlayerState, this.sleepState, this.harvestState, this.loggingState, this.inLavaState, this.onFireState, this.instructionState, this.fishingState, this.loveState]
         this.attackHostilesState.nextStates = [this.idleState, this.followPlayerState, this.instructionState]
         this.attackPlayerState.nextStates = [this.idleState, this.attackHostilesState, this.instructionState]
         this.diveState.nextStates = [this.idleState, this.followPlayerState, this.instructionState]
@@ -68,6 +71,7 @@ export class CustomFSM extends FSMImpl {
         this.onFireState.nextStates = [this.idleState, this.instructionState]
         this.instructionState.nextStates = [this.idleState]
         this.fishingState.nextStates = [this.idleState, this.attackHostilesState, this.diveState, this.followPlayerState, this.sleepState, this.inLavaState, this.onFireState, this.instructionState]
+        this.loveState.nextStates = [this.idleState]
 
         this.currentState = this.idleState
     }

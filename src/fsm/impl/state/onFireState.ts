@@ -49,8 +49,7 @@ export class OnFireState extends AbstractState {
     @lock()
     async onUpdate() {
         super.onUpdate();
-        // @ts-ignore
-        GotoWaterSkill.gotoWater(this.waterBlock)
+        this.bot.skills.gotoWater.gotoWater(this.waterBlock)
     }
 
     onExit() {

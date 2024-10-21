@@ -118,7 +118,7 @@ export function createExtendedBot(botOption: any): ExtendedBot {
                 "Are you sure the address of the server is right?")
         } else if (e.errno === -4077) {
             logger.fatal("Protocol version conflict: \n" +
-                "The Minecraft server does not correspond to your client version.")
+                `The Minecraft server does not correspond to your client version ${bot.option.version}`)
         } else if (e.errno === -4078) {
             logger.fatal("Failed to connect the server:\n" +
                 " Possible solutions: \n" +

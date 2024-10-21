@@ -1,16 +1,16 @@
 import {BotEvents} from "mineflayer";
-import {DamageEventEmitter} from "./damageEventEmitter";
+import {DamageEvent} from "./damageEventEmitter";
 import {Entity} from "prismarine-entity";
 import {ExtendedBot} from "../extendedBot";
 
 export interface ExtendedBotEvents extends BotEvents {
     secondTick: () => Promise<void> | void
     botDamageEvent: (
-        sourceType: DamageEventEmitter,
+        sourceType: DamageEvent,
         sourceCause: Entity | null,
         sourceDirect: Entity | null) => Promise<void> | void
     damageEvent: (entity: Entity,
-                  sourceType: DamageEventEmitter,
+                  sourceType: DamageEvent,
                   sourceCause: Entity | null,
                   sourceDirect: Entity | null) => Promise<void> | void
 }

@@ -2,17 +2,16 @@ import {stateDoc} from "../../../common/decorator/stateDoc";
 import {AbstractState} from "../../abstractState";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {Vec3} from "vec3";
-import {AutoClearZeroValueMap, ExtendedMap} from "../../../util/mapUtil";
+import {ExtendedMap} from "../../../util/mapUtil";
 import {ExtendedVec3} from "../../../extension/extendedVec3";
 import {Block} from "prismarine-block";
 import {Chest, Dispenser} from "mineflayer";
 import {getLogger} from "../../../util/logger";
 import {range} from "../../../common/decorator/range";
 import {lock} from "../../../common/decorator/lock";
+import {targetItemNameMap} from "./searchResourceState";
 
 const logger = getLogger("SearchForChestState")
-
-export const targetItemNameMap = new AutoClearZeroValueMap<string, number>()
 
 @stateDoc({
     name: "SearchForChestState",

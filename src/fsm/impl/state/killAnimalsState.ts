@@ -6,6 +6,7 @@ import {stateDoc} from "../../../common/decorator/stateDoc";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {AutoClearZeroValueMap} from "../../../util/mapUtil";
 import {clamp, dot, sum} from "../../../util/math";
+import {enableKillAnimalsState, setEnableKillAnimalsState} from "./searchResourceState";
 
 const logger = getLogger("KillAnimalsState")
 
@@ -24,6 +25,7 @@ export class KillAnimalsState extends AbstractState {
 
     @range(0, 1)
     getTransitionValue(): number {
+        if (!enableKillAnimalsState) return 0
         if (targetAnimals.size > 0) {
             const targetCount = sum(targetAnimals.toValueList())
             const entities = this.findAnimals(targetCount);
@@ -70,5 +72,6 @@ export class KillAnimalsState extends AbstractState {
             await this.bot.skills.attack.equipWeapon()
             await this.bot.pvp.attack(animalEntity)
         }
+        setEnableKillAnimalsState(false)
     }
 }

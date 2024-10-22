@@ -5,7 +5,7 @@ import {Chest, Dispenser} from "mineflayer";
 import {getLogger} from "../../../util/logger";
 import {range} from "../../../common/decorator/range";
 import {lock} from "../../../common/decorator/lock";
-import {targetItemNameMap} from "./searchResourceState";
+import {enableSearchForChestState, setEnableSearchForChestState, targetItemNameMap} from "./searchResourceState";
 import {maxDistanceAmong, minDistanceAmong} from "../../../util/distUtil";
 import {clamp, dot} from "../../../util/math";
 
@@ -26,6 +26,7 @@ export class SearchForChestState extends AbstractState {
 
     @range(0, 1)
     getTransitionValue(): number {
+        if (!enableSearchForChestState) return 0
         if (targetItemNameMap.size > 0) {
             const chestPositions = this.bot.skills.findChest.findCachedChestsIncludingItems(targetItemNameMap);
             if (chestPositions) {
@@ -72,6 +73,7 @@ export class SearchForChestState extends AbstractState {
                 chest.close()
             }
         }
+        setEnableSearchForChestState(false)
     }
 
 

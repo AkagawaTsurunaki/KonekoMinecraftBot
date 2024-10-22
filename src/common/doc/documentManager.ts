@@ -2,6 +2,7 @@ import {getLogger} from "../../util/logger";
 
 import {InstructionDocument} from "./instructionDocument";
 import {StateDocument} from "./stateDocument";
+import {FiniteStateMachine} from "../../fsm/fsm";
 
 const logger = getLogger("DocumentManager")
 
@@ -15,7 +16,7 @@ export class DocumentManager {
     }>()
 
     public static generateStatesForm() {
-        let result = "| State ID | Description | Issues |" + "\n"
+        let result = "| State ID | Description | Issues |" + "\n" +
         "|---|---|---|" + "\n";
         this.statesDoc.forEach(sd => {
             result += " | " + sd.name + " | " + sd.description + " | " + sd.issue + "| \n"
@@ -43,6 +44,18 @@ export class DocumentManager {
         })
         logger.info("Document of behaviours generated.")
         logger.info(result)
+        return result
+    }
+
+    public static generateStateDiagram(fsm: FiniteStateMachine) {
+        let lines = fsm.allStates.flatMap(state =>
+            state.nextStates.map(nextState => `${state.id} --> ${nextState.id}`)
+        );
+        lines = Array.from(new Set(lines));
+        logger.info(`Mermaid state diagram generated.`)
+        let result = ""
+        lines.forEach(line => result += line + "\n")
+        logger.info("stateDiagram\n" + result)
         return result
     }
 

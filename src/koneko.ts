@@ -5,7 +5,6 @@ import {loader as autoEat} from "mineflayer-auto-eat";
 import {getLogger} from "./util/logger";
 import {CustomFSM} from "./fsm/impl/customFSM";
 import {FSMImpl} from "./fsm/impl/fsmImpl";
-import {DocGenerator} from "./common/mermaid";
 import {AbstractBehaviour} from "./behaviour/abstractBehaviour";
 import {FaceToSoundSourceBehaviour} from "./behaviour/faceToSoundSourceBehaviour";
 import {AutoEatBehaviour} from "./behaviour/autoEatBehaviour";
@@ -130,7 +129,7 @@ export class Koneko {
      * Generate documents
      */
     generateDocuments() {
-        DocGenerator.generateStateDiag(this.fsm)
+        DocumentManager.generateStateDiagram(this.fsm)
         DocumentManager.generateStatesForm()
         DocumentManager.generateInstructionsForm()
         DocumentManager.generateBehavioursForm()

@@ -84,4 +84,54 @@ export class ExtendedUtil {
     public master() {
         return this.bot.players[this.bot.option.masterName]
     }
+
+    public findEntities(info: {
+        point?: Vec3
+        matching: number | number[] | ((entity: Entity) => boolean)
+        maxDistance?: number
+        count?: number
+    }) {
+        const point = info.point ? info.point : this.bot.entity.position
+        const matching = info.matching
+        const maxDistance = info.maxDistance ? info.maxDistance : 256
+        const count = info.count ? info.count : 1
+
+        const result = []
+        for (let id in this.bot.entities) {
+            if (count === result.length) {
+                // Max count arrived
+                break
+            }
+
+            const entity = this.bot.entities[id];
+            if (!entity) {
+                // Skip null entity.
+                continue;
+            }
+
+            const dist = point.distanceTo(entity.position)
+            if (dist >= maxDistance) {
+                // Skip too far entity.
+                continue;
+            }
+
+            if (typeof matching === "function") {
+                if (matching(entity)) {
+                    result.push(entity)
+                }
+            } else if (typeof matching === "number") {
+                if (matching === Number(id)) {
+                    result.push(entity)
+                }
+            } else if (Array.isArray(matching)) {
+                if (matching.includes(Number(id))) {
+                    result.push(entity)
+                }
+            } else {
+                throw new Error("matching param is invalid.")
+            }
+        }
+
+        return result
+    }
 }

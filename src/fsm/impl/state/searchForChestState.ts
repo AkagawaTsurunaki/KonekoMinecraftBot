@@ -28,11 +28,13 @@ export class SearchForChestState extends AbstractState {
     getTransitionValue(): number {
         if (!enableSearchForChestState) return 0
         if (targetItemNameMap.size > 0) {
-            const chestPositions = this.bot.skills.findChest.findCachedChestsIncludingItems(targetItemNameMap);
-            if (chestPositions) {
+            let chestPositions = this.bot.skills.findChest.findCachedChestsIncludingItems(targetItemNameMap);
+            if (chestPositions === null || chestPositions?.length === 0) {
+                chestPositions = this.bot.skills.findChest.searchChestAround();
+            }
+            if (chestPositions && chestPositions.length > 0) {
                 const minDistanceAmongChests = minDistanceAmong(chestPositions, this.bot.entity.position);
                 const maxDistanceAmongChests = maxDistanceAmong(chestPositions, this.bot.entity.position);
-
                 const s = clamp((maxDistanceAmongChests - minDistanceAmongChests) / maxDistanceAmongChests, 0, 1)
                 const near = minDistanceAmongChests < this.minChestDistance ? 1 : 0
                 const remote = maxDistanceAmongChests < this.maxChestDistance ? 1 : 0

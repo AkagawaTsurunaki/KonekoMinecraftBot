@@ -8,8 +8,6 @@ import {AutoClearZeroValueMap} from "../../../util/mapUtil";
 
 const logger = getLogger("KillAnimalsState")
 
-const meatDroppableAnimals = ['cow', 'chicken', 'pig', 'sheep', 'rabbit']
-const rawMeat = new Map([['cow', "beef"], ['chicken', "chicken"], ['pig', "porkchop"], ['sheep', "mutton"], ['rabbit', "rabbit"]])
 const targetAnimals = new AutoClearZeroValueMap<string, number>()
 
 @stateDoc({

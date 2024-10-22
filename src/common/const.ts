@@ -7,3 +7,5 @@ export const corpsNameList: string[] = ['wheat', 'potatoes', 'carrots', 'beetroo
 export const woodNameList: string[] = ['cherry_log', 'oak_log', 'dark_oak_log', 'spruce_log', 'birch_log', 'jungle_log', 'acacia_log', 'mangrove_log']
 export const axeNameList: string[] = ['diamond_axe', 'iron_axe', 'stone_axe', 'wooden_axe', 'golden_axe', 'netherite_axe']
 export const entityTypes = ['player', 'mob', 'object', 'global', 'orb', 'projectile', 'hostile', 'other']
+export const meatDroppableAnimals = ['cow', 'chicken', 'pig', 'sheep', 'rabbit']
+export const rawMeat = new Map([['cow', "beef"], ['chicken', "chicken"], ['pig', "porkchop"], ['sheep', "mutton"], ['rabbit', "rabbit"]])

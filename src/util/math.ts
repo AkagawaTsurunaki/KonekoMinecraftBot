@@ -70,3 +70,39 @@ export function getTimeDiff(date1: Date, date2: Date) {
 export function randomNeg1ToPos1() {
     return (Math.random() - 0.5) * 2
 }
+
+/**
+ * Finds the maximum value in an array of numbers.
+ * @param array The array of numbers to search.
+ * @returns The maximum value in the array, or undefined if the array is empty.
+ */
+export function max(array: number[]): number {
+    if (array.length === 0) {
+        throw Error("Length of array should >=1")
+    }
+    let max = array[0];
+    for (let i = 1; i < array.length; i++) {
+        if (array[i] > max) {
+            max = array[i];
+        }
+    }
+    return max;
+}
+
+/**
+ * Finds the minimum value in an array of numbers.
+ * @param array The array of numbers to search.
+ * @returns The minimum value in the array, or undefined if the array is empty.
+ */
+export function min(array: number[]): number {
+    if (array.length === 0) {
+        throw Error("Length of array should >=1")
+    }
+    let min = array[0];
+    for (let i = 1; i < array.length; i++) {
+        if (array[i] < min) {
+            min = array[i];
+        }
+    }
+    return min;
+}

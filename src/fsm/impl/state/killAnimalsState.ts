@@ -10,7 +10,7 @@ import {enableKillAnimalsState, setEnableKillAnimalsState} from "./searchResourc
 
 const logger = getLogger("KillAnimalsState")
 
-const targetAnimals = new AutoClearZeroValueMap<string, number>()
+export const targetAnimals = new AutoClearZeroValueMap<string, number>()
 
 @stateDoc({
     name: "KillAnimalsState",
@@ -30,7 +30,7 @@ export class KillAnimalsState extends AbstractState {
             const targetCount = sum(targetAnimals.toValueList())
             const entities = this.findAnimals(targetCount);
             const distSum = sum(entities.map(entity => this.bot.utils.distanceTo(entity)));
-            const dist = 1 - clamp((distSum / targetCount * this.searchAnimalRadius), 0, 1)
+            const dist = 1 - clamp((distSum / (targetCount * this.searchAnimalRadius)), 0, 1)
             const food = clamp((20 - this.bot.food) / 20, 0, 1)
             logger.debug(`Dist factor is ${dist}`)
             return dot([0.8, 0.2], [dist, food])
@@ -67,11 +67,20 @@ export class KillAnimalsState extends AbstractState {
 
         const entities = this.findAnimals(100);
 
+        if (entities.length === 0) {
+            targetAnimals.clear()
+        }
+
         for (let animalEntity of entities) {
             logger.info(`Attack animal ${animalEntity.name}`)
             await this.bot.skills.attack.equipWeapon()
             await this.bot.pvp.attack(animalEntity)
         }
         setEnableKillAnimalsState(false)
+    }
+
+    onExit() {
+        super.onExit();
+        targetAnimals.clear()
     }
 }

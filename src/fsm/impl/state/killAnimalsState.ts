@@ -5,6 +5,7 @@ import {getLogger} from "../../../util/logger";
 import {stateDoc} from "../../../common/decorator/stateDoc";
 import {ExtendedBot} from "../../../extension/extendedBot";
 import {AutoClearZeroValueMap} from "../../../util/mapUtil";
+import {clamp, dot, sum} from "../../../util/math";
 
 const logger = getLogger("KillAnimalsState")
 
@@ -15,7 +16,7 @@ const targetAnimals = new AutoClearZeroValueMap<string, number>()
     description: "Attack and kill the nearest animal that can drop meat."
 })
 export class KillAnimalsState extends AbstractState {
-    private targetAnimalEntityIdList: Set<number> = new Set<number>()
+    private searchAnimalRadius: number = 16
 
     constructor(bot: ExtendedBot) {
         super("KillAnimalsState", bot);
@@ -24,53 +25,47 @@ export class KillAnimalsState extends AbstractState {
     @range(0, 1)
     getTransitionValue(): number {
         if (targetAnimals.size > 0) {
-            return 1
+            const targetCount = sum(targetAnimals.toValueList())
+            const entities = this.findAnimals(targetCount);
+            const distSum = sum(entities.map(entity => this.bot.utils.distanceTo(entity)));
+            const dist = 1 - clamp((distSum / targetCount * this.searchAnimalRadius), 0, 1)
+            const food = clamp((20 - this.bot.food) / 20, 0, 1)
+            logger.debug(`Dist factor is ${dist}`)
+            return dot([0.8, 0.2], [dist, food])
         }
         return 0
     }
 
     onListen() {
         super.onListen();
-        this.bot.events.on("masterPlainChat", (username, message) => {
-            if (message === "kill animals") {
-                targetAnimals.set("pig", 1)
-            }
-        })
         this.bot.on("entityDead", entity => {
             if (!entity) return
             if (!entity.name) return;
             if (targetAnimals.has(entity.name)) {
                 targetAnimals.setAndAdd(entity.name, -1)
             }
-            if (this.targetAnimalEntityIdList.has(entity.id)) {
-                this.targetAnimalEntityIdList.delete(entity.id)
-            }
         })
+    }
+
+    private findAnimals(count: number) {
+        const entities = this.bot.utils.findEntities({
+            matching: entity => entity.name !== undefined && targetAnimals.toKeyList().includes(entity.name),
+            maxDistance: this.searchAnimalRadius,
+            count: count
+        });
+
+        logger.debug(`Find ${entities.length} animals.`)
+
+        return entities
     }
 
     @lock()
     async onUpdate() {
         super.onUpdate();
 
-        for (let entityId of this.targetAnimalEntityIdList) {
-            if (!this.bot.entities[entityId]) {
-                this.targetAnimalEntityIdList.delete(entityId)
-            }
-        }
+        const entities = this.findAnimals(100);
 
-        const targetAnimalEntities = []
-        for (let [animalName, amount] of targetAnimals) {
-            for (let entityId in this.bot.entities) {
-                const entity = this.bot.entities[entityId];
-                if (entity.name === animalName) {
-                    if (entity.position.distanceTo(this.bot.entity.position) < 16) {
-                        this.targetAnimalEntityIdList.add(entity.id)
-                        targetAnimalEntities.push(entity)
-                    }
-                }
-            }
-        }
-        for (let animalEntity of targetAnimalEntities) {
+        for (let animalEntity of entities) {
             logger.info(`Attack animal ${animalEntity.name}`)
             await this.bot.skills.attack.equipWeapon()
             await this.bot.pvp.attack(animalEntity)

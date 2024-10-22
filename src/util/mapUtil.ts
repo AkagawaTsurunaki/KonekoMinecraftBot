@@ -13,8 +13,16 @@ export class ExtendedMap<K, V extends number> extends Map<K, V> {
 
     toKeyList() {
         const result: K[] = []
-        this.forEach((value, key) => {
+        this.forEach((_, key) => {
             result.push(key)
+        })
+        return result;
+    }
+
+    toValueList() {
+        const result: V[] = []
+        this.forEach((value) => {
+            result.push(value)
         })
         return result;
     }

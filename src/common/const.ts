@@ -9,3 +9,4 @@ export const axeNameList: string[] = ['diamond_axe', 'iron_axe', 'stone_axe', 'w
 export const entityTypes = ['player', 'mob', 'object', 'global', 'orb', 'projectile', 'hostile', 'other']
 export const meatDroppableAnimals = ['cow', 'chicken', 'pig', 'sheep', 'rabbit']
 export const rawMeat = new Map([['cow', "beef"], ['chicken', "chicken"], ['pig', "porkchop"], ['sheep', "mutton"], ['rabbit', "rabbit"]])
+export const meatToAnimal = new Map([["beef", 'cow'], ["chicken", 'chicken'], ["porkchop", 'pig'], ["mutton", 'sheep'], ["rabbit", 'rabbit']])

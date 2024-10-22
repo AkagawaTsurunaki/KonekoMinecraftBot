@@ -1,15 +1,13 @@
 import {stateDoc} from "../../../common/decorator/stateDoc";
 import {AbstractState} from "../../abstractState";
 import {ExtendedBot} from "../../../extension/extendedBot";
-import {Vec3} from "vec3";
-import {ExtendedMap} from "../../../util/mapUtil";
-import {ExtendedVec3} from "../../../extension/extendedVec3";
-import {Block} from "prismarine-block";
 import {Chest, Dispenser} from "mineflayer";
 import {getLogger} from "../../../util/logger";
 import {range} from "../../../common/decorator/range";
 import {lock} from "../../../common/decorator/lock";
 import {targetItemNameMap} from "./searchResourceState";
+import {maxDistanceAmong, minDistanceAmong} from "../../../util/distUtil";
+import {clamp, dot} from "../../../util/math";
 
 const logger = getLogger("SearchForChestState")
 
@@ -23,34 +21,39 @@ export class SearchForChestState extends AbstractState {
         super("SearchForChestState", bot);
     }
 
+    private readonly maxChestDistance: number = 100
+    private readonly minChestDistance: number = 32
+
     @range(0, 1)
     getTransitionValue(): number {
         if (targetItemNameMap.size > 0) {
-            logger.debug(targetItemNameMap)
-            return 1
+            const chestPositions = this.bot.skills.findChest.findCachedChestsIncludingItems(targetItemNameMap);
+            if (chestPositions) {
+                const minDistanceAmongChests = minDistanceAmong(chestPositions, this.bot.entity.position);
+                const maxDistanceAmongChests = maxDistanceAmong(chestPositions, this.bot.entity.position);
+
+                const s = clamp((maxDistanceAmongChests - minDistanceAmongChests) / maxDistanceAmongChests, 0, 1)
+                const near = minDistanceAmongChests < this.minChestDistance ? 1 : 0
+                const remote = maxDistanceAmongChests < this.maxChestDistance ? 1 : 0
+
+                return dot([0.5, 0.25, 0.25],
+                    [s, near, remote])
+            }
         }
         return 0
     }
-    
-    private chestCache = new Map<string, Map<string, number>>
 
     onListen() {
         super.onListen();
-        this.bot.events.on("masterPlainChat", (username, message) => {
-            if (message === "find") {
-                // test for raw beef
-                targetItemNameMap.set("beef", 1)
-            }
-        })
     }
 
     @lock()
     async onUpdate() {
         super.onUpdate();
-        let chestPositions = this.recallWhereTargetChest();
+        let chestPositions = this.bot.skills.findChest.findCachedChestsIncludingItems(targetItemNameMap)
         if (!chestPositions || chestPositions.length == 0) {
             // If bot does not find the target item in chest list in memory.
-            chestPositions = this.searchChestAround()
+            chestPositions = this.bot.skills.findChest.searchChestAround()
         }
 
         if (!chestPositions) return;
@@ -58,62 +61,19 @@ export class SearchForChestState extends AbstractState {
         // If bot know the position of the chest and include item
         for (const pos of chestPositions) {
             logger.debug("Number of chests around:" + chestPositions.length)
-            const chestBlock = await this.goNearToCheckChest(pos);
+            const chestBlock = await this.bot.skills.findChest.goNearToCheckChest(pos);
             if (chestBlock) {
                 // Confirm has chestBlock
-                const chest = await this.openChest(chestBlock);
+                const chest = await this.bot.skills.findChest.openChest(chestBlock);
                 if (!chest) continue
 
                 await this.takeTargetItems(chest)
-                this.updateChestCache(chestBlock.position, chest)
+                this.bot.skills.findChest.updateChestCache(chestBlock.position, chest)
                 chest.close()
             }
         }
     }
 
-    private recallWhereTargetChest(): Vec3[] | null {
-        const interestedChests = new ExtendedMap<string, number>()
-
-        this.chestCache.forEach((map, posStr) => {
-            targetItemNameMap.forEach((amount, itemName) => {
-                if (map.has(itemName)) {
-                    interestedChests.setAndAdd(posStr, 1)
-                }
-            })
-        })
-        return interestedChests.toKeyList().map(posStr => ExtendedVec3.fromCommaSplitString(posStr))
-    }
-
-    private searchChestAround(): Vec3[] | null {
-        const blocks = this.bot.findBlocks({
-            point: this.bot.entity.position,
-            maxDistance: 64,
-            matching: block => block.name === "chest",
-            count: 100
-        })
-        logger.info(`Chest blocks around: ${blocks.length}`)
-        return blocks
-    }
-
-    private async goNearToCheckChest(pos: Vec3): Promise<Block | null> {
-        await this.bot.utils.tryGotoNear(pos)
-        const blockAt = this.bot.blockAt(pos);
-        if ((!blockAt) || blockAt.name !== "chest") {
-            logger.warn("Where is the chest? I thought.")
-            return null
-        }
-
-        return blockAt
-    }
-
-    private async openChest(block: Block) {
-        try {
-            return await this.bot.openContainer(block)
-        } catch (e: any) {
-            logger.error(`Error to open the chest at ${block.position.toArray()}: ${e.message}`)
-            return null
-        }
-    }
 
     private async takeTargetItems(chest: Chest | Dispenser) {
         for (const [itemName, amount] of targetItemNameMap.entries()) {
@@ -136,13 +96,6 @@ export class SearchForChestState extends AbstractState {
         }
     }
 
-    private updateChestCache(pos: Vec3, chest: Chest) {
-        const map = new Map<string, number>
-        chest.items().forEach(item => {
-            map.set(item.name, item.count)
-        })
-        this.chestCache.set(ExtendedVec3.of(pos).toCommaSplitString(), map)
-    }
 
     onExit() {
         super.onExit();

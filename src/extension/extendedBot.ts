@@ -17,6 +17,7 @@ import TypedEmitter from "typed-emitter";
 import {ExtendedBotEvents} from "./eventEmitter/extendedEventEmitter";
 import {EventEmitter} from "events";
 import {ChatHistory} from "../share/chatHistory";
+import {FindChestSkill} from "../skill/findChestSkill";
 
 const logger = getLogger("isEntityOnFire")
 
@@ -56,6 +57,7 @@ export interface ExtendedBot extends Bot {
         quit: QuitSkill
         sleep: SleepSkill
         toss: TossSkill
+        findChest: FindChestSkill
     }
 
     utils: ExtendedUtil
@@ -96,6 +98,7 @@ export function createExtendedBot(botOption: any): ExtendedBot {
         quit: new QuitSkill(bot),
         sleep: new SleepSkill(bot),
         toss: new TossSkill(bot),
+        findChest: new FindChestSkill(bot)
     }
 
     bot.utils = new ExtendedUtil(bot)

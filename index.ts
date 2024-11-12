@@ -1,8 +1,12 @@
-import {WebServer} from "./src/web/server";
-import {Koneko} from "./src/koneko";
+// import {WebServer} from "./src/web/server";
+// import {Koneko} from "./src/koneko";
+//
+// export const konekoMinecraftBot = new Koneko()
+// konekoMinecraftBot.start()
+//
+// export const server = new WebServer()
+// server.startServer()
 
-export const konekoMinecraftBot = new Koneko()
-konekoMinecraftBot.start()
+import {ZerolanLiveRobotBridge} from "./src/web/zerolanPlugin";
 
-export const server = new WebServer()
-server.startServer()
+const zerolanPlugin = new ZerolanLiveRobotBridge()

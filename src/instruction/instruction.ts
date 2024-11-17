@@ -1,4 +1,7 @@
 import {ExtendedBot} from "../extension/extendedBot";
+import 'reflect-metadata';
+import * as console from "node:console";
+import {paramMetadata} from "../common/fieldMetadata";
 
 export class Instruction {
     command: string
@@ -27,5 +30,43 @@ export class Instruction {
 export const instructionRegistry = new Map<string, Instruction>()
 
 
+export function argsMetadata() {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function (args: object) {
+            Object.entries(args).forEach(([key, value]) => {
+                console.log(key, typeof value);
+                Reflect.defineMetadata(key, typeof value, originalMethod);
+            });
+            originalMethod.apply(this, args)
+        };
+        return descriptor;
+    };
+}
 
+
+export class NewInstruction {
+    name: string;
+    description: string;
+
+    constructor(name: string, description: string) {
+        this.name = name;
+        this.description = description;
+    }
+
+    @argsMetadata()
+    execute(args: object) {
+        throw new Error("Not Implemented");
+    }
+}
+
+
+class ChatInstructionInput {
+    @paramMetadata("消息内容")
+    public content: string = "";
+    @paramMetadata("数字内容")
+    public num: number = 0;
+    @paramMetadata("布尔类型")
+    public required: boolean = false;
+}
 

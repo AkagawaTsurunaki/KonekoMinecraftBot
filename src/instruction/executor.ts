@@ -1,7 +1,7 @@
 import {plainToInstance} from "class-transformer";
 import {getLogger} from "../util/logger";
-import {BaseInstruction} from "../instruction/instruction";
-import {ToolCall} from "./toolCall";
+import {BaseInstruction} from "./instruction";
+import {ToolCall} from "../agent/toolCall";
 
 const logger = getLogger("InstructionExecutor");
 

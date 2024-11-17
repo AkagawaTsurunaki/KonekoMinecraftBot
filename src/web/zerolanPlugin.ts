@@ -1,5 +1,6 @@
-import WebSocket, {on} from "ws";
+import WebSocket from "ws";
 import {getLogger} from "../util/logger";
+import {plainToInstance} from "class-transformer";
 
 const logger = getLogger("ZerolanPlugin");
 
@@ -25,9 +26,19 @@ export class ZerolanLiveRobotBridge {
         this.client.onmessage = (e) => {
             logger.info(e)
             // Convert to Class instance
-            const obj = JSON.parse(JSON.stringify(e.data));
-            logger.info(obj)
+            const plainJson = JSON.stringify(e.data)
+            const protocolObj = plainToInstance(KonekoProtocol, plainJson)
+            if (protocolObj.protocol !== konekoProtocolVersion) {
+                logger.fatal(`Koneko protocol version "${konekoProtocolVersion}" is not supported`)
+                return
+            }
+            logger.info(protocolObj)
+
         }
+    }
+
+    public send(protocolObj: KonekoProtocol) {
+        this.client.send(JSON.stringify(protocolObj))
     }
 
     private createWebsocketClient() {

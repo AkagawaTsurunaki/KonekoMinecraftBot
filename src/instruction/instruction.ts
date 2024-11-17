@@ -43,13 +43,13 @@ export function argsMetadata() {
     };
 }
 
-
+type ExampleConstructor = new () => BaseInstructionInput;
 export class BaseInstruction {
     name: string;
     description: string;
-    inputSchema: BaseInstructionInput
+    inputSchema: ExampleConstructor
 
-    constructor(name: string, description: string, inputSchema: BaseInstructionInput) {
+    constructor(name: string, description: string, inputSchema: ExampleConstructor) {
         this.name = name;
         this.description = description;
         this.inputSchema = inputSchema;

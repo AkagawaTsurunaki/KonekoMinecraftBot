@@ -1,10 +1,10 @@
 export class ToolCall {
     id: string;
     name: string;
-    args: Record<string, any>
+    args: Map<string, any>
 
 
-    constructor(id: string, name: string, args: Record<string, any>) {
+    constructor(id: string, name: string, args: Map<string, any>) {
         this.id = id;
         this.name = name;
         this.args = args;

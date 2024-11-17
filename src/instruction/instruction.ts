@@ -1,7 +1,6 @@
 import {ExtendedBot} from "../extension/extendedBot";
 import 'reflect-metadata';
 import * as console from "node:console";
-import {paramMetadata} from "../common/fieldMetadata";
 
 export class Instruction {
     command: string
@@ -45,28 +44,26 @@ export function argsMetadata() {
 }
 
 
-export class NewInstruction {
+export class BaseInstruction {
     name: string;
     description: string;
+    inputSchema: BaseInstructionInput
 
-    constructor(name: string, description: string) {
+    constructor(name: string, description: string, inputSchema: BaseInstructionInput) {
         this.name = name;
         this.description = description;
+        this.inputSchema = inputSchema;
     }
 
     @argsMetadata()
     execute(args: object) {
         throw new Error("Not Implemented");
     }
+
+    exe(input: BaseInstructionInput) {
+        throw new Error("Not Implemented");
+    }
 }
 
-
-class ChatInstructionInput {
-    @paramMetadata("消息内容")
-    public content: string = "";
-    @paramMetadata("数字内容")
-    public num: number = 0;
-    @paramMetadata("布尔类型")
-    public required: boolean = false;
+export interface BaseInstructionInput {
 }
-

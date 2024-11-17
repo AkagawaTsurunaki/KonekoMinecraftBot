@@ -7,11 +7,11 @@ class ChatInstructionInput implements BaseInstructionInput {
     public content: string = "";
 }
 
-class ChatInstruction extends BaseInstruction {
+export class ChatInstruction extends BaseInstruction {
     private bot: ExtendedBot;
 
     constructor(bot: ExtendedBot) {
-        super("Chat", "向 Minecraft 中所有在线玩家发送消息。", ChatInstructionInput);
+        super("chat", "向 Minecraft 中所有在线玩家发送消息。", ChatInstructionInput);
         this.bot = bot;
     }
 

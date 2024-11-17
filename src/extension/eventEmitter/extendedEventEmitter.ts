@@ -3,6 +3,7 @@ import {DamageEvent} from "./damageEventEmitter";
 import {Entity} from "prismarine-entity";
 import {ExtendedBot} from "../extendedBot";
 import {ChatMessage} from "prismarine-chat";
+import {ToolCall} from "../../agent/toolCall";
 
 export interface ExtendedBotEvents extends BotEvents {
     secondTick: () => Promise<void> | void
@@ -20,6 +21,10 @@ export interface ExtendedBotEvents extends BotEvents {
         translate: string | null,
         jsonMsg: ChatMessage,
         matches: string[] | null
+    ) => Promise<void> | void
+
+    instructionCall: (
+       toolCall: ToolCall,
     ) => Promise<void> | void
 }
 

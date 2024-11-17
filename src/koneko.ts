@@ -20,6 +20,8 @@ import {ExtendedEventEmitter} from "./extension/eventEmitter/extendedEventEmitte
 import {SecondEventEmitter} from "./extension/eventEmitter/secondEventEmitter";
 import {TossInstruction} from "./instruction/impl/tossInstruction";
 import {MasterPlainChatEventEmitter} from "./extension/eventEmitter/masterPlainChatEventEmitter";
+import {ZerolanLiveRobotBridge} from "./web/zerolanPlugin";
+import {InstructionExecutor} from "./instruction/executor";
 
 const logger = getLogger("Koneko")
 
@@ -35,6 +37,8 @@ export class Koneko {
     protected fsm: FSMImpl
     protected eventEmitters: Array<ExtendedEventEmitter> = new Array<ExtendedEventEmitter>()
     protected behaviours: Array<AbstractBehaviour> = new Array<AbstractBehaviour>()
+    private zerolanPlugin: ZerolanLiveRobotBridge
+    private instructionExecutor: InstructionExecutor
 
     constructor() {
         logger.info("Loading config...")
@@ -43,6 +47,8 @@ export class Koneko {
         logger.info("Creating bot instance...")
         this.bot = createExtendedBot(this.botOption)
         this.fsm = new CustomFSM(this.bot)
+        this.zerolanPlugin = new ZerolanLiveRobotBridge(this.bot);
+        this.instructionExecutor = new InstructionExecutor(this.bot);
     }
 
     public start() {
@@ -114,6 +120,8 @@ export class Koneko {
         instructionRegistry.set(sow.command, sow)
         instructionRegistry.set(harvest.command, harvest)
         instructionRegistry.set(toss.command, toss)
+
+        this.instructionExecutor.start()
     }
 
     /**

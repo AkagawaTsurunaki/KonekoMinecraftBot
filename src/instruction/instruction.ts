@@ -1,6 +1,11 @@
 import {ExtendedBot} from "../extension/extendedBot";
 import 'reflect-metadata';
 import * as console from "node:console";
+import {ClassConstructor} from "class-transformer";
+import {instructionContainer} from "../common/container";
+import {getLogger} from "../util/logger";
+
+const logger = getLogger("Instruction");
 
 export class Instruction {
     command: string
@@ -44,6 +49,7 @@ export function argsMetadata() {
 }
 
 type ExampleConstructor = new () => BaseInstructionInput;
+
 export class BaseInstruction {
     name: string;
     description: string;
@@ -66,4 +72,10 @@ export class BaseInstruction {
 }
 
 export interface BaseInstructionInput {
+}
+
+export function instruction(cls: ClassConstructor<BaseInstruction>) {
+    const instance = new cls()
+    instructionContainer.register(cls.name, instance)
+    logger.debug(`Instruction registered: ${cls.name}`)
 }

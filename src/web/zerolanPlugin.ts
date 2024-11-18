@@ -1,8 +1,10 @@
 import WebSocket from "ws";
 import {getLogger} from "../util/logger";
-import {plainToInstance} from "class-transformer";
-import {ToolCall} from "../agent/toolCall";
+import {instanceToPlain, plainToInstance} from "class-transformer";
+import {ParameterProperty, Tool, ToolCall} from "../agent/toolCall";
 import {ExtendedBot} from "../extension/extendedBot";
+import {instructionContainer} from "../common/container";
+import {getFieldMetadata} from "../common/fieldMetadata";
 
 const logger = getLogger("ZerolanPlugin");
 
@@ -49,6 +51,10 @@ export class ZerolanLiveRobotBridge {
                 }
             }
         }
+
+        this.bot.once("login", () => {
+            this.clientHello()
+        })
     }
 
     private callInstructions(data: any) {
@@ -57,7 +63,16 @@ export class ZerolanLiveRobotBridge {
     }
 
     private pushInstructions() {
-        const allInstructions: any = []
+        const allInstructions = new Array<Tool>()
+        instructionContainer.registry.forEach((bi) => {
+            const fieldMetadataList = getFieldMetadata(bi.inputSchema);
+            const parameters = fieldMetadataList.map((fm) => {
+                return new ParameterProperty(fm.description, fm.name, fm.type, fm.required)
+            })
+            const tool = new Tool(bi.name, bi.description, parameters, typeof bi)
+            allInstructions.push(tool)
+        })
+
         const protocolObj = new KonekoProtocol()
         protocolObj.event = KonekoEventEnum.KONEKO_CLIENT_PUSH_INSTRUCTIONS
         protocolObj.data = allInstructions
@@ -86,13 +101,13 @@ export class ZerolanLiveRobotBridge {
     }
 
     public send(protocolObj: KonekoProtocol) {
-        this.client.send(JSON.stringify(protocolObj))
+        const record = instanceToPlain<KonekoProtocol>(protocolObj)
+        const jsonStr = JSON.stringify(record)
+        this.client.send(jsonStr)
     }
 
     private createWebsocketClient() {
-        const ws = new WebSocket(`ws://${this.host}:${this.port}`)
-        this.clientHello()
-        return ws
+        return new WebSocket(`ws://${this.host}:${this.port}`)
     }
 
 }

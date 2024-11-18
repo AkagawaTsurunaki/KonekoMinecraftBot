@@ -50,7 +50,7 @@ export function argsMetadata() {
 
 type ExampleConstructor = new () => BaseInstructionInput;
 
-export class BaseInstruction {
+export abstract class BaseInstruction {
     name: string;
     description: string;
     inputSchema: ExampleConstructor
@@ -66,9 +66,7 @@ export class BaseInstruction {
         throw new Error("Not Implemented");
     }
 
-    exe(input: BaseInstructionInput) {
-        throw new Error("Not Implemented");
-    }
+    abstract exe(input: BaseInstructionInput): void | Promise<void>;
 }
 
 export interface BaseInstructionInput {

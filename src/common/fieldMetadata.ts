@@ -25,7 +25,7 @@ export function paramMetadata<T>(description: string, required: boolean = true) 
     }
 }
 
-function getMetadata(cls: any) {
+export function getFieldMetadata(cls: any) {
     const instance: any = Reflect.construct(cls, []);
     const className = instance.constructor.name
 

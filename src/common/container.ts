@@ -4,7 +4,7 @@ import {getLogger} from "../util/logger";
 const logger = getLogger("Container")
 
 export class Container<K, V> {
-    private registry: Map<K, V>
+    public readonly registry: Map<K, V>
 
     public constructor() {
         this.registry = new Map<K, V>();

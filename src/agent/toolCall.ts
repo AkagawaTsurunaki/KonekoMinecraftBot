@@ -38,22 +38,21 @@ export class Tool {
         }
     }
 
-    constructor(name: string, description: string, parameters: Array<ParameterProperty>, parametersType: string) {
+    constructor(name: string, description: string, parameters: ParameterProperty[], parametersType: string) {
         this.type = "function";
         const properties = new Map();
         const required = new Array<string>();
         for (const parameter of parameters) {
             if (parameter.isRequired)
-                properties.set(parameter.name, {description: parameter.description, type: parameter.type});
-            else
                 required.push(parameter.name);
+            properties.set(parameter.name, {description: parameter.description, type: parameter.type});
         }
         this.function = {
             name: name,
             description: description,
             parameters: {
                 properties: properties,
-                required:required,
+                required: required,
                 type: parametersType
             }
         }

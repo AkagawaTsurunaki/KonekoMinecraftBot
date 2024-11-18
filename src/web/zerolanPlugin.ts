@@ -8,12 +8,20 @@ const logger = getLogger("ZerolanPlugin");
 
 class KonekoProtocol {
     protocol: string = "Koneko Protocol"
-    version: string = "0.1"
-    type: "hello" | "instruction" = "hello"
+    version: string = "0.2"
+    event: KonekoEventEnum = KonekoEventEnum.KONEKO_SERVER_HELLO
     data: any
 }
 
-export const konekoProtocolVersion = "0.1"
+export enum KonekoEventEnum {
+    KONEKO_CLIENT_HELLO = "koneko.client.hello",
+    KONEKO_CLIENT_PUSH_INSTRUCTIONS = "koneko.client.push_instructions",
+    KONEKO_SERVER_HELLO = "koneko.server.hello",
+    KONEKO_SERVER_FETCH_INSTRUCTIONS = "koneko.server.fetch_instructions",
+    KONEKO_SERVER_CALL_INSTRUCTION = "koneko.server.call_instruction"
+}
+
+export const konekoProtocolVersion = "0.2"
 
 export class ZerolanLiveRobotBridge {
     host: string;
@@ -31,25 +39,50 @@ export class ZerolanLiveRobotBridge {
             logger.info(e)
             // Convert to Class instance
             const jsonObj = JSON.parse(String(e.data))
-            const protocolObj = plainToInstance<KonekoProtocol, any>(KonekoProtocol, jsonObj)
-            if (protocolObj.protocol !== "Koneko Protocol") {
-                logger.error(`Only Koneko Protocol is supported.`)
-                return;
+            const protocolObj = this.validateProtocol(jsonObj)
+            if (protocolObj) {
+                logger.info(protocolObj)
+                if (protocolObj.event === KonekoEventEnum.KONEKO_SERVER_CALL_INSTRUCTION) {
+                    this.callInstructions(protocolObj)
+                } else if (protocolObj.event === KonekoEventEnum.KONEKO_SERVER_FETCH_INSTRUCTIONS) {
+                    this.pushInstructions()
+                }
             }
-
-            if (protocolObj.version !== konekoProtocolVersion) {
-                logger.fatal(`Koneko protocol version "${konekoProtocolVersion}" is not supported`)
-                return
-            }
-            logger.info(protocolObj)
-
-            if (protocolObj.type === "instruction") {
-                // @ts-ignore
-                const toolCall: ToolCall = plainToInstance<ToolCall, any>(ToolCall, protocolObj.data);
-                bot.events.emit("instructionCall", toolCall)
-            }
-
         }
+    }
+
+    private callInstructions(data: any) {
+        const toolCall = plainToInstance<ToolCall, object>(ToolCall, data as object);
+        this.bot.events.emit("instructionCall", toolCall)
+    }
+
+    private pushInstructions() {
+        const allInstructions: any = []
+        const protocolObj = new KonekoProtocol()
+        protocolObj.event = KonekoEventEnum.KONEKO_CLIENT_PUSH_INSTRUCTIONS
+        protocolObj.data = allInstructions
+        this.send(protocolObj)
+    }
+
+    private clientHello() {
+        const protocolObj = new KonekoProtocol()
+        protocolObj.event = KonekoEventEnum.KONEKO_CLIENT_HELLO
+        this.send(protocolObj)
+    }
+
+
+    public validateProtocol(jsonObj: any) {
+        const protocolObj = plainToInstance<KonekoProtocol, any>(KonekoProtocol, jsonObj)
+        if (protocolObj.protocol !== "Koneko Protocol") {
+            logger.error(`Only Koneko Protocol is supported.`)
+            return;
+        }
+
+        if (protocolObj.version !== konekoProtocolVersion) {
+            logger.fatal(`Koneko protocol version "${konekoProtocolVersion}" is not supported`)
+            return
+        }
+        return protocolObj;
     }
 
     public send(protocolObj: KonekoProtocol) {
@@ -57,7 +90,9 @@ export class ZerolanLiveRobotBridge {
     }
 
     private createWebsocketClient() {
-        return new WebSocket(`ws://${this.host}:${this.port}`)
+        const ws = new WebSocket(`ws://${this.host}:${this.port}`)
+        this.clientHello()
+        return ws
     }
 
 }

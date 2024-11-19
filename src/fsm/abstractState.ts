@@ -18,15 +18,15 @@ export abstract class AbstractState implements State {
     }
 
     onEnter(): void {
-        logger.debug(`State entered: ${this.id}`)
+        // logger.debug(`State entered: ${this.id}`)
     }
 
     onExit(): void {
-        logger.debug(`State exited: ${this.id}`)
+        // logger.debug(`State exited: ${this.id}`)
     }
 
     onUpdate(): void {
-        logger.debug(`State updated: ${this.id}`)
+        // logger.debug(`State updated: ${this.id}`)
     }
 
     onListen() {

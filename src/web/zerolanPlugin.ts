@@ -3,8 +3,8 @@ import {getLogger} from "../util/logger";
 import {instanceToPlain, plainToInstance} from "class-transformer";
 import {ParameterProperty, Tool, ToolCall} from "../agent/toolCall";
 import {ExtendedBot} from "../extension/extendedBot";
-import {instructionContainer} from "../common/container";
 import {getFieldMetadata} from "../common/fieldMetadata";
+import {InstructionRegistry} from "../instruction/registry";
 
 const logger = getLogger("ZerolanPlugin");
 
@@ -30,11 +30,13 @@ export class ZerolanLiveRobotBridge {
     port: number;
     client: WebSocket;
     bot: ExtendedBot;
+    private instructionRegistry: InstructionRegistry;
 
-    constructor(bot: ExtendedBot) {
+    constructor(bot: ExtendedBot, instructionRegistry: InstructionRegistry) {
         this.host = "127.0.0.1";
         this.port = 10098;
         this.bot = bot;
+        this.instructionRegistry = instructionRegistry
         this.client = this.createWebsocketClient()
 
         this.client.onmessage = (e) => {
@@ -65,7 +67,7 @@ export class ZerolanLiveRobotBridge {
 
     private pushInstructions() {
         const allInstructions = new Array<Tool>()
-        instructionContainer.registry.forEach((bi) => {
+        this.instructionRegistry.registry.forEach((bi) => {
             const fieldMetadataList = getFieldMetadata(bi.inputSchema);
             const parameters = fieldMetadataList.map((fm) => {
                 return new ParameterProperty(fm.description, fm.name, fm.type, fm.required)

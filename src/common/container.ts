@@ -1,4 +1,3 @@
-import {BaseInstruction} from "../instruction/instruction";
 import {getLogger} from "../util/logger";
 
 const logger = getLogger("Container")
@@ -18,5 +17,3 @@ export class Container<K, V> {
         this.registry.set(key, value)
     }
 }
-
-export const instructionContainer = new Container<string, BaseInstruction>()

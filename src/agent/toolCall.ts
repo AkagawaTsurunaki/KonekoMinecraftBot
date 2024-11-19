@@ -2,12 +2,14 @@ export class ToolCall {
     id: string;
     name: string;
     args: Map<string, any>
+    type: string;
 
 
-    constructor(id: string, name: string, args: Map<string, any>) {
+    constructor(id: string, name: string, args: Map<string, any>, type: string = "any") {
         this.id = id;
         this.name = name;
         this.args = args;
+        this.type = type;
     }
 }
 

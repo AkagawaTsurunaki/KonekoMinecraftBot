@@ -1,21 +1,22 @@
 import {Container} from "../common/container";
 import {BaseInstruction} from "./instruction";
-import {registerClasses} from "../common/reflect";
+import {scanConstructorRecursively} from "../common/reflect";
 import {getLogger} from "../util/logger";
 
-const logger = getLogger("InstructionRegistry")
+const logger = getLogger("registry.ts")
 
-class InstructionRegistry extends Container<string, BaseInstruction> {
+export class InstructionRegistry extends Container<string, BaseInstruction> {
 
-    constructor() {
+    public constructor() {
         super();
-        const instances = registerClasses("D:\\AkagawaTsurunaki\\WorkSpace\\TypeScriptProjects\\KonekoMinecraftBot\\src\\instruction\\impl")
-        instances.forEach(instance => {
-            const className: string = Reflect.getMetadata("instruction:class", instance.constructor);
-            this.register(className, instance as BaseInstruction);
+        const path = "D:\\AkagawaTsurunaki\\WorkSpace\\TypeScriptProjects\\KonekoMinecraftBot\\src";
+        scanConstructorRecursively(path, cls => {
+            const className: string = Reflect.getMetadata("instruction:class", cls);
+            if (className) {
+                const instance = new cls()
+                this.register(className, instance as BaseInstruction);
+            }
         })
         logger.info(`${this.registry.size} instructions registered.`)
     }
 }
-
-export const instructionRegistry = new InstructionRegistry();

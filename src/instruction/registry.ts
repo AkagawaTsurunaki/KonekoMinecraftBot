@@ -12,8 +12,7 @@ export class InstructionRegistry extends Container<string, BaseInstruction> {
     public constructor(bot: ExtendedBot) {
         super();
         this.bot = bot;
-        const path = "D:\\AkagawaTsurunaki\\WorkSpace\\TypeScriptProjects\\KonekoMinecraftBot\\src";
-        scanConstructorRecursively(path, cls => {
+        scanConstructorRecursively(__dirname, cls => {
             const className: string = Reflect.getMetadata("instruction:class", cls);
             if (className) {
                 const instance = new cls(this.bot) as BaseInstruction

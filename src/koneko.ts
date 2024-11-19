@@ -34,7 +34,7 @@ export class Koneko {
     protected fsm: FSMImpl
     protected eventEmitters: Array<ExtendedEventEmitter> = new Array<ExtendedEventEmitter>()
     protected behaviours: Array<AbstractBehaviour> = new Array<AbstractBehaviour>()
-    private zerolanPlugin: ZerolanLiveRobotBridge
+    private zerolanPlugin: ZerolanLiveRobotBridge | undefined
     private instructionExecutor: InstructionExecutor
     private instructionRegistry: InstructionRegistry
     private server: WebServer;
@@ -50,7 +50,10 @@ export class Koneko {
 
         this.fsm = new CustomFSM(this.bot, this.server)
         this.instructionRegistry = new InstructionRegistry(this.bot)
-        this.zerolanPlugin = new ZerolanLiveRobotBridge(this.bot, this.instructionRegistry);
+        const config = require("../resources/config/webServer.json")
+        if (config.zerolanLiveRobot.enable) {
+            this.zerolanPlugin = new ZerolanLiveRobotBridge(this.bot, this.instructionRegistry);
+        }
         this.instructionExecutor = new InstructionExecutor(this.bot, this.instructionRegistry);
     }
 

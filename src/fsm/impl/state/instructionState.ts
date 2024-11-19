@@ -27,7 +27,9 @@ export class InstructionState extends AbstractState {
         this.bot.on("whisper", async (username, message) => {
             if (username === this.bot.option.masterName) {
                 const parser = new StrictParser()
-                const {command, args} = parser.parse(message)
+                // const {command, args} = parser.parse(message)
+                const command = ""
+                const args = [1]
                 const ins = instructionRegistry.get(command)
                 if (ins) {
                     this.instructionFlag = true
@@ -36,6 +38,7 @@ export class InstructionState extends AbstractState {
                     logger.info(`Instruction ${command} execution finished.`)
                     this.instructionFlag = false
                 }
+                throw new Error("Not Implemented")
             }
         })
     }

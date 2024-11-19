@@ -16,4 +16,8 @@ export class Container<K, V> {
         }
         this.registry.set(key, value)
     }
+
+    public asArray() {
+        return Array.from(this.registry.values())
+    }
 }

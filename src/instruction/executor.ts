@@ -3,30 +3,29 @@ import {getLogger} from "../util/logger";
 import {BaseInstruction} from "./instruction";
 import {ToolCall} from "../agent/toolCall";
 import {ExtendedBot} from "../extension/extendedBot";
-import {ChatInstruction} from "./impl/chatInstruction";
+import {Container, instructionContainer} from "../common/container";
 
 const logger = getLogger("InstructionExecutor");
 
 export class InstructionExecutor {
 
-    instructions: Map<string, BaseInstruction>;
     private bot: ExtendedBot;
+    private instructionContainer: Container<string, BaseInstruction>
 
-    constructor(bot: ExtendedBot) {
-        this.bot = bot
-        this.instructions = new Map<string, BaseInstruction>();
-        const chat = new ChatInstruction(this.bot)
-        this.instructions.set(chat.name, chat)
+    constructor(bot: ExtendedBot, instructionContainer: Container<string, BaseInstruction>) {
+        this.bot = bot;
+        this.instructionContainer = instructionContainer;
     }
 
     start() {
         this.bot.events.on("instructionCall", toolCall => {
             this.execute(toolCall);
         })
+        logger.info("Instructions: " + instructionContainer.registry.size)
     }
 
     execute(toolCall: ToolCall) {
-        const instruction = this.instructions.get(toolCall.name);
+        const instruction = this.instructionContainer.registry.get(toolCall.name)
         if (!instruction) {
             logger.warn(`No such instruction: ${toolCall.name}`);
             return;

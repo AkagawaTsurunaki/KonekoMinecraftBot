@@ -13,11 +13,11 @@ import {InstructionState} from "./state/instructionState";
 import {ExtendedBot} from "../../extension/extendedBot";
 import {FishingState} from "./state/fishingState";
 import assert from "node:assert";
-import {server} from "../../../index";
 import {LoveState} from "./state/loveState";
 import {SearchForChestState} from "./state/searchForChestState";
 import {KillAnimalsState} from "./state/killAnimalsState";
 import {SearchResourceState} from "./state/searchResourceState";
+import {WebServer} from "../../web/server";
 
 export class CustomFSM extends FSMImpl {
 
@@ -39,10 +39,12 @@ export class CustomFSM extends FSMImpl {
     private readonly searchForResourceState: SearchResourceState;
     private readonly searchForChestState: SearchForChestState;
     private readonly killAnimalsState: KillAnimalsState;
+    private server: WebServer;
 
-    constructor(bot: ExtendedBot) {
+    constructor(bot: ExtendedBot, server: WebServer) {
         super();
         this.bot = bot
+        this.server = server
 
         this.idleState = new IdleState(this.bot)
         this.attackHostilesState = new AttackHostilesState(this.bot)
@@ -115,7 +117,7 @@ export class CustomFSM extends FSMImpl {
                 mermaid: this.getStateDiagramMermaid()
             }
         }
-        server.sendMessage(data)
+        this.server.sendMessage(data)
     }
 
     private getStateDiagramMermaid() {

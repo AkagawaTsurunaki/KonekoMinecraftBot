@@ -17,6 +17,7 @@ import {MasterPlainChatEventEmitter} from "./extension/eventEmitter/masterPlainC
 import {ZerolanLiveRobotBridge} from "./web/zerolanPlugin";
 import {InstructionExecutor} from "./instruction/executor";
 import {InstructionRegistry} from "./instruction/registry";
+import {WebServer} from "./web/server";
 
 const logger = getLogger("Koneko")
 
@@ -42,9 +43,12 @@ export class Koneko {
 
         logger.info("Creating bot instance...")
         this.bot = createExtendedBot(this.botOption)
-        this.fsm = new CustomFSM(this.bot)
-        this.zerolanPlugin = new ZerolanLiveRobotBridge(this.bot);
+
+        const server = new WebServer()
+        server.startServer()
+        this.fsm = new CustomFSM(this.bot, server)
         this.instructionRegistry = new InstructionRegistry()
+        this.zerolanPlugin = new ZerolanLiveRobotBridge(this.bot, this.instructionRegistry);
         this.instructionExecutor = new InstructionExecutor(this.bot, this.instructionRegistry);
     }
 

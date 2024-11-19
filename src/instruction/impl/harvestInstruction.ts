@@ -1,20 +1,7 @@
-import {BaseInstruction, BaseInstructionInput, instruction, Instruction} from "../instruction";
-import {getStopFlag, setStopFlag} from "../../share/flags";
+import {BaseInstruction, BaseInstructionInput, instruction} from "../instruction";
+import {getStopFlag} from "../../share/flags";
 import {ExtendedBot} from "../../extension/extendedBot";
-import {instructionDoc} from "../../common/decorator/instructionDoc";
 import {paramMetadata} from "../../common/fieldMetadata";
-
-@instructionDoc({name: "Harvest Corps", description: "Ask bot to harvest."})
-export class HarvestInstruction extends Instruction {
-    constructor(bot: ExtendedBot) {
-        super(bot, {
-            command: "harvest", func: async () => {
-                setStopFlag(false)
-                await bot.skills.farm.harvest(64, 1000, 5, () => getStopFlag())
-            }
-        });
-    }
-}
 
 class HarvestInstructionInput implements BaseInstructionInput {
     @paramMetadata("搜索作物的半径大小", false)
@@ -24,7 +11,7 @@ class HarvestInstructionInput implements BaseInstructionInput {
 }
 
 @instruction
-export class HarvestInstruction01 extends BaseInstruction {
+export class HarvestInstruction extends BaseInstruction {
     private bot: ExtendedBot;
 
     constructor(bot: ExtendedBot) {

@@ -1,18 +1,27 @@
-import {Instruction} from "../instruction";
+import {BaseInstruction, BaseInstructionInput, instruction, Instruction} from "../instruction";
 import {getStopFlag, setStopFlag} from "../../share/flags";
 import {ExtendedBot} from "../../extension/extendedBot";
 import {instructionDoc} from "../../common/decorator/instructionDoc";
+import {HarvestInstruction} from "./harvestInstruction";
+import {paramMetadata} from "../../common/fieldMetadata";
+import {corpsNameList} from "../../common/const";
 
-@instructionDoc({name: "Sow Corps", description: "Ask bot to sow."})
-export class SowInstruction extends Instruction {
+
+class SowInstructionInput implements BaseInstructionInput {
+    @paramMetadata(`作物名称： ${corpsNameList}`, true)
+    itemName: string = ""
+}
+
+@instruction
+export class SowInstruction extends BaseInstruction {
+    private bot: ExtendedBot;
+
     constructor(bot: ExtendedBot) {
-        super(bot, {
-            command: "sow", args: ["itemName"], argTypes: ["string"], func: async (itemName: string) => {
-                setStopFlag(false)
-                await bot.skills.farm.sow(64, itemName, () => getStopFlag())
-            }
-        });
-
+        super("sow", "在附近种植作物", SowInstructionInput);
+        this.bot = bot
     }
 
+    async exe(input: SowInstructionInput) {
+        await this.bot.skills.farm.sow(64, input.itemName, () => getStopFlag())
+    }
 }

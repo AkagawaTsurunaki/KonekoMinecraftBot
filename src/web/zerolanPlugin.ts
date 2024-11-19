@@ -47,7 +47,7 @@ export class ZerolanLiveRobotBridge {
             if (protocolObj) {
                 logger.info(protocolObj)
                 if (protocolObj.event === KonekoEventEnum.KONEKO_SERVER_CALL_INSTRUCTION) {
-                    this.callInstructions(protocolObj)
+                    this.callInstructions(protocolObj.data)
                 } else if (protocolObj.event === KonekoEventEnum.KONEKO_SERVER_FETCH_INSTRUCTIONS) {
                     this.pushInstructions()
                 }

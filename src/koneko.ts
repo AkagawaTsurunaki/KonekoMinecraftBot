@@ -18,6 +18,7 @@ import {ZerolanLiveRobotBridge} from "./web/zerolanPlugin";
 import {InstructionExecutor} from "./instruction/executor";
 import {InstructionRegistry} from "./instruction/registry";
 import {WebServer} from "./web/server";
+import {genInstructions} from "./common/docGen";
 
 const logger = getLogger("Koneko")
 
@@ -36,6 +37,7 @@ export class Koneko {
     private zerolanPlugin: ZerolanLiveRobotBridge
     private instructionExecutor: InstructionExecutor
     private instructionRegistry: InstructionRegistry
+    private server: WebServer;
 
     constructor() {
         logger.info("Loading config...")
@@ -44,10 +46,10 @@ export class Koneko {
         logger.info("Creating bot instance...")
         this.bot = createExtendedBot(this.botOption)
 
-        const server = new WebServer()
-        server.startServer()
-        this.fsm = new CustomFSM(this.bot, server)
-        this.instructionRegistry = new InstructionRegistry()
+        this.server = new WebServer()
+
+        this.fsm = new CustomFSM(this.bot, this.server)
+        this.instructionRegistry = new InstructionRegistry(this.bot)
         this.zerolanPlugin = new ZerolanLiveRobotBridge(this.bot, this.instructionRegistry);
         this.instructionExecutor = new InstructionExecutor(this.bot, this.instructionRegistry);
     }
@@ -60,7 +62,7 @@ export class Koneko {
             this.enableBehaviours()
             this.startFiniteStateMachine()
             this.generateDocuments()
-
+            this.server.startServer()
 
             logger.info(`Koneko Minecraft Bot is running!`)
         })
@@ -128,7 +130,7 @@ export class Koneko {
     generateDocuments() {
         DocumentManager.generateStateDiagram(this.fsm)
         DocumentManager.generateStatesForm()
-        DocumentManager.generateInstructionsForm()
+        genInstructions(this.instructionRegistry.asArray())
         DocumentManager.generateBehavioursForm()
     }
 

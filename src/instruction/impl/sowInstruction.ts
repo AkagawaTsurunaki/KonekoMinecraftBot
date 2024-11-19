@@ -2,11 +2,11 @@ import {BaseInstruction, BaseInstructionInput, instruction} from "../instruction
 import {getStopFlag} from "../../share/flags";
 import {ExtendedBot} from "../../extension/extendedBot";
 import {paramMetadata} from "../../common/fieldMetadata";
-import {corpsNameList} from "../../common/const";
+import {seedsNameList} from "../../common/const";
 
 
 class SowInstructionInput implements BaseInstructionInput {
-    @paramMetadata(`作物名称： ${corpsNameList}`, true)
+    @paramMetadata(`作物名称： ${seedsNameList}`, true)
     itemName: string = ""
 }
 

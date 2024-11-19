@@ -59,6 +59,7 @@ export class ZerolanLiveRobotBridge {
 
     private callInstructions(data: any) {
         const toolCall = plainToInstance<ToolCall, object>(ToolCall, data as object);
+        logger.info(toolCall);
         this.bot.events.emit("instructionCall", toolCall)
     }
 

@@ -8,20 +8,15 @@ import {FSMImpl} from "./fsm/impl/fsmImpl";
 import {AbstractBehaviour} from "./behaviour/abstractBehaviour";
 import {FaceToSoundSourceBehaviour} from "./behaviour/faceToSoundSourceBehaviour";
 import {AutoEatBehaviour} from "./behaviour/autoEatBehaviour";
-import {QuitInstruction} from "./instruction/impl/quitInstruction";
-import {StopInstruction} from "./instruction/impl/stopInstruction";
-import {SowInstruction} from "./instruction/impl/sowInstruction";
-import {HarvestInstruction} from "./instruction/impl/harvestInstruction";
-import {instructionRegistry} from "./instruction/instruction";
 import {DocumentManager} from "./common/doc/documentManager";
 import {BotHurtEventEmitter} from "./extension/eventEmitter/botHurtEventEmitter";
 import {DamageEventEventEmitter} from "./extension/eventEmitter/damageEventEmitter";
 import {ExtendedEventEmitter} from "./extension/eventEmitter/extendedEventEmitter";
 import {SecondEventEmitter} from "./extension/eventEmitter/secondEventEmitter";
-import {TossInstruction} from "./instruction/impl/tossInstruction";
 import {MasterPlainChatEventEmitter} from "./extension/eventEmitter/masterPlainChatEventEmitter";
 import {ZerolanLiveRobotBridge} from "./web/zerolanPlugin";
 import {InstructionExecutor} from "./instruction/executor";
+import {instructionContainer} from "./common/container";
 
 const logger = getLogger("Koneko")
 
@@ -48,7 +43,7 @@ export class Koneko {
         this.bot = createExtendedBot(this.botOption)
         this.fsm = new CustomFSM(this.bot)
         this.zerolanPlugin = new ZerolanLiveRobotBridge(this.bot);
-        this.instructionExecutor = new InstructionExecutor(this.bot);
+        this.instructionExecutor = new InstructionExecutor(this.bot, instructionContainer);
     }
 
     public start() {
@@ -109,18 +104,6 @@ export class Koneko {
     }
 
     initAllInstructions() {
-        const quit = new QuitInstruction(this.bot)
-        const stop = new StopInstruction(this.bot)
-        const sow = new SowInstruction(this.bot)
-        const harvest = new HarvestInstruction(this.bot)
-        const toss = new TossInstruction(this.bot)
-
-        instructionRegistry.set(quit.command, quit)
-        instructionRegistry.set(stop.command, stop)
-        instructionRegistry.set(sow.command, sow)
-        instructionRegistry.set(harvest.command, harvest)
-        instructionRegistry.set(toss.command, toss)
-
         this.instructionExecutor.start()
     }
 

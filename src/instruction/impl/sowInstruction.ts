@@ -1,8 +1,6 @@
-import {BaseInstruction, BaseInstructionInput, instruction, Instruction} from "../instruction";
-import {getStopFlag, setStopFlag} from "../../share/flags";
+import {BaseInstruction, BaseInstructionInput, instruction} from "../instruction";
+import {getStopFlag} from "../../share/flags";
 import {ExtendedBot} from "../../extension/extendedBot";
-import {instructionDoc} from "../../common/decorator/instructionDoc";
-import {HarvestInstruction} from "./harvestInstruction";
 import {paramMetadata} from "../../common/fieldMetadata";
 import {corpsNameList} from "../../common/const";
 

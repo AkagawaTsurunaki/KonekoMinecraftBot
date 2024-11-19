@@ -4,3 +4,5 @@ function main() {
     const konekoMinecraftBot = new Koneko()
     konekoMinecraftBot.start()
 }
+
+main()

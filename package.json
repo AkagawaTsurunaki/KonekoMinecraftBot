@@ -1,6 +1,6 @@
 {
   "name": "koneko-minecraft-bot",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "description": "A minecraft bot",
   "main": "index.ts",
   "scripts": {

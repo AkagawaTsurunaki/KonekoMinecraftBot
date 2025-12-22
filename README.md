@@ -1,6 +1,6 @@
 # Koneko Minecraft Bot
 
-<img src="https://img.shields.io/badge/ver-0.2--alpha-purple" alt="npm"> <img src="https://img.shields.io/badge/Minecraft-1.20.1|1.20.2|1.20.6-green" alt="TypeScript"><img src="https://img.shields.io/badge/TypeScript-5.6.3-blue" alt="TypeScript"> <img src="https://img.shields.io/badge/Node.js-20.17.0-blue" alt="Node.js 20.17.0"> <img src="https://img.shields.io/badge/npm-10.8.2-blue" alt="npm">
+<img src="https://img.shields.io/badge/ver-0.3--alpha-purple" alt="npm"> <img src="https://img.shields.io/badge/Minecraft-1.20.1|1.20.2|1.20.6-green" alt="TypeScript"><img src="https://img.shields.io/badge/TypeScript-5.6.3-blue" alt="TypeScript"> <img src="https://img.shields.io/badge/Node.js-20.17.0-blue" alt="Node.js 20.17.0"> <img src="https://img.shields.io/badge/npm-10.8.2-blue" alt="npm">
 
 `KonekoMinecraftBot` is an intelligent Minecraft bot based on **Finite State Machine** and some **Machine Learning Algorithms**, such as **DB-Scan** and **Single Layer Perceptron**.
 

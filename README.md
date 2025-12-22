@@ -1,20 +1,12 @@
 # Koneko Minecraft Bot
 
-<img src="https://img.shields.io/badge/ver-0.2--alpha-purple" alt="npm">
-<img src="https://img.shields.io/badge/Minecraft-1.20.1|1.20.2|1.20.6-green" alt="TypeScript">
-<img src="https://img.shields.io/badge/TypeScript-5.6.3-blue" alt="TypeScript">
-<img src="https://img.shields.io/badge/Node.js-20.17.0-blue" alt="Node.js 20.17.0">
-<img src="https://img.shields.io/badge/npm-10.8.2-blue" alt="npm">
+<img src="https://img.shields.io/badge/ver-0.2--alpha-purple" alt="npm"> <img src="https://img.shields.io/badge/Minecraft-1.20.1|1.20.2|1.20.6-green" alt="TypeScript"><img src="https://img.shields.io/badge/TypeScript-5.6.3-blue" alt="TypeScript"> <img src="https://img.shields.io/badge/Node.js-20.17.0-blue" alt="Node.js 20.17.0"> <img src="https://img.shields.io/badge/npm-10.8.2-blue" alt="npm">
 
-`KonekoMinecraftBot` is an intelligent Minecraft bot based on **Finite State Machine** and some **Machine Learning
-Algorithms**, such
-as **DB-Scan** and **Single Layer Perceptron**.
+`KonekoMinecraftBot` is an intelligent Minecraft bot based on **Finite State Machine** and some **Machine Learning Algorithms**, such as **DB-Scan** and **Single Layer Perceptron**.
 
 > [!NOTE]
 >
-> I am new to TypeScript and `mineflayer`, so some unexpected behaviours of bot still exist, and may be
-> fixed in later versions (or not ///>_</// ).
-> Just think of your bot as a **Cute Neko Musume** to nurture but not a ~~Cold Dumb Machine~~ to oppress.
+> I am new to TypeScript and `mineflayer`, so some unexpected behaviours of bot still exist, and may be fixed in later versions (or not ///>_</// ). Just think of your bot as a **Cute Neko Musume** to nurture but not a ~~Cold Dumb Machine~~ to oppress.
 
 <img src="./docs/koneko-logo-github.png" width="800" alt="koneko-logo-github.png" style="text-align: center;">
 
@@ -54,9 +46,9 @@ Minecraft 1.20.1, 1.20.2 and 1.20.6 are supported.
 > [!WARNING]
 >
 > To support other version of Minecraft, you should download `registry_data.json`
-> from [here](https://wiki.vg/Registry_Data#Damage_Type) (click the link and scroll down to the bottom of page)
-> and put the JSON file in `./resource/protocol/{VERSION}/register_data.json`.
+> from [here](https://minecraft.wiki/w/Java_Edition_protocol/Registries#Synchronized_registries) (click the link and scroll down to **Obtaining vanilla registry data**) and put the JSON file in `./resource/protocol/{VERSION}/register_data.json`.
 > Then implement the code how process the `DamageEventEmitter` in this version.
+> But may be it does not work well on other versions!
 
 ### Download Dependencies
 
@@ -76,16 +68,11 @@ Find the config file `./resource/config/botConfig.json` and edit it.
 
 ```json5
 {
-  "host": "127.0.0.1",
-  // Minecraft server host. 
-  "port": 25565,
-  // Minecraft server port.
-  "username": "Koneko",
-  // Your bot name.
-  "version": "1.20.1",
-  // Minecraft version. Default to 1.20.1 if null is given.
-  "masterName": "Akagawa"
-  // The name of the master of your bot.
+  "host": "127.0.0.1", // Minecraft server host. 
+  "port": 25565,  // Minecraft server port.
+  "username": "Koneko",  // Your bot name.
+  "version": "1.20.1",  // Minecraft version. Default to 1.20.1 if null is given.
+  "masterName": "Akagawa"  // The name of the master of your bot.
 }
 ```
 
@@ -97,10 +84,7 @@ Run the command.
 npx tsx index.ts
 ```
 
-By click the link and open your browser. You will see the whole dynamically updating state diagram of
-`KonekoMinecraftBot` by visiting the link `http:127.0.0.1:5689/stateDiagram.html` by default.
-Purple indicates the current active state, blue indicates states that are connected to the current state,
-and gray indicates states that are not connected to the current state.
+By click the link and open your browser. You will see the whole dynamically updating state diagram of `KonekoMinecraftBot` by visiting the link `http:127.0.0.1:5689/stateDiagram.html` by default. Purple indicates the current active state, blue indicates states that are connected to the current state, and gray indicates states that are not connected to the current state.
 
 ```mermaid
 stateDiagram
@@ -188,20 +172,13 @@ Your bot will join the game later if everything goes well. Enjoy Minecraft time 
 ## Finite State Machine
 
 This state diagram show the relation between different states.
-Each state $S$ has a transition value $T_S \ (0 \leq T_S \leq 1) $ denoted the probability of whether the FSM should
-transition from current state to this state.
-If the transition value of the current state is greater than any transition values of the next states of the current
-state, FSM will not transition, or say **State Remain**.
-Or else, it will transition to the state with maximum transition value, namely **State Transition**.
+Each state $S$ has a transition value $T_S \ (0 \leq T_S \leq 1) $ denoted the probability of whether the FSM should transition from current state to this state. If the transition value of the current state is greater than any transition values of the next states of the current state, FSM will not transition, or say **State Remain**. Or else, it will transition to the state with maximum transition value, namely **State Transition**.
 
-> Currently, FSM implementation does not really transition state on ~~probability distribution~~, but just on **value
-comparison**, for development and test stability.
+> Currently, FSM implementation does not really transition state on ~~probability distribution~~, but just on **value comparison**, for development and test stability.
 > I will test this trick in future releases, but using it or not depends on the final performance.
 
-FSM updates transition values of all states registered per second (or 20 physical tick in Minecraft). If you think the
-frequency is too low, just set a value you want.
-But remember, some updates of transition value of specific states may depend on `EventEmitter` defined by
-`KonekoMinecraftBot` and `mineflayer`, which are not fully controlled by FSM.
+FSM updates transition values of all states registered per second (or 20 physical tick in Minecraft). If you think the frequency is too low, just set a value you want.
+But remember, some updates of transition value of specific states may depend on `EventEmitter` defined by `KonekoMinecraftBot` and `mineflayer`, which are not fully controlled by FSM.
 You should consider memory leak when implementing your custom states or FSM.
 
 ### State Diagram

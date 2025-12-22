@@ -9,8 +9,8 @@ const logger = getLogger("DamageEvent")
  *
  * More information:
  * - What is damage type: https://minecraft.wiki/w/Damage_type
- * - Protocol of damage event: https://wiki.vg/Protocol#Damage_Event
- * - Available default registries: https://wiki.vg/Registry_Data#Damage_Type
+ * - Protocol of damage event: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Damage_Event
+ * - Available default registries: https://minecraft.wiki/w/Java_Edition_protocol/Registries#Synchronized_registries
  * - Download "registry_data.json": https://gist.github.com/WinX64/2d257d3df3c7ab9c4b02dc90be881ab2
  */
 
@@ -77,7 +77,7 @@ export class DamageEventEventEmitter extends ExtendedEventEmitter {
     }
 
     /**
-     * See: https://wiki.vg/Protocol#Damage_Event
+     * See: https://minecraft.wiki/w/Java_Edition_protocol/Packets#Damage_Event
      */
     public startEventEmitter() {
         try {
